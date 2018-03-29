@@ -7,5 +7,6 @@
     <select id="selectUser" resultType="User" parameterType="long">
         SELECT * FROM user WHERE id = #{id}
     </select>
-
+    
+	
 </mapper>
