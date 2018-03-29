@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.scut.dao.teacherDao.ITeacherDao">
+	<select id="verificateTelnumber" resultType="String" parameterType="String">
+		SELECT phone FROM teacher WHERE phone = #{telnumber}
+	</select>
+	
+	<insert id="inputTeacher" timeout="10">
+		insert into teacher (teacher_id, phone, password, create_time, pic_path, name, nickname, birthday, sex, school, token)
+		values (#{id},#{phone},#{password},#{createTime},#{pic_path},#{name},#{nickname},#{birthday,javaType=Date,jdbcType=DATE},#{sex},#{school},#{token})
+	</insert>
+</mapper>

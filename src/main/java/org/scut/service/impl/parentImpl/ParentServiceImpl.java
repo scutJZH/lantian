@@ -1,0 +1,28 @@
+package org.scut.service.impl.parentImpl;
+
+import javax.annotation.Resource;
+
+import org.scut.dao.parentDao.IParentDao;
+import org.scut.model.Parent;
+import org.scut.service.parentService.IParentService;
+import org.springframework.stereotype.Service;
+
+@Service("parentService")
+public class ParentServiceImpl implements IParentService {
+
+	@Resource
+	private IParentDao parentDao;
+	
+	public boolean inputParent(Parent parent) {
+		try{
+			this.parentDao.inputParent(parent);
+			return true;
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+
+}

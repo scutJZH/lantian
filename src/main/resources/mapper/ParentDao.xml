@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.scut.dao.parentDao.IParentDao">
+
+	<select id="verificateTelnumber" resultType="String" parameterType="String">
+		SELECT phone FROM parent WHERE phone = #{telnumber}
+	</select>
+	
+	<insert id="inputParent" timeout="10">
+		insert into parent (parent_id, phone, password, nickname, birthday, create_time, token, pic_path, sex)
+		values (#{id},#{phone},#{password},#{nickname},#{birthday,javaType=Date,jdbcType=DATE},#{createTime},#{token},#{pic_path},#{sex})
+	</insert>
+</mapper>
