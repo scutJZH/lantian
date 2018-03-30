@@ -42,13 +42,21 @@ public class RegistController {
 	@Resource
 	private Teacher teacher;
 	
-	
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 * 
+	 * status 为0代表账号已经被注册，为1代表注册成功，-1代表注册发生错误
+	 */
 	@RequestMapping("/regist.do")
-	public void ParentRegist(HttpServletRequest request, HttpServletResponse response) throws IOException{
+	public void regist(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		
 		request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         
+        //读取json数据
 		BufferedReader br = request.getReader();
 		StringBuffer sb = new StringBuffer();
 		String input = "";
@@ -58,7 +66,7 @@ public class RegistController {
 		
 //		System.out.println(sb);
 		
-		
+		//把json转为map
 		Gson gson = new Gson();
 		Map<String, Object> m = gson.fromJson(sb.toString(), Map.class);
 		
@@ -69,69 +77,56 @@ public class RegistController {
 		String id = "";
 		String nickname = "";
 		String password = "";
-		int isSuccess = -1;
+		int status = -1;
 		String token = "";
 		
 		String telnumber = (String)m.get("telnumber");
 		String userType = (String)m.get("userType");
 		boolean isUserExist = this.verificateService.verificateTelnumber(telnumber, userType);
 		if(isUserExist){
-			isSuccess = 0;
+			status = 0;
 		}else{
+			
 			id = UUID.randomUUID().toString();
+			token = UUID.randomUUID().toString();
+			
 			nickname = (String)m.get("nickname");
 			password = (String)m.get("password");
-			Date createTime = new Date();
-			token = UUID.randomUUID().toString();
 			try{
-				if(userType.equals("1")){
-					this.student.setId(id);
-					this.student.setPhone(telnumber);
-					this.student.setNickname(nickname);
-					this.student.setPassword(password);
-					this.student.setCreateTime(createTime);
-					this.student.setToken(token);
-					if(!this.studentService.inputStudent(student)){
+				switch(userType){
+				case "1":
+					if(!this.studentService.inputStudent(id, telnumber, nickname, password, token)){
 						throw new Exception();
 					}
-				}else if(userType.equals("2")){
-					this.teacher.setId(id);
-					this.teacher.setPhone(telnumber);
-					this.teacher.setNickname(nickname);
-					this.teacher.setPassword(password);
-					this.teacher.setCreateTime(createTime);
-					this.teacher.setToken(token);
-					if(!this.teacherService.inputTeacher(teacher)){
+					break;
+				case "2":
+					if(!this.teacherService.inputTeacher(id, telnumber, nickname, password, token)){
 						throw new Exception();
 					}
-				}else if(userType.equals("3")){
-					this.parent.setId(id);
-					this.parent.setPhone(telnumber);
-					this.parent.setNickname(nickname);
-					this.parent.setPassword(password);
-					this.parent.setCreateTime(createTime);
-					this.parent.setToken(token);
-					if(!this.parentService.inputParent(parent)){
+				case "3":
+					if(!this.parentService.inputParent(id, telnumber, nickname, password, token)){
 						throw new Exception();
 					}
-				}else{
+					break;
+				default:
 					throw new Exception();
 				}
-				isSuccess = 1;
+				status = 1;
 			}catch(Exception e){
-				isSuccess = -1;
+				status = -1;
 			}
 		
 		}
 		
 		result.put("userid", id);
 		result.put("token", token);
-		result.put("isSuccess", isSuccess);
+		result.put("isSuccess", status);
 		
 		PrintWriter out = response.getWriter();
 		out.write(gson.toJson(result));
 		out.flush();
 		out.close();
+		
 	}
 
 }

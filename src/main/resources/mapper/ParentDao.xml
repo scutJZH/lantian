@@ -11,4 +11,10 @@
 		insert into parent (parent_id, phone, password, nickname, birthday, create_time, token, pic_path, sex)
 		values (#{id},#{phone},#{password},#{nickname},#{birthday,javaType=Date,jdbcType=DATE},#{createTime},#{token},#{pic_path},#{sex})
 	</insert>
+	
+	<select id="queryPwdAndToken" resultType="HashMap" parameterType="String">
+		SELECT (password, token) FROM parent WHERE phone = #{telnumber}
+	
+	</select>
+	
 </mapper>
