@@ -29,7 +29,7 @@ public class VerificateServiceImpl implements IVerificateService{
 			flag = this.parentDao.verificateTelnumber(telnumber);
 		}
 		
-		System.out.println("flag = "+flag);
+//		System.out.println("flag = "+flag);
 		
 		return (flag == null||flag == "")?false:true;
 	}

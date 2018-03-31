@@ -12,9 +12,21 @@
 		values (#{id},#{phone},#{password},#{nickname},#{birthday,javaType=Date,jdbcType=DATE},#{createTime},#{token},#{pic_path},#{sex})
 	</insert>
 	
-	<select id="queryPwdAndToken" resultType="HashMap" parameterType="String">
-		SELECT (password, token) FROM parent WHERE phone = #{telnumber}
+	<select id="queryIdAndPwdAndToken" parameterType="String" resultType="HashMap">
+		SELECT parent_id, password , token FROM parent WHERE phone = #{telnumber}
 	
 	</select>
+	
+	<update id="updateToken">
+		update parent set
+			token = #{token}
+		where parent_id = #{id}
+	</update>
+	
+	<resultMap type="HashMap" id="PwdAndTokenMap">
+		<id column="phone" property="phone" jdbcType="VARCHAR"/>
+		<result column="password" property="password" jdbcType="VARCHAR"/>
+		<result column="token" property="token" jdbcType="VARCHAR"/>
+	</resultMap>
 	
 </mapper>

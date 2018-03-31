@@ -35,13 +35,6 @@ public class RegistController {
 	private IParentService parentService;
 	@Resource
 	private ITeacherService teacherService;
-	@Resource
-	private Student student;
-	@Resource
-	private Parent parent;
-	@Resource
-	private Teacher teacher;
-	
 	/**
 	 * 
 	 * @param request

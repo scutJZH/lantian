@@ -1,7 +1,9 @@
 package org.scut.dao.parentDao;
 
 import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.scut.model.Parent;
 import org.springframework.stereotype.Repository;
 
@@ -12,5 +14,7 @@ public interface IParentDao {
 	
 	public void inputParent(Parent parent);
 	
-	public List<String> queryPwdAndToken(String telnumber);
+	public Map<String,String> queryIdAndPwdAndToken(String telnumber);
+	
+	public void updateToken(@Param("id")String id, @Param("token")String token);
 }

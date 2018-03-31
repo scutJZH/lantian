@@ -1,6 +1,7 @@
 package org.scut.service.impl.parentImpl;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -42,10 +43,6 @@ public class ParentServiceImpl implements IParentService {
 		}
 	}
 
-	@Override
-	public Map<String, String> queryPwdAndToken(String telnumber) {
-		return null;
-	}
 
 
 }

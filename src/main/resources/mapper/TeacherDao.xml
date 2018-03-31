@@ -10,4 +10,15 @@
 		insert into teacher (teacher_id, phone, password, create_time, pic_path, name, nickname, birthday, sex, school, token)
 		values (#{id},#{phone},#{password},#{createTime},#{pic_path},#{name},#{nickname},#{birthday,javaType=Date,jdbcType=DATE},#{sex},#{school},#{token})
 	</insert>
+	
+	<select id="queryIdAndPwdAndToken" parameterType="String" resultType="HashMap">
+		SELECT teacher_id, password , token FROM teacher WHERE phone = #{telnumber}
+	
+	</select>
+	
+	<update id="updateToken">
+		update teacher set
+			token = #{token}
+		where teacher_id = #{id}
+	</update>
 </mapper>
