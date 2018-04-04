@@ -4,5 +4,5 @@ import java.util.Map;
 
 public interface IRegistService {
 
-	public Map<String, String> regist(String telnumber, String nickname, String password, String userType);
+	public Map<String, Object> regist(String telnumber, String nickname, String password, String userType);
 }

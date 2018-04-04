@@ -23,10 +23,11 @@ public class LoginServiceImpl implements ILoginService {
 	private ITeacherDao teacherDao;
 
 	@Override
-	public Map<String, String> login(String userType, String telnumber, String pwd, String token) {
+	public Map<String, Object> login(String userType, String telnumber, String pwd, String token) {
 
 		Map<String, String> queryResult = null;
-		Map<String, String> result = new HashMap();
+		Map<String, Object> result = new HashMap();
+		Map<String, String> userInfo = new HashMap();
 		String status = "-1";
 		try {
 			switch (userType) {
@@ -51,13 +52,13 @@ public class LoginServiceImpl implements ILoginService {
 			
 			switch(userType){
 			case "1":
-				result.put("id", queryResult.get("student_id"));
+				userInfo.put("id", queryResult.get("student_id"));
 				break;
 			case "2":
-				result.put("id", queryResult.get("teacher_id"));
+				userInfo.put("id", queryResult.get("teacher_id"));
 				break;
 			case "3":
-				result.put("id", queryResult.get("parent_id"));
+				userInfo.put("id", queryResult.get("parent_id"));
 				break;
 			}
 			
@@ -69,7 +70,7 @@ public class LoginServiceImpl implements ILoginService {
 						if(pwd.equals(queryResult.get("password"))){
 							status = "1";
 							newToken = UUID.randomUUID().toString();
-							if(this.updateToken(userType, result.get("id"), newToken)){
+							if(this.updateToken(userType, userInfo.get("id"), newToken)){
 								token = newToken;
 							}
 						}else{
@@ -84,7 +85,7 @@ public class LoginServiceImpl implements ILoginService {
 					if(pwd.equals(queryResult.get("password"))){
 						status = "1";
 						newToken = UUID.randomUUID().toString();
-						if(this.updateToken(userType, result.get("id"), newToken)){
+						if(this.updateToken(userType, userInfo.get("id"), newToken)){
 							token = newToken;
 						}
 					}else{
@@ -95,14 +96,15 @@ public class LoginServiceImpl implements ILoginService {
 				}
 			}
 			
-			result.put("token", token);
+			userInfo.put("token", token);
 				
 		} else {
-			result.put("id", "");
-			result.put("token", "");
+			userInfo.put("id", "");
+			userInfo.put("token", "");
 			status = "-2";
 		}
 		result.put("status", status);
+		result.put("result", userInfo);
 
 		return result;
 

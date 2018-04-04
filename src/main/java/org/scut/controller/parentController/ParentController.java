@@ -152,6 +152,8 @@ public class ParentController {
 		String studentId = m.get("studentTelnumber");
 		String id = m.get("id");
 		
+//		Map<String, Object> result = parentService.
+		
 	}
 	
 

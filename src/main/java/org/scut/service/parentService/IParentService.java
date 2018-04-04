@@ -13,4 +13,6 @@ public interface IParentService {
 	
 	public List<Map<String, String>> getChildren(String parentId);
 	
+	public Map<String, Object> addChild(String parentId, String childTelnumber);
+	
 }

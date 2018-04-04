@@ -66,7 +66,7 @@ public class RegistController {
 		String userType = (String)m.get("userType");
 		
 		
-		Map<String, String> result = registService.regist(telnumber, nickname, password, userType);
+		Map<String, Object> result = registService.regist(telnumber, nickname, password, userType);
 		
 		
 		PrintWriter out = response.getWriter();

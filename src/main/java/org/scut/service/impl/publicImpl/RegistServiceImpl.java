@@ -31,9 +31,10 @@ public class RegistServiceImpl implements IRegistService{
 	
 	
 	@Override
-	public Map<String, String> regist(String telnumber, String nickname, String password, String userType) {
+	public Map<String, Object> regist(String telnumber, String nickname, String password, String userType) {
 		
-		Map<String, String> result = new HashMap<String, String>();
+		Map<String, Object> result = new HashMap<String, Object>();
+		Map<String, String> userInfo = new HashMap<String, String>();
 		
 		boolean isUserExist = this.verificateService.verificateTelnumber(telnumber, userType);
 		
@@ -79,9 +80,10 @@ public class RegistServiceImpl implements IRegistService{
 //			System.out.println(TokenMap.tokenMap);
 		}
 		
-		result.put("id", id);
-		result.put("token", token);
+		userInfo.put("id", id);
+		userInfo.put("token", token);
 		result.put("status", status);
+		result.put("result", userInfo);
 		return result;
 	}
 

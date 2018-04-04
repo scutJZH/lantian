@@ -38,20 +38,24 @@ public class LoginInterceptor implements HandlerInterceptor {
 		System.out.println(TokenMap.tokenMap);
 		if (id != null && !id.equals("")) {
 			if (TokenMap.tokenMap.containsKey(id)) {
-				String token = null;
+				String token = "";
 				Cookie[] cookies = request.getCookies();
+				if(cookies!=null&&cookies.length!=0){
 				for (int i = 0; i < cookies.length; i++) {
 					if (cookies[i].getName().equals("token")) {
 						token = cookies[i].getValue();
+						break;
 					}
 				}
-				if (token.equals(TokenMap.tokenMap.get(id))) {
+				}
+				if (!token.equals("")&&token.equals(TokenMap.tokenMap.get(id))) {
 					return true;
 				}
 			}
 		}
 		Map<String, String> result = new HashMap<String, String>();
 		result.put("status", "0");
+		result.put("result", "");
 		PrintWriter out = response.getWriter();
 		out.write(gson.toJson(result));
 		out.flush();

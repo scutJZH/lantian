@@ -3,19 +3,15 @@ package org.scut.controller.publicController;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.scut.dao.parentDao.IParentDao;
-import org.scut.model.Student;
+
 import org.scut.model.TokenMap;
-import org.scut.service.parentService.IParentService;
 import org.scut.service.publicService.ILoginService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,12 +44,22 @@ public class LoginController {
 		
 		String telnumber = (String)m.get("telnumber");
 		String password = (String)m.get("password");
-		String token = (String)m.get("token");
+		String token = "";
+		Cookie[] cookies = request.getCookies();
+		if(cookies!=null &&cookies.length != 0){
+		for (int i = 0; i < cookies.length; i++) {
+			if (cookies[i].getName().equals("token")) {
+				token = cookies[i].getValue();
+				break;
+			}
+		}
+		}
 		String userType = (String)m.get("userType");
 		
-		Map<String,String> result = this.loginService.login(userType, telnumber, password, token);
+		Map<String, Object> result = this.loginService.login(userType, telnumber, password, token);
 		if(result.get("status").equals("1")){
-				TokenMap.tokenMap.put(result.get("id"), result.get("token"));
+				Map<String, String> userInfo = (Map<String, String>)result.get("result");
+				TokenMap.tokenMap.put(userInfo.get("id"), userInfo.get("token"));
 //				System.out.println(TokenMap.tokenMap);
 		}
 

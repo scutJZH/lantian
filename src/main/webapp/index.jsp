@@ -28,41 +28,7 @@
 
 
     <body>
-        <script>
-            function selectUser() {
-                var xmlhttp = new XMLHttpRequest();
-                xmlhttp.onreadystatechange = function () {
-                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                        document.getElementById("test").innerHTML = xmlhttp.responseText;
-                    }
-                }
-                xmlhttp.open("POST", "user/show.do", true);
-                xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xmlhttp.send("id=1");
-            }
-            function requestJson(){
-
-                var jsonData = {
-                    "username" : "手机",
-                    "role" : "root"
-                };
-                console.log('${pageContext.request.contextPath}');
-                $.ajax({
-                    type:'post',
-                    url:'${pageContext.request.contextPath}/user/requestJson.do',
-                    crossDomain:true,
-                    contentType:'application/json;charset=utf-8',//指定为json类型
-                    //数据格式是json串，商品信息
-                    data:JSON.stringify(jsonData),
-                    success:function(data){//返回json结果
-                        alert(data.role);
-                    }
-                });
-            }
-        </script>
-        <p id="test">Hello World!</p>
-        <button type="button" onclick="selectUser()">onclick test</button>
-        <button type="button" onclick="requestJson()">json test</button>
+        HelloWord!
     </body>
 
 </html>

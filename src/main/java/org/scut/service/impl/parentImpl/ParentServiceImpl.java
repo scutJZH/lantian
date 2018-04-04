@@ -82,4 +82,14 @@ public class ParentServiceImpl implements IParentService {
 
 	}
 
+	/**
+	 * status:0用户未登录，-1孩子账号不存在，1成功
+	 */
+	@Override
+	public Map<String, Object> addChild(String parentId, String childTelnumber) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		Map<String, String> userInfo = new HashMap<String, String>();
+		return null;
+	}
+
 }
