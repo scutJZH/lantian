@@ -19,4 +19,15 @@ public interface IStudentDao {
 	
 	public void updateToken(@Param("id")String id, @Param("token")String token);
 	
+	public Student getStudent(@Param("id")String studentId);
+	
+	public String getName(@Param("id")String studentId);
+	
+	public List<Map<String, String>> getHomework(@Param("id")String studentId, @Param("subjectId")String subjectId);
+	
+	public List<Map<String, String>> getPractice(@Param("id")String studentId, @Param("subjectId")String subjectId);
+	
+	public List<Map<String, String>> getExam(@Param("id")String studentId, @Param("subjectId")String subjectId);
+	
+	public String getClassId(@Param("id")String studentId);
 }

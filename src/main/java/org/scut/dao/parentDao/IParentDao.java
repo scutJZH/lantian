@@ -17,4 +17,8 @@ public interface IParentDao {
 	public Map<String,String> queryIdAndPwdAndToken(String telnumber);
 	
 	public void updateToken(@Param("id")String id, @Param("token")String token);
+	
+	public List<String> getChildrenIdList(@Param("id")String parentId);
+	
+	
 }

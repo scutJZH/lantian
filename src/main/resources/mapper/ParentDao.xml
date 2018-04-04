@@ -23,6 +23,10 @@
 		where parent_id = #{id}
 	</update>
 	
+	<select id="getChildrenIdList" resultType = "List" parameterType = "String">
+		SELECT student_id FROM parent_student WHERE parent_id = #{id} 
+	</select>
+	
 	<resultMap type="HashMap" id="PwdAndTokenMap">
 		<id column="phone" property="phone" jdbcType="VARCHAR"/>
 		<result column="password" property="password" jdbcType="VARCHAR"/>

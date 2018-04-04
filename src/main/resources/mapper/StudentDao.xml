@@ -7,13 +7,21 @@
 	</select>
 	
 	<insert id="inputStudent" timeout="10">
-		insert into student (student_id, phone, password, create_time, pic_path, nickname, birthday, sex, school, token)
+		insert into student (student_id, phone, password, create_time, pic_path, nickname, birthday, sex, school, grade, token)
 		values (#{id},#{phone},#{password},#{createTime},#{pic_path},#{nickname},#{birthday,javaType=Date,jdbcType=DATE},#{sex},#{school},#{token})
 	</insert>
 	
 	<select id="queryIdAndPwdAndToken" parameterType="String" resultType="HashMap">
 		SELECT student_id, password , token FROM student WHERE phone = #{telnumber}
 	
+	</select>
+	
+	<select id="getName" parameterType = "String" resultType = "String">
+		SELECT nickname FROM student WHERE student_id = #{id}
+	</select>
+	
+	<select id="getClassId" parameterType = "String" resultType = "String">
+		SELECT class_id FROM join_class WHERE student_id = #{id}
 	</select>
 	
 	<update id="updateToken">

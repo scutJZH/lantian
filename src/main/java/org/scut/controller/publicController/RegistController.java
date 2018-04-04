@@ -15,7 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.scut.model.Parent;
 import org.scut.model.Student;
 import org.scut.model.Teacher;
+import org.scut.model.TokenMap;
 import org.scut.service.parentService.IParentService;
+import org.scut.service.publicService.IRegistService;
 import org.scut.service.publicService.IVerificateService;
 import org.scut.service.studentService.IStudentService;
 import org.scut.service.teacherService.ITeacherService;
@@ -28,13 +30,7 @@ import com.google.gson.Gson;
 public class RegistController {
 	
 	@Resource
-	private IVerificateService verificateService;
-	@Resource
-	private IStudentService studentService;
-	@Resource
-	private IParentService parentService;
-	@Resource
-	private ITeacherService teacherService;
+	private IRegistService registService;
 	/**
 	 * 
 	 * @param request
@@ -64,56 +60,14 @@ public class RegistController {
 		Map<String, Object> m = gson.fromJson(sb.toString(), Map.class);
 		
 //		System.out.println(m);
-		
-		Map<String, Object> result = new HashMap<String, Object>();
-		
-		String id = "";
-		String nickname = "";
-		String password = "";
-		int status = -1;
-		String token = "";
-		
 		String telnumber = (String)m.get("telnumber");
+		String nickname = (String)m.get("nickname");
+		String password = (String)m.get("password");
 		String userType = (String)m.get("userType");
-		boolean isUserExist = this.verificateService.verificateTelnumber(telnumber, userType);
-		if(isUserExist){
-			status = 0;
-		}else{
-			
-			id = UUID.randomUUID().toString();
-			token = UUID.randomUUID().toString();
-			
-			nickname = (String)m.get("nickname");
-			password = (String)m.get("password");
-			try{
-				switch(userType){
-				case "1":
-					if(!this.studentService.inputStudent(id, telnumber, nickname, password, token)){
-						throw new Exception();
-					}
-					break;
-				case "2":
-					if(!this.teacherService.inputTeacher(id, telnumber, nickname, password, token)){
-						throw new Exception();
-					}
-				case "3":
-					if(!this.parentService.inputParent(id, telnumber, nickname, password, token)){
-						throw new Exception();
-					}
-					break;
-				default:
-					throw new Exception();
-				}
-				status = 1;
-			}catch(Exception e){
-				status = -1;
-			}
 		
-		}
 		
-		result.put("userid", id);
-		result.put("token", token);
-		result.put("isSuccess", status);
+		Map<String, String> result = registService.regist(telnumber, nickname, password, userType);
+		
 		
 		PrintWriter out = response.getWriter();
 		out.write(gson.toJson(result));

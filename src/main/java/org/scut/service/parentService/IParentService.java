@@ -9,4 +9,8 @@ public interface IParentService {
 	
 	public boolean inputParent(String id, String telnumber, String nickname, String password, String token);
 	
+	public List<String> getChildrenIdList(String parentId);
+	
+	public List<Map<String, String>> getChildren(String parentId);
+	
 }

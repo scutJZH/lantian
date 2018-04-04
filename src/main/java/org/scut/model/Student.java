@@ -23,6 +23,7 @@ public class Student {
 	private String school;
 	private Date createTime;
 	private String token;
+	private String grade;
 	
 	
 	public Student() {
@@ -110,7 +111,7 @@ public class Student {
 	}
 
 
-	public Date getCreate_time() {
+	public Date getCreateTime() {
 		return createTime;
 	}
 
@@ -128,9 +129,17 @@ public class Student {
 	public void setToken(String token) {
 		this.token = token;
 	}
-	
-	
-	
+
+
+	public String getGrade() {
+		return grade;
+	}
+
+
+	public void setGrade(String grade) {
+		this.grade = grade;
+	}
+
 	
 	
 	

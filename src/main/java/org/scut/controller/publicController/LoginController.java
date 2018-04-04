@@ -10,9 +10,11 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.scut.dao.parentDao.IParentDao;
 import org.scut.model.Student;
+import org.scut.model.TokenMap;
 import org.scut.service.parentService.IParentService;
 import org.scut.service.publicService.ILoginService;
 import org.springframework.stereotype.Controller;
@@ -50,6 +52,10 @@ public class LoginController {
 		String userType = (String)m.get("userType");
 		
 		Map<String,String> result = this.loginService.login(userType, telnumber, password, token);
+		if(result.get("status").equals("1")){
+				TokenMap.tokenMap.put(result.get("id"), result.get("token"));
+//				System.out.println(TokenMap.tokenMap);
+		}
 
 		PrintWriter out = response.getWriter();
 		out.write(gson.toJson(result));

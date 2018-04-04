@@ -1,8 +1,8 @@
 package org.scut.service.impl.studentImpl;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -42,10 +42,35 @@ public class StudentServiceImpl implements IStudentService{
 	}
 
 	@Override
-	public Map<String, String> queryPwdAndToken(String telnumber) {
+	public List<Map<String, String>> getHomework(String studentId, String subjectId){
+		
+		List<Map<String, String>> result = this.studentDao.getHomework(studentId, subjectId);
+		
+		return result;
+	}
+
+	@Override
+	public List<Map<String, String>> getPractice(String studentId, String subjectId) {
+		
+		List<Map<String, String>> result = this.studentDao.getPractice(studentId, subjectId);
+		
+		return result;
+	}
+	
+	@Override
+	public List<Map<String, String>> getExam(String studentId, String subjectId) {
+		
+		List<Map<String, String>> result = this.studentDao.getExam(studentId, subjectId);
+		
+		return result;
+	}
+	
+	@Override
+	public Student getStudent(String studentId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 	
 
