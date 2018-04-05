@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.google.gson.Gson;
 
 @Controller
-public class RegistController {
+public class RegisterController {
 	
 	@Resource
 	private IRegistService registService;
@@ -39,7 +39,7 @@ public class RegistController {
 	 * 
 	 * status 为0代表账号已经被注册，为1代表注册成功，-1代表注册发生错误
 	 */
-	@RequestMapping("/regist.do")
+	@RequestMapping("/register.do")
 	public void regist(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		
 		request.setCharacterEncoding("UTF-8");
