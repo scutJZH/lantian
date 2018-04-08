@@ -34,7 +34,7 @@ public class Homework {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	public String getSemester() {
+	public String getSemester() { 
 		return semester;
 	}
 	public void setSemester(String semester) {
