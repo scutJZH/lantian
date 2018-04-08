@@ -21,14 +21,14 @@
     <mvc:interceptors>   
     	<mvc:interceptor>  
         <!-- 进行拦截：/**表示拦截所有controller -->
-        <mvc:mapping path="/parent/**" />
-        <mvc:mapping path="/student/**" />
-        <mvc:mapping path="/teacher/**" />
+          	<mvc:mapping path="/parent/**" />
+    	    <mvc:mapping path="/student/**" />
+        	<mvc:mapping path="/teacher/**" />
        
-        <bean class="org.scut.interceptor.LoginInterceptor" />
+        	<bean class="org.scut.util.LoginInterceptor" />
 
-    </mvc:interceptor>  
-</mvc:interceptors>   
+    	</mvc:interceptor>  
+	</mvc:interceptors>   
 
     <!-- 静态资源默认servlet配置 -->
     <mvc:default-servlet-handler/>

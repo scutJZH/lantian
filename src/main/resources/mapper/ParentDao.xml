@@ -4,7 +4,7 @@
 <mapper namespace="org.scut.dao.parentDao.IParentDao">
 
 	<select id="verificateTelnumber" resultType="String" parameterType="String">
-		SELECT phone FROM parent WHERE phone = #{telnumber}
+		select phone from parent where phone = #{telnumber}
 	</select>
 	
 	<insert id="inputParent" timeout="10">
@@ -13,7 +13,7 @@
 	</insert>
 	
 	<select id="queryIdAndPwdAndToken" parameterType="String" resultType="HashMap">
-		SELECT parent_id, password , token FROM parent WHERE phone = #{telnumber}
+		select parent_id, password , token from parent where phone = #{telnumber}
 	
 	</select>
 	
@@ -24,8 +24,17 @@
 	</update>
 	
 	<select id="getChildrenIdList" resultType = "List" parameterType = "String">
-		SELECT student_id FROM parent_student WHERE parent_id = #{id} 
+		select student_id from parent_student where parent_id = #{id} 
 	</select>
+	
+	<insert id="addChild" timeout="10">
+		insert into parent (parent_student_id, parent_id, student_id)
+		values (#{relationshipId}, #{parent_id}, #{student_id})
+	</insert>
+	
+	<delete id="removeChild">
+		delete from parent_student where student_id = #{childId} and parent_id = #{parent_id}
+	</delete>
 	
 	<resultMap type="HashMap" id="PwdAndTokenMap">
 		<id column="phone" property="phone" jdbcType="VARCHAR"/>
