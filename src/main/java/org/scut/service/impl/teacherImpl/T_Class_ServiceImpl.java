@@ -14,4 +14,8 @@ public class T_Class_ServiceImpl implements IT_Class_Service{
 	public ArrayList<T_ClassVO> get_Class(String teacher_id){
 		return this.t_ClassDAO.get_Class(teacher_id);
 	}
+	public boolean addClass(String teacher_id,int class_id,int grade,int class_number) {
+		return this.t_ClassDAO.addClass(teacher_id, class_id, grade, class_number);
+	}
+
 }

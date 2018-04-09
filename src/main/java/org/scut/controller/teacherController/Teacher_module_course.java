@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 @Controller
-@RequestMapping("/teacher-module-course")
+@RequestMapping("/teacher")//改成这个可以直接该类下全部方法在调用前都会调用intercepter包下的拦截方法处理token。
 public class Teacher_module_course {
 	@Resource
 	private IT_Homework_Details_Service t_Homework_Details_Service;
@@ -34,6 +34,8 @@ public class Teacher_module_course {
 	private IT_Collection_Service t_Collection_Service;
 	@Resource
 	private IT_Rank_Service t_Rank_Service;
+	@Resource
+	private IT_Student_Details_Service t_Student_Details_Service;
 	
 	public void get_Homework_List(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		request.setCharacterEncoding("UTF-8");
@@ -53,8 +55,8 @@ public class Teacher_module_course {
 		String teacher_id=request.getParameter("teacher_id");
 		boolean tag=this.t_Homework_Details_Service.delete_Homework_List(teacher_id);
 		return tag;
-	}
-	@RequestMapping("get_Assignments.do")
+	}	
+	@RequestMapping("/get_Assignments.do")
 	public @ResponseBody HashMap<String,Integer> get_Assignments(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
@@ -124,4 +126,24 @@ public class Teacher_module_course {
 		int homework_id=Integer.parseInt(request.getParameter("homework_id"));
 		return this.t_Rank_Service.getRankDetails(homework_id);
 	}
+	
+	/***下面开始为班级模块***/
+	/*1.获取班级列表*/
+	public @ResponseBody  ArrayList<T_Student_DetailsVO> getClassList(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		String teacher_id=request.getParameter("teacher_id");
+		return this.t_Student_Details_Service.getClassList(teacher_id);
+	}
+	/*2.添加班级*/
+	public @ResponseBody boolean addClass(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		String teacher_id=request.getParameter("teacher_id");
+		int class_id=Integer.parseInt(request.getParameter("class_id"));
+		int grade=Integer.parseInt(request.getParameter("grade"));
+		int class_number=Integer.parseInt(request.getParameter("class_nunmber"));
+		return this.t_Class_Service.addClass(teacher_id, class_id, grade, class_number);
+	}
+	
 }
