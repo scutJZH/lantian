@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 设置为T_homework_detailsDAO接口方法提供sql语句配置 -->
+<mapper namespace="org.scut.dao.T_Homework_DetailsDAO">
+
+    <select id="get_Homework_List" resultType="T_Homework_DetailsVO" timeout="20">
+        SELECT * FROM t_homework_details WHERE teacher_id = #{teacher_id}
+    </select>
+    <delete id="delete_Homework_List">
+    	DELETE * FROM t_homework_details WHERE teacher_id = #{teacher_id}
+    </delete>
+	<insert id="insert" useGeneratedKeys="true" keyProperty="homewrk_id">
+	INSERT INTO t_homework_details(homework_id,teacher_id,homework_time,selected_class,selected_subject,submitted_number,unsubmitted_number,corrected_number,uncorrected_number,total_number,rank_id)
+        VALUES
+        (#{homework_id},#{teacher_id},#{homework_time},#{selected_class},#{selected_subject},#{submitted_number},#{unsubmitted_number},#{corrected_number},#{uncorrected_number},#{total_number},#{rank_id})
+       <!-- 下面这行可能要在其他地方直接生成homework_id而删去 -->
+      <!--   <selectKey order="BEFORE" resultType="java.lang.String" keyProperty="homework_id">
+            CALL IDENTITY()
+        </selectKey> -->
+	</insert>
+	<select id="getLatestHomeworkId" resultType="int">
+        SELECT homework_id FROM t_homework_details WHERE homework_id=(SELECT MAX(homework_id) FROM t_homework_details)
+    </select>
+</mapper>

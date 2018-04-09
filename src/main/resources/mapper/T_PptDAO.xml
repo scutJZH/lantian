@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 设置为T_homework_detailsDAO接口方法提供sql语句配置 -->
+<mapper namespace="org.scut.dao.T_PptDAO">
+
+    <select id="getPptList" resultType="Integer">
+        SELECT ppt_id FROM t_ppt WHERE teacher_id = #{teacher_id}
+    </select>
+ 
+</mapper>
