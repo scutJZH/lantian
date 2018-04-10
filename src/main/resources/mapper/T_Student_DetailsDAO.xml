@@ -5,7 +5,10 @@
 <mapper namespace="org.scut.dao.T_Student_DetailsDAO">
 
     <select id="getClassList" resultType="T_Student_DetilsVO">
-        SELECT * FROM t_student WHERE teacher_id = #{teacher_id}
+        SELECT * FROM t_student_details WHERE teacher_id = #{teacher_id}
+    </select>
+ <select id="queryStudent" resultType="T_Student_DetilsVO">
+        SELECT * FROM t_student_details WHERE teacher_id = #{teacher_id} AND class_id=#{class_id} AND student_id=#{student_id}
     </select>
  
 </mapper>

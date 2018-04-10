@@ -13,5 +13,8 @@ public class T_Student_Details_ServiceImpl implements IT_Student_Details_Service
 	public ArrayList<T_Student_DetailsVO> getClassList(String teacher_id){
 		return this.t_Student_DetailsDAO.getClassList(teacher_id);
 	}
+	public T_Student_DetailsVO queryStudent(String teacher_id,int class_id,String student_id) {
+		return this.t_Student_DetailsDAO.queryStudent(teacher_id, class_id, student_id);
+	}
 
 }

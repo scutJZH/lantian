@@ -145,5 +145,14 @@ public class Teacher_module_course {
 		int class_number=Integer.parseInt(request.getParameter("class_nunmber"));
 		return this.t_Class_Service.addClass(teacher_id, class_id, grade, class_number);
 	}
-	
+	/*3.添加学生，未完成*/
+	/*4.查询学生（确认学生）*/
+	public @ResponseBody  T_Student_DetailsVO queryStudent(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		String teacher_id=request.getParameter("teacher_id");
+		int class_id=Integer.parseInt(request.getParameter("class_id"));
+		String student_id=request.getParameter("student_id");
+		return this.t_Student_Details_Service.queryStudent(teacher_id,class_id,student_id);
+	}
 }
