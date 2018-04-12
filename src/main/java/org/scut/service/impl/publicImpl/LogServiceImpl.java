@@ -9,11 +9,12 @@ import javax.annotation.Resource;
 import org.scut.dao.parentDao.IParentDao;
 import org.scut.dao.studentDao.IStudentDao;
 import org.scut.dao.teacherDao.ITeacherDao;
-import org.scut.service.publicService.ILoginService;
+import org.scut.model.TokenMap;
+import org.scut.service.publicService.ILogService;
 import org.springframework.stereotype.Service;
 
-@Service("loginService")
-public class LoginServiceImpl implements ILoginService {
+@Service("logService")
+public class LogServiceImpl implements ILogService {
 
 	@Resource
 	private IParentDao parentDao;
@@ -32,7 +33,7 @@ public class LoginServiceImpl implements ILoginService {
 		try {
 			switch (userType) {
 			case "1":
-				queryResult = this.studentDao.queryIdAndPwdAndToken(telnumber);
+				queryResult = this.studentDao.getIdAndPwdAndToken(telnumber);
 				break;
 			case "2":
 				queryResult = this.teacherDao.queryIdAndPwdAndToken(telnumber);
@@ -128,7 +129,31 @@ public class LoginServiceImpl implements ILoginService {
 		}catch(Exception e){
 			e.printStackTrace();
 			return false;
+			
 		}
+	}
+
+	@Override
+	public Map<String, String> logout(String userType, String id, String token) {
+		
+		Map<String, String> result = new HashMap<String, String>();	
+		String status = "1";
+		
+//		System.out.println(TokenMap.tokenMap);
+		
+		if(TokenMap.tokenMap.containsKey(id)){
+			if(TokenMap.tokenMap.get(id).equals(token)){
+				TokenMap.tokenMap.remove(id, token);
+				if(this.updateToken(userType, id, "")){
+					status = "1";
+				}else{
+					status= "0";
+				}
+			}
+		}
+//		System.out.println(TokenMap.tokenMap);
+		result.put("status", status);
+		return result;
 	}
 
 }

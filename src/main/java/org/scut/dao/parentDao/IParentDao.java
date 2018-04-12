@@ -20,5 +20,7 @@ public interface IParentDao {
 	
 	public List<String> getChildrenIdList(@Param("id")String parentId);
 	
+	public void addChild(@Param("relationshipId")String relationshipId, @Param("parentId")String parentId, @Param("studentId")String studentId);
 	
+	public void removeChild(@Param("parentId")String parentId, @Param("childId")String childId);
 }

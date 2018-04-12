@@ -44,9 +44,10 @@ public class StudentServiceImpl implements IStudentService{
 	@Override
 	public List<Map<String, String>> getHomework(String studentId, String subjectId){
 		
-		List<Map<String, String>> result = this.studentDao.getHomework(studentId, subjectId);
+//		List<Map<String, String>> result = this.studentDao.getHomework(studentId, subjectId);
 		
-		return result;
+//		return result;
+		return null;
 	}
 
 	@Override

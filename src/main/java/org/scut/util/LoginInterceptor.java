@@ -1,4 +1,4 @@
-package org.scut.interceptor;
+package org.scut.util;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
@@ -21,7 +21,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 	@Override
 	public synchronized boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-
+/*
 		BufferedReader br = request.getReader();
 		StringBuffer sb = new StringBuffer();
 		String input = null;
@@ -36,26 +36,32 @@ public class LoginInterceptor implements HandlerInterceptor {
 
 		String id = m.get("id");
 		System.out.println(TokenMap.tokenMap);
-		if (id != null && !id.equals("")) {
-			if (TokenMap.tokenMap.containsKey(id)) {
-				String token = "";
-				Cookie[] cookies = request.getCookies();
-				if(cookies!=null&&cookies.length!=0){
-				for (int i = 0; i < cookies.length; i++) {
-					if (cookies[i].getName().equals("token")) {
-						token = cookies[i].getValue();
-						break;
-					}
+		*/
+		
+		String id = null;
+		String token = null;
+		Cookie[] cookies = request.getCookies();
+		if(cookies!=null&&cookies.length!=0){
+			for (int i = 0; i < cookies.length; i++) {
+				if (cookies[i].getName().equals("token")) {
+					token = cookies[i].getValue();
 				}
+				if (cookies[i].getName().equals("id")) {
+					id = cookies[i].getValue();
 				}
-				if (!token.equals("")&&token.equals(TokenMap.tokenMap.get(id))) {
+			}
+		}
+		if (id != null && !id.equals("")&&token!=null&&!token.equals("")) {
+			if (TokenMap.tokenMap.containsKey(id)&&token.equals(TokenMap.tokenMap.get(id))) {
 					return true;
-				}
 			}
 		}
 		Map<String, String> result = new HashMap<String, String>();
 		result.put("status", "0");
 		result.put("result", "");
+		
+		Gson gson = new Gson();
+		
 		PrintWriter out = response.getWriter();
 		out.write(gson.toJson(result));
 		out.flush();

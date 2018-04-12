@@ -15,4 +15,8 @@ public interface IParentService {
 	
 	public Map<String, Object> addChild(String parentId, String childTelnumber);
 	
+	public Map<String, String> removeChild(String parentId, String childId);
+	
+	public Map<String, Object> getChildHomework(String studentId, String subjectId);
+	
 }
