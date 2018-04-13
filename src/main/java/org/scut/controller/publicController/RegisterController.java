@@ -13,21 +13,12 @@ import javax.imageio.spi.RegisterableService;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.scut.model.Parent;
-import org.scut.model.Student;
-import org.scut.model.Teacher;
-import org.scut.model.TokenMap;
 import org.scut.service.publicService.IRegisterService;
-import org.scut.service.publicService.IVerificateService;
-import org.scut.service.studentService.IStudentService;
-import org.scut.service.teacherService.ITeacherService;
 import org.scut.util.ParamsTransport;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.gson.Gson;
 
 @Controller
 public class RegisterController {

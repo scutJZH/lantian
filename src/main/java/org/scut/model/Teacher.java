@@ -1,13 +1,11 @@
 package org.scut.model;
 
-import java.util.Date;
-
 import org.springframework.stereotype.Component;
 
 /**
  * 
  * @author jzh
- * @category老师实体类
+ * @category锟斤拷师实锟斤拷锟斤拷
  *
  */
 
@@ -15,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class Teacher extends User{
 	
 	private String name;
-	private String school_name;
+	private String schoolName;
 	
 	
 	public String getName() {
@@ -24,11 +22,11 @@ public class Teacher extends User{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getSchool_name() {
-		return school_name;
+	public String getSchoolName() {
+		return schoolName;
 	}
-	public void setSchool_name(String school_name) {
-		this.school_name = school_name;
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
 	}
 	
 

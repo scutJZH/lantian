@@ -14,7 +14,6 @@ import org.scut.dao.parentDao.IParentDao;
 import org.scut.dao.studentDao.IClassDao;
 import org.scut.dao.studentDao.IHomeworkDao;
 import org.scut.dao.studentDao.IStudentDao;
-import org.scut.model.Homework;
 import org.scut.model.Parent;
 import org.scut.model.Student;
 import org.scut.service.parentService.IParentService;
@@ -88,7 +87,7 @@ public class ParentServiceImpl implements IParentService {
 	}
 
 	/**
-	 * status:0ÓÃ»§Î´µÇÂ¼£¬-1º¢×ÓÕËºÅ²»´æÔÚ£¬1³É¹¦£¬-2Êý¾Ý¿â·¢Éú´íÎó£¬2ÒÑ¾­´æÔÚ´Ë¹ØÏµ
+	 * status:0ï¿½Ã»ï¿½Î´ï¿½ï¿½Â¼ï¿½ï¿½-1ï¿½ï¿½ï¿½ï¿½ï¿½ËºÅ²ï¿½ï¿½ï¿½ï¿½Ú£ï¿½1ï¿½É¹ï¿½ï¿½ï¿½-2ï¿½ï¿½ï¿½Ý¿â·¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½2ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½Ú´Ë¹ï¿½Ïµ
 	 */
 	@Override
 	public Map<String, Object> addChild(String parentId, String childTelnumber) {
@@ -99,7 +98,7 @@ public class ParentServiceImpl implements IParentService {
 		String studentId = null;
 		String nickname = null;
 		String grade = "";
-		//Èô²é²»µ½Êý¾Ý¿â»á·µ»Ønull
+		//ï¿½ï¿½ï¿½é²»ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½á·µï¿½ï¿½null
 		try{
 			childInfo = studentDao.getStudentIdAndName(childTelnumber);
 			if(childInfo!=null){
@@ -136,7 +135,7 @@ public class ParentServiceImpl implements IParentService {
 	}
 
 	/**
-	 * -2´ú±íÊý¾Ý¿â´íÎó£¬0´ú±íÎ´µÇÂ¼£¬1´ú±í³É¹¦
+	 * -2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½0ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½Â¼ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½É¹ï¿½
 	 */
 	@Override
 	public Map<String, String> removeChild(String parentId, String childId) {

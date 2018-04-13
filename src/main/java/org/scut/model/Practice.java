@@ -6,50 +6,64 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Practice {
+    private Integer practiceId;
 
-	private String practiceId;
-	private String title;
-	private Date createTime;
-	private String maxScore;
-	private String semester;
-	private String subjectId;
-	public String getPracticeId() {
-		return practiceId;
-	}
-	public void setPracticeId(String practiceId) {
-		this.practiceId = practiceId;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public Date getCreateTime() {
-		return createTime;
-	}
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-	public String getMaxScore() {
-		return maxScore;
-	}
-	public void setMaxScore(String maxScore) {
-		this.maxScore = maxScore;
-	}
-	public String getSemester() {
-		return semester;
-	}
-	public void setSemester(String semester) {
-		this.semester = semester;
-	}
-	public String getSubjectId() {
-		return subjectId;
-	}
-	public void setSubjectId(String subjectId) {
-		this.subjectId = subjectId;
-	}
+    private String practiceTitle;
 
-	
-	
+    private Date practiceCreateTime;
+
+    private Integer maxScore;
+
+    private Integer semesterId;
+
+    private Integer subjectId;
+
+    public Integer getPracticeId() {
+        return practiceId;
+    }
+
+    public void setPracticeId(Integer practiceId) {
+        this.practiceId = practiceId;
+    }
+
+    public String getPracticeTitle() {
+        return practiceTitle;
+    }
+
+    public void setPracticeTitle(String practiceTitle) {
+        this.practiceTitle = practiceTitle == null ? null : practiceTitle.trim();
+    }
+
+    public Date getPracticeCreateTime() {
+        return practiceCreateTime;
+    }
+
+    public void setPracticeCreateTime(Date practiceCreateTime) {
+        this.practiceCreateTime = practiceCreateTime;
+    }
+
+    public Integer getMaxScore() {
+        return maxScore;
+    }
+
+    public void setMaxScore(Integer maxScore) {
+        this.maxScore = maxScore;
+    }
+
+    public Integer getSemesterId() {
+        return semesterId;
+    }
+
+    public void setSemesterId(Integer semesterId) {
+        this.semesterId = semesterId;
+    }
+
+    public Integer getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(Integer subjectId) {
+        this.subjectId = subjectId;
+    }
 }
+

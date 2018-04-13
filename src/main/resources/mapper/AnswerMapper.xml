@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.scut.dao.AnswerMapper" >
+  <resultMap id="BaseResultMap" type="org.scut.model.Answer" >
+    <id column="answer_id" property="answerId" jdbcType="VARCHAR" />
+    <result column="student_id" property="studentId" jdbcType="VARCHAR" />
+    <result column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="answer_content" property="answerContent" jdbcType="VARCHAR" />
+    <result column="answer_time" property="answerTime" jdbcType="TIMESTAMP" />
+    <result column="likes" property="likes" jdbcType="INTEGER" />
+    <result column="at_student_id" property="atStudentId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    answer_id, student_id, post_id, answer_content, answer_time, likes, at_student_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from answer
+    where answer_id = #{answerId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from answer
+    where answer_id = #{answerId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="org.scut.model.Answer" >
+    insert into answer (answer_id, student_id, post_id, 
+      answer_content, answer_time, likes, 
+      at_student_id)
+    values (#{answerId,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR}, #{postId,jdbcType=VARCHAR}, 
+      #{answerContent,jdbcType=VARCHAR}, #{answerTime,jdbcType=TIMESTAMP}, #{likes,jdbcType=INTEGER}, 
+      #{atStudentId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.scut.model.Answer" >
+    insert into answer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="answerId != null" >
+        answer_id,
+      </if>
+      <if test="studentId != null" >
+        student_id,
+      </if>
+      <if test="postId != null" >
+        post_id,
+      </if>
+      <if test="answerContent != null" >
+        answer_content,
+      </if>
+      <if test="answerTime != null" >
+        answer_time,
+      </if>
+      <if test="likes != null" >
+        likes,
+      </if>
+      <if test="atStudentId != null" >
+        at_student_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="answerId != null" >
+        #{answerId,jdbcType=VARCHAR},
+      </if>
+      <if test="studentId != null" >
+        #{studentId,jdbcType=VARCHAR},
+      </if>
+      <if test="postId != null" >
+        #{postId,jdbcType=VARCHAR},
+      </if>
+      <if test="answerContent != null" >
+        #{answerContent,jdbcType=VARCHAR},
+      </if>
+      <if test="answerTime != null" >
+        #{answerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="likes != null" >
+        #{likes,jdbcType=INTEGER},
+      </if>
+      <if test="atStudentId != null" >
+        #{atStudentId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.scut.model.Answer" >
+    update answer
+    <set >
+      <if test="studentId != null" >
+        student_id = #{studentId,jdbcType=VARCHAR},
+      </if>
+      <if test="postId != null" >
+        post_id = #{postId,jdbcType=VARCHAR},
+      </if>
+      <if test="answerContent != null" >
+        answer_content = #{answerContent,jdbcType=VARCHAR},
+      </if>
+      <if test="answerTime != null" >
+        answer_time = #{answerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="likes != null" >
+        likes = #{likes,jdbcType=INTEGER},
+      </if>
+      <if test="atStudentId != null" >
+        at_student_id = #{atStudentId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where answer_id = #{answerId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.scut.model.Answer" >
+    update answer
+    set student_id = #{studentId,jdbcType=VARCHAR},
+      post_id = #{postId,jdbcType=VARCHAR},
+      answer_content = #{answerContent,jdbcType=VARCHAR},
+      answer_time = #{answerTime,jdbcType=TIMESTAMP},
+      likes = #{likes,jdbcType=INTEGER},
+      at_student_id = #{atStudentId,jdbcType=VARCHAR}
+    where answer_id = #{answerId,jdbcType=VARCHAR}
+  </update>
+</mapper>
