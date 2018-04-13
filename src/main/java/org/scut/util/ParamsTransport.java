@@ -20,7 +20,6 @@ public class ParamsTransport {
  * @throws IOException
  */
 	public static Map<String, Object>getParams(HttpServletRequest request) throws IOException{
-		request.setCharacterEncoding("utf-8");
 		BufferedReader br = request.getReader();
 		StringBuffer sb = new StringBuffer();
 		String input = null;
@@ -34,8 +33,6 @@ public class ParamsTransport {
 	}
 	
 	public static void returnParams(HttpServletResponse response,Map<String, Object> result) throws IOException{
-		
-		response.setCharacterEncoding("utf-8");
 		
 		Gson gson = new Gson();
 		

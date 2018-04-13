@@ -21,22 +21,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 	@Override
 	public synchronized boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-/*
-		BufferedReader br = request.getReader();
-		StringBuffer sb = new StringBuffer();
-		String input = null;
-
-		while ((input = br.readLine()) != null) {
-			sb.append(input);
-		}
-
-		Gson gson = new Gson();
-
-		Map<String, String> m = gson.fromJson(sb.toString(), Map.class);
-
-		String id = m.get("id");
-		System.out.println(TokenMap.tokenMap);
-		*/
+		
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
 		
 		String id = null;
 		String token = null;
