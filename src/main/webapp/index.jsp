@@ -28,6 +28,10 @@
 
 
     <body>
+    <a href="TeacherCourseModule.do">
+    <form action="TeacherCourseModule.do" method="post">
+<button><input type="submit" id="sub" >确认提交</button>
+</form></a>
         HelloWord!
     </body>
 

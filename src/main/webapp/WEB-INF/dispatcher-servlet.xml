@@ -17,6 +17,7 @@
     <mvc:annotation-driven/>
     <!--定义扫描装载的包-->
     <context:component-scan base-package="org"/>
+     <context:component-scan base-package="org.scut.edu.controller"/>
     <!--定义视图解析器-->
     <!--找到Web工程/WEB-INF/JSP文件夹，且文件为jsp的文件作为映射-->
     <bean id="viewResolver"
