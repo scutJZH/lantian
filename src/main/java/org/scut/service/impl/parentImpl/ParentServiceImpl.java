@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 
 import org.scut.dao.parentDao.IParentDao;
 import org.scut.dao.studentDao.IClassDao;
+import org.scut.dao.studentDao.IHomeworkDao;
 import org.scut.dao.studentDao.IStudentDao;
 import org.scut.model.Parent;
 import org.scut.model.Student;
@@ -29,6 +30,9 @@ public class ParentServiceImpl implements IParentService {
 	private IStudentDao studentDao;
 	@Resource
 	private IClassDao classDao;
+	@Resource
+	private IHomeworkDao homeworkDao;
+
 
 	@Override
 	public boolean inputParent(String id, String telnumber, String nickname, String password, String token) {
@@ -70,7 +74,7 @@ public class ParentServiceImpl implements IParentService {
 				Map<String, String> childrenInfo = new HashMap<String, String>();
 				childrenInfo.put("id", childrenId);
 				childrenInfo.put("name", studentDao.getName(childrenId));
-				String classId = studentDao.getClassId(childrenId);
+				String classId = studentDao.getClassIdFromJoinClass(childrenId);
 				childrenInfo.put("grade", classDao.getGrade(classId));
 				childrenList.add(childrenInfo);
 			}
@@ -83,13 +87,105 @@ public class ParentServiceImpl implements IParentService {
 	}
 
 	/**
-	 * status:0ÓÃ»§Î´µÇÂ¼£¬-1º¢×ÓÕËºÅ²»´æÔÚ£¬1³É¹¦
+	 * status:0ï¿½Ã»ï¿½Î´ï¿½ï¿½Â¼ï¿½ï¿½-1ï¿½ï¿½ï¿½ï¿½ï¿½ËºÅ²ï¿½ï¿½ï¿½ï¿½Ú£ï¿½1ï¿½É¹ï¿½ï¿½ï¿½-2ï¿½ï¿½ï¿½Ý¿â·¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½2ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½Ú´Ë¹ï¿½Ïµ
 	 */
 	@Override
 	public Map<String, Object> addChild(String parentId, String childTelnumber) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		Map<String, String> userInfo = new HashMap<String, String>();
-		return null;
+		
+		String status = "1";
+		Map<String, String> childInfo = null;
+		String studentId = null;
+		String nickname = null;
+		String grade = "";
+		//ï¿½ï¿½ï¿½é²»ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½á·µï¿½ï¿½null
+		try{
+			childInfo = studentDao.getStudentIdAndName(childTelnumber);
+			if(childInfo!=null){
+				studentId = childInfo.get("student_id");
+				nickname = childInfo.get("nickname");
+				String classId = studentDao.getClassIdFromJoinClass(studentId);
+				if(classId != null){
+					grade = classDao.getGrade(classId);
+				}
+				List<String> childrenList = parentDao.getChildrenIdList(parentId);
+				if(childrenList!=null&&childrenList.contains(studentId)){
+					status = "2";
+				}else{
+					String relationshipId = UUID.randomUUID().toString();
+					parentDao.addChild(relationshipId, parentId, studentId);
+				}				
+				childInfo = new HashMap<String, String>();
+				childInfo.put("studentId", studentId);
+				childInfo.put("nickname", nickname);
+				childInfo.put("grade", grade);
+				result.put("result", childInfo);
+			}else{
+				status = "-1";
+				result.put("result", "");
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			status = "-2";
+			result.put("result", "");
+		}
+		result.put("status", status);
+		
+		return result;
+	}
+
+	/**
+	 * -2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½0ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½Â¼ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½É¹ï¿½
+	 */
+	@Override
+	public Map<String, String> removeChild(String parentId, String childId) {
+		
+		Map<String, String> result = new HashMap<String, String>();
+		
+		String status = "1";
+		try{
+			parentDao.removeChild(parentId, childId);
+		}catch(Exception e){
+			e.printStackTrace();
+			status = "-1";
+		}
+		result.put("status", status);
+		return result;
+	}
+
+	/**
+	 * status:1
+	 */
+	@Override
+	public Map<String, Object> getChildHomework(String studentId, String subjectId) {
+		String status = "1";
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		List<Map<String, String>> homeworkList = null;
+		
+		List<Map<String, String>> homeworkInfoList = new LinkedList<Map<String, String>>();
+		try{
+			homeworkList = studentDao.getHomeworkList(studentId);
+			if(homeworkList != null){
+				for(Map<String, String> homework:homeworkList){
+					Map<String, String> homeworkTitleAndTime = homeworkDao.getHomeworkTitleAndCreateTime(homework.get("homework_id"), subjectId);
+					if(homeworkTitleAndTime != null){
+						Map<String, String> homeworkInfo = new HashMap<String, String>();
+						homeworkInfo.putAll(homeworkTitleAndTime);
+						homeworkInfo.putAll(homework);
+						homeworkInfoList.add(homeworkInfo);
+					}
+				}
+			}
+			result.put("result", homeworkInfoList);
+		}catch(Exception e){
+			e.printStackTrace();
+			status = "-2";
+			result.put("result", "");
+		}
+		result.put("status", status);
+		return result;
 	}
 
 }

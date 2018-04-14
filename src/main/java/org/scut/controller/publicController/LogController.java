@@ -12,17 +12,17 @@ import javax.servlet.http.HttpServletResponse;
 
 
 import org.scut.model.TokenMap;
-import org.scut.service.publicService.ILoginService;
+import org.scut.service.publicService.ILogService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.google.gson.Gson;
 
 @Controller
-public class LoginController {
+public class LogController {
 	
 	@Resource
-	private ILoginService loginService;
+	private ILogService logService;
 	
 
 	@RequestMapping("/login.do")
@@ -56,7 +56,7 @@ public class LoginController {
 		}
 		String userType = (String)m.get("userType");
 		
-		Map<String, Object> result = this.loginService.login(userType, telnumber, password, token);
+		Map<String, Object> result = this.logService.login(userType, telnumber, password, token);
 		if(result.get("status").equals("1")){
 				Map<String, String> userInfo = (Map<String, String>)result.get("result");
 				TokenMap.tokenMap.put(userInfo.get("id"), userInfo.get("token"));
@@ -68,6 +68,43 @@ public class LoginController {
 		out.flush();
 		out.close();
 		
+		
+	}
+	
+	@RequestMapping("/logout.do")
+	public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		request.setCharacterEncoding("utf-8");
+		response.setCharacterEncoding("utf-8");
+
+		BufferedReader br = request.getReader();
+		StringBuffer sb = new StringBuffer();
+		String input = "";
+		while ((input = br.readLine()) != null) {
+			sb.append(input);
+		}
+
+		Gson gson = new Gson();
+		Map<String, Object> m = gson.fromJson(sb.toString(), Map.class);
+
+		String id = (String) m.get("id");
+		String userType = (String)m.get("userType");
+		String token = "";
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null && cookies.length != 0) {
+			for (int i = 0; i < cookies.length; i++) {
+				if (cookies[i].getName().equals("token")) {
+					token = cookies[i].getValue();
+					break;
+				}
+			}
+		}
+		Map<String, String> result = logService.logout(userType, id, token);
+		
+		PrintWriter out = response.getWriter();
+		out.write(gson.toJson(result));
+		out.flush();
+		out.close();
 		
 	}
 
