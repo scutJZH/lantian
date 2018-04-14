@@ -2,12 +2,7 @@ package org.scut.model;
 
 import org.springframework.stereotype.Component;
 
-/**
- * 
- * @author jzh
- * @category��ʦʵ����
- *
- */
+
 
 @Component
 public class Teacher extends User{

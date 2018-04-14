@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.scut.dao.ITitleDao" >
+  <resultMap id="BaseResultMap" type="org.scut.model.Title" >
+    <id column="title_id" property="titleId" jdbcType="VARCHAR" />
+    <result column="title_content" property="titleContent" jdbcType="VARCHAR" />
+    <result column="pic_path" property="picPath" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    title_id, title_content, pic_path
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from title
+    where title_id = #{titleId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from title
+    where title_id = #{titleId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="org.scut.model.Title" >
+    insert into title (title_id, title_content, pic_path
+      )
+    values (#{titleId,jdbcType=VARCHAR}, #{titleContent,jdbcType=VARCHAR}, #{picPath,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.scut.model.Title" >
+    insert into title
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="titleId != null" >
+        title_id,
+      </if>
+      <if test="titleContent != null" >
+        title_content,
+      </if>
+      <if test="picPath != null" >
+        pic_path,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="titleId != null" >
+        #{titleId,jdbcType=VARCHAR},
+      </if>
+      <if test="titleContent != null" >
+        #{titleContent,jdbcType=VARCHAR},
+      </if>
+      <if test="picPath != null" >
+        #{picPath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.scut.model.Title" >
+    update title
+    <set >
+      <if test="titleContent != null" >
+        title_content = #{titleContent,jdbcType=VARCHAR},
+      </if>
+      <if test="picPath != null" >
+        pic_path = #{picPath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where title_id = #{titleId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.scut.model.Title" >
+    update title
+    set title_content = #{titleContent,jdbcType=VARCHAR},
+      pic_path = #{picPath,jdbcType=VARCHAR}
+    where title_id = #{titleId,jdbcType=VARCHAR}
+  </update>
+</mapper>

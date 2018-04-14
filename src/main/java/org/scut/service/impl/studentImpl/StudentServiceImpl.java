@@ -6,7 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.scut.dao.studentDao.IStudentDao;
+import org.scut.dao.IStudentDao;
 import org.scut.model.Student;
 import org.scut.service.studentService.IStudentService;
 import org.springframework.stereotype.Service;
@@ -50,24 +50,24 @@ public class StudentServiceImpl implements IStudentService{
 		return null;
 	}
 
-	@Override
-	public List<Map<String, String>> getPractice(String studentId, String subjectId) {
-		
-		List<Map<String, String>> result = this.studentDao.getPractice(studentId, subjectId);
-		
-		return result;
-	}
+
 	
-	@Override
-	public List<Map<String, String>> getExam(String studentId, String subjectId) {
-		
-		List<Map<String, String>> result = this.studentDao.getExam(studentId, subjectId);
-		
-		return result;
-	}
+	
 	
 	@Override
 	public Student getStudent(String studentId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Map<String, String>> getPractice(String studentId, String subjectId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Map<String, String>> getExam(String studentId, String subjectId) {
 		// TODO Auto-generated method stub
 		return null;
 	}

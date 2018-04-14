@@ -55,45 +55,7 @@ public class ParentController {
 		
 	}
 	
-	/**
-	 * status:0用户未登录，-1孩子账号不存在，1成功，-2数据库发生错误，2已经存在此关系
-	 */
-	@RequestMapping("/children/addchild")
-	public void addChild(HttpServletRequest request, HttpServletResponse response) throws IOException{
-		
-		request.setCharacterEncoding("utf-8");
-		response.setCharacterEncoding("utf-8");
-		
-		BufferedReader br = request.getReader();
-		StringBuffer sb = new StringBuffer();
-		String input = null;
-		
-		while((input = br.readLine()) != null){
-			sb.append(input);
-		}
-		
-		Gson gson = new Gson();
-		
-		Map<String, String> m = gson.fromJson(sb.toString(), Map.class);
-		
-		String childTelnumber = m.get("childTelnumber");
-		String id = null;
-		Cookie[] cookies = request.getCookies();
-		for (int i = 0; i < cookies.length; i++) {
-			if (cookies[i].getName().equals("id")) {
-				id = cookies[i].getValue();
-			}
-		}
-
-		
-		Map<String, Object> result = parentService.addChild(id, childTelnumber);
-		
-		PrintWriter out = response.getWriter();
-		out.write(gson.toJson(result));
-		out.flush();
-		out.close();
-		
-	}
+	
 	
 	/**
 	 * @return -1代表服务器错误，0代表未登录，1代表成功
