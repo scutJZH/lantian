@@ -1,18 +1,18 @@
 package org.scut.service.impl.publicImpl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
 
-import org.scut.dao.parentDao.IParentDao;
-import org.scut.dao.studentDao.IStudentDao;
-import org.scut.dao.teacherDao.ITeacherDao;
-import org.scut.model.Student;
-import org.scut.model.TokenMap;
+import org.scut.dao.IParentDao;
+import org.scut.dao.IStudentDao;
+import org.scut.dao.ITeacherDao;
 import org.scut.model.User;
 import org.scut.service.publicService.IRegisterService;
+import org.scut.util.GlobalVar;
 import org.springframework.stereotype.Service;
 
 @Service("registService")
@@ -26,11 +26,13 @@ public class RegisterServiceImpl implements IRegisterService {
 	private ITeacherDao teacherDao;
 
 	@Override
-	public Map<String, Object> regist(String userType, String telnumber, String nickname, String password) {
+	public Map<String, Object> sendVerifyCode(String userType, String telnumber) {
 
-		User user = null;
-
+		
+		Map<String, Object> result = new HashMap<String, Object>();
 		String status = "1";
+		
+		User user = null;
 
 		try {
 			user = this.getUserByType(userType, telnumber);
@@ -48,8 +50,6 @@ public class RegisterServiceImpl implements IRegisterService {
 				String verifyCode = "000000";//调用生成验证码的短信接口
 				user.setId(id);
 				user.setPhone(telnumber);
-				user.setNickname(nickname);
-				user.setPassword(password);
 				user.setState("0");
 				user.setVerifyCode(verifyCode);
 				this.inputUserByType(userType, user);
@@ -59,7 +59,7 @@ public class RegisterServiceImpl implements IRegisterService {
 			e.printStackTrace();
 		}
 		
-		Map<String, Object> result = new HashMap<String, Object>();
+		
 		result.put("status", status);
 		
 		return result;
@@ -71,9 +71,11 @@ public class RegisterServiceImpl implements IRegisterService {
 	public Map<String, Object> verify(String userType, String telnumber, String nickname, String password,
 			String verifyCode) {
 		
-		User user = null;
+		Map<String, Object> result = new HashMap<String, Object>();
 		String status = "1";
 		Map<String, Object> userInfo = new HashMap<String, Object>();
+		
+		User user = null;
 		
 		try{
 			user = this.getUserByType(userType, telnumber);
@@ -87,13 +89,14 @@ public class RegisterServiceImpl implements IRegisterService {
 						user.setNickname(nickname);
 						user.setPassword(password);
 						user.setToken(token);
+						user.setCreateTime(new Date());
 						this.inputUserByType(userType, user);
 						userInfo.put("id", user.getId());
 						userInfo.put("nickname", nickname);
-						userInfo.put("pic_path", user.getPic_path());
+						userInfo.put("img", user.getPicPath());
 						userInfo.put("token", token);
 						
-						TokenMap.tokenMap.put(user.getId(), token);
+						GlobalVar.tokenMap.put(user.getId(), token);
 						
 						
 					}
@@ -108,7 +111,7 @@ public class RegisterServiceImpl implements IRegisterService {
 			status = "-2";
 		}
 		
-		Map<String, Object> result = new HashMap<String, Object>();
+		
 		result.put("status", status);
 		result.put("result",userInfo);
 		
@@ -121,7 +124,7 @@ public class RegisterServiceImpl implements IRegisterService {
 		User user = null;
 		switch (userType) {
 		case "1":
-			user = studentDao.getStudentById(telnumber);
+			user = studentDao.getStudentByTel(telnumber);
 			break;
 		case "2":
 			user = teacherDao.getTeacherByTel(telnumber);

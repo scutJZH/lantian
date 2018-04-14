@@ -22,75 +22,77 @@ public class Question {
 
     private Integer grade;
 
-    public String getQuestionId() {
-        return questionId;
-    }
+	public String getQuestionId() {
+		return questionId;
+	}
 
-    public void setQuestionId(String questionId) {
-        this.questionId = questionId == null ? null : questionId.trim();
-    }
+	public void setQuestionId(String questionId) {
+		this.questionId = questionId;
+	}
 
-    public String getTitleId() {
-        return titleId;
-    }
+	public String getTitleId() {
+		return titleId;
+	}
 
-    public void setTitleId(String titleId) {
-        this.titleId = titleId == null ? null : titleId.trim();
-    }
+	public void setTitleId(String titleId) {
+		this.titleId = titleId;
+	}
 
-    public String getSubjectId() {
-        return subjectId;
-    }
+	public String getSubjectId() {
+		return subjectId;
+	}
 
-    public void setSubjectId(String subjectId) {
-        this.subjectId = subjectId == null ? null : subjectId.trim();
-    }
+	public void setSubjectId(String subjectId) {
+		this.subjectId = subjectId;
+	}
 
-    public String getOptionA() {
-        return optionA;
-    }
+	public String getOptionA() {
+		return optionA;
+	}
 
-    public void setOptionA(String optionA) {
-        this.optionA = optionA == null ? null : optionA.trim();
-    }
+	public void setOptionA(String optionA) {
+		this.optionA = optionA;
+	}
 
-    public String getOptionB() {
-        return optionB;
-    }
+	public String getOptionB() {
+		return optionB;
+	}
 
-    public void setOptionB(String optionB) {
-        this.optionB = optionB == null ? null : optionB.trim();
-    }
+	public void setOptionB(String optionB) {
+		this.optionB = optionB;
+	}
 
-    public String getOptionC() {
-        return optionC;
-    }
+	public String getOptionC() {
+		return optionC;
+	}
 
-    public void setOptionC(String optionC) {
-        this.optionC = optionC == null ? null : optionC.trim();
-    }
+	public void setOptionC(String optionC) {
+		this.optionC = optionC;
+	}
 
-    public String getOptionD() {
-        return optionD;
-    }
+	public String getOptionD() {
+		return optionD;
+	}
 
-    public void setOptionD(String optionD) {
-        this.optionD = optionD == null ? null : optionD.trim();
-    }
+	public void setOptionD(String optionD) {
+		this.optionD = optionD;
+	}
 
-    public String getAnswer() {
-        return answer;
-    }
+	public String getAnswer() {
+		return answer;
+	}
 
-    public void setAnswer(String answer) {
-        this.answer = answer == null ? null : answer.trim();
-    }
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
 
-    public Integer getGrade() {
-        return grade;
-    }
+	public Integer getGrade() {
+		return grade;
+	}
 
-    public void setGrade(Integer grade) {
-        this.grade = grade;
-    }
+	public void setGrade(Integer grade) {
+		this.grade = grade;
+	}
+
+   
 }

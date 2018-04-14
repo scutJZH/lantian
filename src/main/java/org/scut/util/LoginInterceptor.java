@@ -1,6 +1,5 @@
 package org.scut.util;
 
-import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,9 +7,7 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.scut.model.TokenMap;
+import org.scut.util.GlobalVar;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -39,7 +36,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 			}
 		}
 		if (id != null && !id.equals("")&&token!=null&&!token.equals("")) {
-			if (TokenMap.tokenMap.containsKey(id)&&token.equals(TokenMap.tokenMap.get(id))) {
+			if (GlobalVar.tokenMap.containsKey(id)&&token.equals(GlobalVar.tokenMap.get(id))) {
 					return true;
 			}
 		}

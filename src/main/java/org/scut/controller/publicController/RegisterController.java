@@ -33,7 +33,7 @@ public class RegisterController {
 	 * 
 	 * status 为-1代表账号已经被注册，为1代表可以进行验证码验证；为-2代表服务器连接数据库发生错误
 	 */
-	@RequestMapping("/register.do")
+	@RequestMapping("/register/sendVerifyCode")
 	@ResponseBody
 	public Map<String, Object> regist(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		request.setCharacterEncoding("UTF-8");
@@ -42,11 +42,9 @@ public class RegisterController {
 		Map<String, Object> m = ParamsTransport.getParams(request);
 		
 		String telnumber = (String)m.get("telnumber");
-		String nickname = (String)m.get("nickname");
-		String password = (String)m.get("password");
 		String userType = (String)m.get("userType");
 		
-		Map<String, Object> result = registerService.regist(userType, telnumber, nickname, password);
+		Map<String, Object> result = registerService.sendVerifyCode(userType, telnumber);
 
 		return result;
 	
@@ -75,13 +73,15 @@ public class RegisterController {
 		String verifyCode = (String)m.get("verifyCode");
 		
 		Map<String, Object> result = registerService.verify(userType, telnumber, nickname, password, verifyCode);
-		Map<String, Object> userInfo = (Map<String, Object>)result.get("result");
-		Cookie idCookie = new Cookie("id",(String)userInfo.get("id"));
-		Cookie tokenCookie = new Cookie("token",(String)userInfo.get("token"));
-		response.addCookie(tokenCookie);
-		response.addCookie(idCookie);
-		
-		userInfo.remove("token");
+		String status = (String)result.get("status");
+		if(status.equals("1")){
+			Map<String, Object> userInfo = (Map<String, Object>)result.get("result");
+			Cookie idCookie = new Cookie("id",(String)userInfo.get("id"));
+			Cookie tokenCookie = new Cookie("token",(String)userInfo.get("token"));
+			response.addCookie(tokenCookie);
+			response.addCookie(idCookie);
+			userInfo.remove("token");
+		}
 		
 		return result;
 		

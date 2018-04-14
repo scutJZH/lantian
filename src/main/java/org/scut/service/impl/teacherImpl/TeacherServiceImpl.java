@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 
-import org.scut.dao.teacherDao.ITeacherDao;
+import org.scut.dao.ITeacherDao;
 import org.scut.model.Teacher;
 import org.scut.service.teacherService.ITeacherService;
 import org.springframework.stereotype.Service;

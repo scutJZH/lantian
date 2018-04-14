@@ -86,56 +86,10 @@ public class ParentServiceImpl implements IParentService {
 
 	}
 
-	/**
-	 * status:0�û�δ��¼��-1�����˺Ų����ڣ�1�ɹ���-2���ݿⷢ������2�Ѿ����ڴ˹�ϵ
-	 */
-	@Override
-	public Map<String, Object> addChild(String parentId, String childTelnumber) {
-		Map<String, Object> result = new HashMap<String, Object>();
-		
-		String status = "1";
-		Map<String, String> childInfo = null;
-		String studentId = null;
-		String nickname = null;
-		String grade = "";
-		//���鲻�����ݿ�᷵��null
-		try{
-			childInfo = studentDao.getStudentIdAndName(childTelnumber);
-			if(childInfo!=null){
-				studentId = childInfo.get("student_id");
-				nickname = childInfo.get("nickname");
-				String classId = studentDao.getClassIdFromJoinClass(studentId);
-				if(classId != null){
-					grade = classDao.getGrade(classId);
-				}
-				List<String> childrenList = parentDao.getChildrenIdList(parentId);
-				if(childrenList!=null&&childrenList.contains(studentId)){
-					status = "2";
-				}else{
-					String relationshipId = UUID.randomUUID().toString();
-					parentDao.addChild(relationshipId, parentId, studentId);
-				}				
-				childInfo = new HashMap<String, String>();
-				childInfo.put("studentId", studentId);
-				childInfo.put("nickname", nickname);
-				childInfo.put("grade", grade);
-				result.put("result", childInfo);
-			}else{
-				status = "-1";
-				result.put("result", "");
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-			status = "-2";
-			result.put("result", "");
-		}
-		result.put("status", status);
-		
-		return result;
-	}
+	
 
 	/**
-	 * -2�������ݿ����0����δ��¼��1����ɹ�
+	 * -2锟斤拷锟斤拷锟斤拷锟捷匡拷锟斤拷锟�0锟斤拷锟斤拷未锟斤拷录锟斤拷1锟斤拷锟斤拷晒锟�
 	 */
 	@Override
 	public Map<String, String> removeChild(String parentId, String childId) {

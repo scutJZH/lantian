@@ -9,7 +9,7 @@ public class User {
 	private String password;
 	private Date createTime;
 	private String token;
-	private String pic_path;
+	private String picPath;
 	private Date birthday;
 	private String sex;
 	private String nickname;
@@ -47,11 +47,11 @@ public class User {
 	public void setToken(String token) {
 		this.token = token;
 	}
-	public String getPic_path() {
-		return pic_path;
+	public String getPicPath() {
+		return picPath;
 	}
-	public void setPic_path(String pic_path) {
-		this.pic_path = pic_path;
+	public void setPicPath(String picPath) {
+		this.picPath = picPath;
 	}
 	public Date getBirthday() {
 		return birthday;

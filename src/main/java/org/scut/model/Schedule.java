@@ -16,43 +16,45 @@ public class Schedule {
 
     private String scheduleContent;
 
-    public String getScheduleId() {
-        return scheduleId;
-    }
+	public String getScheduleId() {
+		return scheduleId;
+	}
 
-    public void setScheduleId(String scheduleId) {
-        this.scheduleId = scheduleId == null ? null : scheduleId.trim();
-    }
+	public void setScheduleId(String scheduleId) {
+		this.scheduleId = scheduleId;
+	}
 
-    public String getStudentId() {
-        return studentId;
-    }
+	public String getStudentId() {
+		return studentId;
+	}
 
-    public void setStudentId(String studentId) {
-        this.studentId = studentId == null ? null : studentId.trim();
-    }
+	public void setStudentId(String studentId) {
+		this.studentId = studentId;
+	}
 
-    public Date getStartTime() {
-        return startTime;
-    }
+	public Date getStartTime() {
+		return startTime;
+	}
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
 
-    public Date getEndTime() {
-        return endTime;
-    }
+	public Date getEndTime() {
+		return endTime;
+	}
 
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
 
-    public String getScheduleContent() {
-        return scheduleContent;
-    }
+	public String getScheduleContent() {
+		return scheduleContent;
+	}
 
-    public void setScheduleContent(String scheduleContent) {
-        this.scheduleContent = scheduleContent == null ? null : scheduleContent.trim();
-    }
+	public void setScheduleContent(String scheduleContent) {
+		this.scheduleContent = scheduleContent;
+	}
+
+   
 }
