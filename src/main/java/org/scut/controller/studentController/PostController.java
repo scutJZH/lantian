@@ -1,6 +1,8 @@
-package org.scut.controller;
+package org.scut.controller.studentController;
 
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -31,7 +33,9 @@ public class PostController {
 //					    	  return Json.getJson(false,"帖子标题为空")；
 //					    			  
 //					      }，
+		                            
 						Post post= new Post();
+						post.setPostId(UUID.randomUUID().toString());
 						post.setPostTitle(postTitle);
 						post.setStudentId(studentId);
 						post.setSubjectId(postSubject);
@@ -66,6 +70,12 @@ public class PostController {
 		else {
 			return Json.getJson(false,"errormsg","");
 		}
+	}
+	@RequestMapping(value="/student/post/getanswer.do")
+	@ResponseBody
+	public Object getanswer(@RequestParam(value="postId",required=false)String postId) {
+		List<Answer>answers=answerService.findanswerbypostid(postId);
+		
 	}
 	
 

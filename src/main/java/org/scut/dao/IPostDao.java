@@ -1,8 +1,9 @@
 package org.scut.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.scut.model.Post;
 
-public interface PostMapper {
+public interface IPostDao {
     int deleteByPrimaryKey(String postId);
 
     int insert(Post record);
@@ -14,4 +15,6 @@ public interface PostMapper {
     int updateByPrimaryKeySelective(Post record);
 
     int updateByPrimaryKey(Post record);
+
+	Post findpostbyid(@Param("postId")String postId);
 }

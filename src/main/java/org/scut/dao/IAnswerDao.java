@@ -1,8 +1,10 @@
 package org.scut.dao;
 
+import java.util.List;
+
 import org.scut.model.Answer;
 
-public interface AnswerMapper {
+public interface IAnswerDao {
     int deleteByPrimaryKey(String answerId);
 
     int insert(Answer record);
@@ -14,4 +16,6 @@ public interface AnswerMapper {
     int updateByPrimaryKeySelective(Answer record);
 
     int updateByPrimaryKey(Answer record);
+    Answer findanswerbyid (String answerId);
+    List<Answer>findanswerbypostid(String postId);
 }

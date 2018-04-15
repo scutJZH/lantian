@@ -1,4 +1,4 @@
-package org.scut.controller;
+package org.scut.controller.studentController;
 
 import java.util.HashMap;
 import java.util.Map;

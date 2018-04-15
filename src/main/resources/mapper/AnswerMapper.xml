@@ -104,6 +104,11 @@
     </set>
     where answer_id = #{answerId,jdbcType=VARCHAR}
   </update>
+  <select id="findanswerbyid" resultMap="BaseResultMap">
+  SELECT
+  <include refid="Base_Column_List"/>
+  from answer where answer_id= #{answerId,jdbcType=VARCHAR}
+  </select>
   <update id="updateByPrimaryKey" parameterType="org.scut.model.Answer" >
     update answer
     set student_id = #{studentId,jdbcType=VARCHAR},
