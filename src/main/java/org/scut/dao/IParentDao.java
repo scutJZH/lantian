@@ -12,7 +12,8 @@ public interface IParentDao {
 	
 	public void updateToken(@Param("parentId")String id, @Param("token")String token);
     
-	public void inputParent(Parent parent);
+	public void insertParent(Parent parent);
 	
-	public void inputParent(User user);
+	public void insertParent(User user);
+	
 }

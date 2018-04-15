@@ -12,7 +12,7 @@ public interface ITeacherDao {
 	
 	public void updateToken(@Param("teacherId")String id, @Param("token")String token);
     
-	public void inputTeacher(Teacher Teacher);
+	public void insertTeacher(Teacher Teacher);
 	
-	public void inputTeacher(User user);
+	public void insertTeacher(User user);
 }

@@ -139,13 +139,13 @@ public class RegisterServiceImpl implements IRegisterService {
 	private void inputUserByType(String userType, User user) throws Exception{
 		switch(userType){
 		case "1":
-			studentDao.inputStudent(user);
+			studentDao.insertStudent(user);
 			break;
 		case "2":
-			teacherDao.inputTeacher(user);
+			teacherDao.insertTeacher(user);
 			break;
 		case "3":
-			parentDao.inputParent(user);
+			parentDao.insertParent(user);
 			break;
 		}
 	}

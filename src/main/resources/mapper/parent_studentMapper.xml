@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.scut.dao.IParent_studentDao" >
+<mapper namespace="org.scut.dao.IParent_studentDao">
+	<select id="isExist" resultType="String">
+		if exists (
+		select * from parent_student
+		where parent_id = #{parentId} and student_id =#{studentId}
+		) select '1' else select '0'
+	</select>
 </mapper>

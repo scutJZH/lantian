@@ -44,5 +44,32 @@ public class ChildrenController {
 		return result;
 		
 	}
+	
+	
+	@RequestMapping("/children/removechild")
+	@ResponseBody
+	public Map<String, Object> removeChild(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		
+		Map<String, Object> m = ParamsTransport.getParams(request);
+		
+		String parentId = (String)m.get("parentId");
+		String childId = (String)m.get("studentId");
+		
+		Map<String, Object> result = childrenService.removeChild(parentId, childId);
+		
+		return result;
+	}
+	
+	@RequestMapping("/children")
+	@ResponseBody
+	public Map<String, Object> getChildren(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		Map<String, Object> m = ParamsTransport.getParams(request);
+		
+		String parentId = (String)m.get("parentId");
+		
+		Map<String, Object> result = childrenService.getChildren(parentId);
+		
+		return result; 
+	}
 
 }
