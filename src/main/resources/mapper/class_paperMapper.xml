@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.scut.dao.IClass_paperDao">
+	<select id="selectList" resultType="HashMap">
+	SELECT paper_id,assign_time,submit_number FROM class_paper WHERE paper_id=#{paperId} AND class_id=#{class_id}
+	LEFT JOIN (SELECT paper_name FROM paper WHERE paper_id=#{paperId})
+	ON class_paper.paper_id=(SELECT paper_name FROM paper WHERE paper_id=#{paperId}).paper_id
+	LEFT JOIN (SELECT student_number FROM class WHERE class.class_id=#{class_id})
+	ON class_paper.class_id=class.class_id
+	</select>
+<resultMap id="getHomeworkListHashMap" type="HashMap">
+<id property="paperId" column="paper_id"/>
+<result property="assignTime" column="assign_time"/>
+<result property="submitNumber" column="submit_number"/>
+<result property="paperName" column="paper_name"/>
+<result property="studentNumber" column="student_number"/>
+</resultMap>
 </mapper>
