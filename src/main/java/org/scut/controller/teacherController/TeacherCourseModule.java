@@ -33,4 +33,8 @@ public class TeacherCourseModule {
 		result.put("status", resultPre);
 		return result;
 	}
+	//3.1 获取班级
+	public HashMap<String,Object> getClass(@RequestParam(value="teacherId")String teacherId){
+		teacherCourseModuleService.
+	}
 }
