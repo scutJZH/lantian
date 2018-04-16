@@ -8,6 +8,9 @@ encoding//src/main/java/org/scut/controller/PostController.java=UTF-8
 encoding//src/main/java/org/scut/controller/publicController/LogController.java=GBK
 encoding//src/main/java/org/scut/controller/publicController/RegisterController.java=GBK
 encoding//src/main/java/org/scut/model/Parent.java=GBK
+<<<<<<< HEAD
 encoding//src/main/resources=UTF-8
+=======
+>>>>>>> refs/remotes/origin/master
 encoding//src/main/resources/jdbc.properties=UTF-8
 encoding/<project>=UTF-8

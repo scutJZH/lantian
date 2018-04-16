@@ -7,12 +7,4 @@ import org.scut.model.Parent;
 
 public interface IParentService {
 	
-	public boolean inputParent(String id, String telnumber, String nickname, String password, String token);
-	
-	
-	
-	
-	
-	public Map<String, Object> getChildHomework(String studentId, String subjectId);
-	
 }

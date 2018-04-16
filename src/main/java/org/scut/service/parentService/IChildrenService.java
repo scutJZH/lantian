@@ -9,7 +9,5 @@ public interface IChildrenService {
 	
 	public Map<String, Object> removeChild(String parentId, String childId);
 	
-	public List<String> getChildrenIdList(String parentId);
-	
-	public List<Map<String, String>> getChildren(String parentId);
+	public Map<String, Object> getChildren(String parentId);
 }
