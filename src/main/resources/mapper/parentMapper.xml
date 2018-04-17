@@ -1,4 +1,49 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.scut.dao.IParentDao" >
+
+	<select id="getParentByTel" resultType="Parent" parameterType="String">
+		select * from parent where phone = #{telnumber}
+	</select>
+	
+	<update id="updateToken">
+		update parent set token = #{token} where parent_id = #{parentId}
+	</update>
+	
+	<insert id="insertParent" parameterType="Parent">
+		 insert into parent 
+		 (parent_id, phone, password, create_time, pic_path, nickname, birthday, sex,
+		 token, state, verify_code)
+  		 values (#{parent.id}, #{parent.phone}, #{parent.password, javaType=String, jdbcType=VARCHAR},
+  		 #{parent.createTime, javaType=Date, jdbcType=DATE}, #{parent.picPath},
+  		 #{parent.nickname, javaType=String, jdbcType=VARCHAR}, #{parent.birthday, javaType=Date, jdbcType=DATE},
+  		 #{parent.sex}, #{parent.token, javaType=String, jdbcType=VARCHAR}, #{parent.state},
+  		 #{parent.verifyCode, javaType=String, jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="insertUser" parameterType="User">
+		insert into parent 
+		 (parent_id, phone, password, create_time, pic_path, nickname, birthday, sex,
+		 token, state, verify_code)
+  		 values (#{user.id}, #{user.phone}, #{user.password, javaType=String, jdbcType=VARCHAR},
+  		 #{user.createTime, javaType=Date, jdbcType=DATE}, #{user.picPath},
+  		 #{user.nickname, javaType=String, jdbcType=VARCHAR}, #{user.birthday, javaType=Date, jdbcType=DATE},
+  		 #{user.sex}, #{user.token, javaType=String, jdbcType=VARCHAR}, #{user.state},
+  		 #{user.verifyCode, javaType=String, jdbcType=VARCHAR})
+	</insert>
+	
+	<update id="updateUser" parameterType="User">
+		update parent set
+		phone = #{user.phone},
+   	 	password = #{user.password},
+   	 	create_time = #{user.createTime},
+    	pic_path = #{user.picPath},
+    	nickname = #{user.nickname},
+    	birthday = #{user.birthday, javaType=Date, jdbcType=DATE},
+    	sex = #{user.sex},
+    	token = #{user.token, javaType=String, jdbcType=VARCHAR},
+    	state = #{user.state},
+    	varify_code = #{user.varifyCode, javaType=String, jdbcType=VARCHAR}
+  		where parent_id = #{user.id}
+	</update>
 </mapper>

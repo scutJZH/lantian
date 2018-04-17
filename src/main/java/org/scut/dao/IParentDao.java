@@ -10,10 +10,14 @@ public interface IParentDao {
 
 	public Parent getParentByTel(@Param("telnumber")String telnumber);
 	
-	public void updateToken(@Param("parentId")String id, @Param("token")String token);
+	public void updateToken(@Param("parentId")String parentId, @Param("token")String token);
     
-	public void insertParent(Parent parent);
+	public void insertParent(@Param("parent")Parent parent);
 	
-	public void insertParent(User user);
+	public void insertUser(@Param("user")User user);
+	
+	public void updateParent(@Param("user")User user);
+	
+	public Parent getParentById(@Param("parentId")String parentId);
 	
 }

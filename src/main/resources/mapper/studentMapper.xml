@@ -4,4 +4,55 @@
 	<select id="getStudentByTel" resultType="Student" parameterType="String">
 		select * from student where phone = #{telnumber}
 	</select>
+	
+	<update id="updateToken">
+		update student set token = #{token} where student_id = #{studentId}
+	</update>
+	
+	<insert id="insertStudent" parameterType="Student">
+		 insert into student 
+		 (student_id, phone, password, create_time, pic_path, nickname, birthday, sex,
+		 school_name, token, class_id, state, verify_code)
+  		 values (#{student.id}, #{student.phone}, #{student.password, javaType=String, jdbcType=VARCHAR},
+  		 #{student.createTime, javaType=Date, jdbcType=DATE}, #{student.picPath},
+  		 #{student.nickname, javaType=String, jdbcType=VARCHAR}, #{student.birthday, javaType=Date, jdbcType=DATE},
+  		 #{student.sex},#{student.schoolName, javaType=String, jdbcType=VARCHAR}, #{student.token, javaType=String, jdbcType=VARCHAR},
+  		 #{student.classId, javaType=String, jdbcType=VARCHAR}, #{student.state}, #{student.verifyCode, javaType=String, jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="insertUser" parameterType="User">
+		insert into student 
+		 (student_id, phone, password, create_time, pic_path, nickname, birthday, sex,
+		 token, state, verify_code)
+  		 values (#{user.id}, #{user.phone}, #{user.password, javaType=String, jdbcType=VARCHAR},
+  		 #{user.createTime, javaType=Date, jdbcType=DATE}, #{user.picPath},
+  		 #{user.nickname, javaType=String, jdbcType=VARCHAR}, #{user.birthday, javaType=Date, jdbcType=DATE},
+  		 #{user.sex}, #{user.token, javaType=String, jdbcType=VARCHAR}, #{user.state},
+  		 #{user.verifyCode, javaType=String, jdbcType=VARCHAR})
+	</insert>
+	
+	<update id="updateStudent" parameterType="User">
+		update student set
+		phone = #{user.phone},
+   	 	password = #{user.password},
+   	 	create_time = #{user.createTime},
+    	pic_path = #{user.picPath},
+    	nickname = #{user.nickname},
+    	birthday = #{user.birthday, javaType=Date, jdbcType=DATE},
+    	sex = #{user.sex},
+    	token = #{user.token, javaType=String, jdbcType=VARCHAR},
+    	state = #{user.state},
+    	varify_code = #{user.varifyCode, javaType=String, jdbcType=VARCHAR}
+  		where student_id = #{user.id}
+	</update>
+	
+	<select id="getchildInfoByTel" parameterType="String" resultType="hashmap">
+		select (student_id, nickname, class_id, class_name, pic_path)
+		from student left join class on student.phone = #{telnumber} and student.class_id = class.class_id
+	</select>
+	
+	<select id="getchildInfoById" parameterType="String" resultType="hashmap">
+		select (phone, nickname, class_id, class_name, pic_path)
+		from student left join class on student.student_id = #{studentId} and student.class_id = class.class_id
+	</select>
 </mapper>

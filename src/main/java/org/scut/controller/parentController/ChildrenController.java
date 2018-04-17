@@ -35,8 +35,8 @@ public class ChildrenController {
 		
 		Map<String, Object> m = ParamsTransport.getParams(request);
 		
-		String childTelnumber = (String)m.get("telnumber");
-		String parentId = (String)m.get("id");
+		String childTelnumber = (String)m.get("studentTelnumber");
+		String parentId = (String)m.get("parentId");
 
 		
 		Map<String, Object> result = childrenService.addChild(parentId, childTelnumber);

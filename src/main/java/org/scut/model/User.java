@@ -9,9 +9,9 @@ public class User {
 	private String password;
 	private Date createTime;
 	private String token;
-	private String picPath;
+	private String picPath = "123";
 	private Date birthday;
-	private String sex;
+	private String sex = "1";
 	private String nickname;
 	private String state;
 	private String verifyCode;

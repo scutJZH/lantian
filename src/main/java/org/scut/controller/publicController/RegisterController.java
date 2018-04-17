@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
+@RequestMapping("/register")
 public class RegisterController {
 	
 	@Resource
@@ -33,7 +34,7 @@ public class RegisterController {
 	 * 
 	 * status 为-1代表账号已经被注册，为1代表可以进行验证码验证；为-2代表服务器连接数据库发生错误
 	 */
-	@RequestMapping("/register/sendVerifyCode")
+	@RequestMapping("/sendverifyCode")
 	@ResponseBody
 	public Map<String, Object> regist(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		request.setCharacterEncoding("UTF-8");
@@ -57,8 +58,8 @@ public class RegisterController {
 	 * @return
 	 * @throws IOException
 	 * status：-3代表验证码过期，-1为验证码不匹配，-2为数据库连接发生错误，1为验证成功，直接进入登录状态
-	 */
-	@RequestMapping("/register/verify")
+	 */	
+	@RequestMapping("/verify")
 	@ResponseBody
 	public Map<String, Object> verify(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		request.setCharacterEncoding("UTF-8");

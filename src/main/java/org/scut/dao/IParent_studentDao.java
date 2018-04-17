@@ -14,5 +14,5 @@ public interface IParent_studentDao {
 	
 	public List<String> getChildrenIdsList(@Param("parentId")String parentId);
 	
-	public void removeChild(@Param("parentId")String id, @Param("studentId")String studentId);
+	public void removeChild(@Param("parentId")String parentId, @Param("studentId")String studentId);
 }
