@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.scut.dao.ITeacherDao" >
-	<select id="getTeacherByTel" resultType="Teacher" parameterType="String">
+	<select id="getTeacherByTel" resultMap="teacherMap" parameterType="String">
 		select * from teacher where phone = #{telnumber}
 	</select>
 	
@@ -42,7 +42,23 @@
     	sex = #{user.sex},
     	token = #{user.token, javaType=String, jdbcType=VARCHAR},
     	state = #{user.state},
-    	varify_code = #{user.varifyCode, javaType=String, jdbcType=VARCHAR}
+    	verify_code = #{user.verifyCode, javaType=String, jdbcType=VARCHAR}
   		where teacher_id = #{user.id}
 	</update>
+	
+	<resultMap type="Teacher" id="teacherMap">
+		<id property="id" column="teacher_id"/>
+		<result property="phone" column="phone"/>
+		<result property="password" column="password"/>
+		<result property="createTime" column ="create_time"/>
+		<result property="token" column = "token"/>
+		<result property="picPath" column="pic_path"/>
+		<result property="birthday" column="birthday"/>
+		<result property="sex" column="sex"/>
+		<result property="nickname" column="nickname"/>
+		<result property="state" column="state"/>
+		<result property="verifyCode" column="verify_code"/>
+		<result property="schoolName" column="school_name"/>
+		<result property="name" column="name"/>
+	</resultMap>
 </mapper>
