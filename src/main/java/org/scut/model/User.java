@@ -9,7 +9,7 @@ public class User {
 	private String password;
 	private Date createTime;
 	private String token;
-	private String picPath = "123";
+	private String picPath = "123.JPG";
 	private Date birthday;
 	private String sex = "1";
 	private String nickname;
