@@ -18,4 +18,10 @@
 	natural join student where paper_id=#{paperId}
 	<!-- 这里少用了一个teacherId参数，可能有问题 -->
 	</select>
+	<resultMap id="getCorrectStudentListHashMap" type="java.util.HashMap">
+	<id property="studentId" column="student_id"></id>
+	<result property="nickname" column="nickname"/>
+	<result property="choice_score" column="choice_score"/>
+	<result property="total_score" column="total_score"/>
+	</resultMap>
 </mapper>

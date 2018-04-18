@@ -18,4 +18,6 @@ public interface IClass_paperDao {
 	public ArrayList<HashMap<String,Object>> selectList(@Param("teacherId")String teacherId,@Param("classId")String classId);
 	public int deleteList(List<String> paperId);
 	public List<HashMap<String,String>> getCorrectionList(@Param("teacherId")String teacherId,@Param("classId")String classId);
+	public List<HashMap<String,String>> get(@Param("teacherId")String teacherId,@Param("classId")String classId);
+
 }

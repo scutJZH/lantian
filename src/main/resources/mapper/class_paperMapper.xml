@@ -23,9 +23,9 @@ select paper_id,assign_time,submit_number,paper_name,student_number from class_p
 	</foreach>
 </delete>
 <!-- 获取作业批改列表 -->
-<select id="getCorrectionList" resultType="getCorrectionListHashMap">
+<select id="getCorrectionList" resultMap="getCorrectionListHashMap">
 	select papar_id,paper_name,assign_time,submit_number from class_paper natural join paper
-	where assign_teacher_id=#{teacherId} and class_id=#{classId}
+	where assign_teacher_id=#{teacherId,javaType=String,jdbcType=VARCHAR} and class_id=#{classId,javaType=String,jdbcType=VARCHAR}
 </select>
 <resultMap id="getCorrectionListHashMap" type="java.util.HashMap">
 <id property="paperId" column="paper_id"></id>
@@ -33,5 +33,11 @@ select paper_id,assign_time,submit_number,paper_name,student_number from class_p
 <result property="assignTime" column="assign_time"/>
 <result property="submitNumber" column="submit_number"/>
 </resultMap>
-
+<!-- test用 -->
+<select id="get" resultMap="getmap">
+	select assign_teacher_id from class_paper
+</select>
+<resultMap id="getmap" type="HashMap">
+<id property="assign_teacher_id" column="assign_teacher_id"></id>
+</resultMap>
 </mapper>
