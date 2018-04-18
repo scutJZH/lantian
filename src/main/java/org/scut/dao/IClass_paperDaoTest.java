@@ -25,6 +25,6 @@ public class IClass_paperDaoTest {
        String classId="10001";
        //papar_id,paper_name,assign_time,submit_number
         List<HashMap<String,String>> test= class_paperDao.get(teacherId,classId);
-        System.out.println(test.get(1).get("assign_teacher_id").toString()+" "+test.get(2).get("assign_teacher_id").toString());
+        System.out.println((test.get(1).get("assign_teacher_id")).toString()+" "+(test.get(2).get("assign_teacher_id")).toString());
     }
 }
