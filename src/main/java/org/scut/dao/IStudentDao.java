@@ -22,12 +22,8 @@ public interface IStudentDao {
 	
 	public HashMap<String, Object> getchildInfoById(@Param("studentId")String studentId);
 	
-<<<<<<< HEAD
 	public Student getStudentById(@Param("studentId")String studentId);
 	
 	public String getClassIdById(@Param("studentId")String studentId);
-=======
-	public Student getStduetnById(@Param("studentId")String studentId);
 
->>>>>>> branch 'master' of https://github.com/scutJZH/lantian.git
 }
