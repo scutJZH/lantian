@@ -1,4 +1,64 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.scut.dao.ITeacherDao" >
+	<select id="getTeacherByTel" resultMap="teacherMap" parameterType="String">
+		select * from teacher where phone = #{telnumber}
+	</select>
+	
+	<update id="updateToken">
+		update teacher set token = #{token} where teacher_id = #{teacherId}
+	</update>
+	
+	<insert id="insertTeacher" parameterType="Teacher">
+		 insert into teacher 
+		 (teacher_id, phone, password, create_time, pic_path, nickname, birthday, sex,
+		 school_name, token, name, state, verify_code)
+  		 values (#{teacher.id}, #{teacher.phone}, #{teacher.password, javaType=String, jdbcType=VARCHAR},
+  		 #{teacher.createTime, javaType=Date, jdbcType=DATE}, #{teacher.picPath},
+  		 #{teacher.nickname, javaType=String, jdbcType=VARCHAR}, #{teacher.birthday, javaType=Date, jdbcType=DATE},
+  		 #{teacher.sex},#{teacher.schoolName, javaType=String, jdbcType=VARCHAR}, #{teacher.token, javaType=String, jdbcType=VARCHAR},
+  		 #{teacher.name, javaType=String, jdbcType=VARCHAR}, #{teacher.state}, #{teacher.verifyCode, javaType=String, jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="insertUser" parameterType="User">
+		insert into teacher 
+		 (teacher_id, phone, password, create_time, pic_path, nickname, birthday, sex,
+		 token, state, verify_code)
+  		 values (#{user.id}, #{user.phone}, #{user.password, javaType=String, jdbcType=VARCHAR},
+  		 #{user.createTime, javaType=Date, jdbcType=DATE}, #{user.picPath},
+  		 #{user.nickname, javaType=String, jdbcType=VARCHAR}, #{user.birthday, javaType=Date, jdbcType=DATE},
+  		 #{user.sex}, #{user.token, javaType=String, jdbcType=VARCHAR}, #{user.state},
+  		 #{user.verifyCode, javaType=String, jdbcType=VARCHAR})
+	</insert>
+	
+	<update id="updateTeacher" parameterType="User">
+		update student set
+		phone = #{user.phone},
+   	 	password = #{user.password},
+   	 	create_time = #{user.createTime},
+    	pic_path = #{user.picPath},
+    	nickname = #{user.nickname},
+    	birthday = #{user.birthday, javaType=Date, jdbcType=DATE},
+    	sex = #{user.sex},
+    	token = #{user.token, javaType=String, jdbcType=VARCHAR},
+    	state = #{user.state},
+    	verify_code = #{user.verifyCode, javaType=String, jdbcType=VARCHAR}
+  		where teacher_id = #{user.id}
+	</update>
+	
+	<resultMap type="Teacher" id="teacherMap">
+		<id property="id" column="teacher_id"/>
+		<result property="phone" column="phone"/>
+		<result property="password" column="password"/>
+		<result property="createTime" column ="create_time"/>
+		<result property="token" column = "token"/>
+		<result property="picPath" column="pic_path"/>
+		<result property="birthday" column="birthday"/>
+		<result property="sex" column="sex"/>
+		<result property="nickname" column="nickname"/>
+		<result property="state" column="state"/>
+		<result property="verifyCode" column="verify_code"/>
+		<result property="schoolName" column="school_name"/>
+		<result property="name" column="name"/>
+	</resultMap>
 </mapper>

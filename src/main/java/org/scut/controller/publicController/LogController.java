@@ -30,7 +30,7 @@ public class LogController {
  * @throws IOException
  * status：1代表登陆成功，-1用户未注册，0为密码输入错误，-2为数据库连接发生错误
  */
-	@RequestMapping("/login.do")
+	@RequestMapping("/login")
 	@ResponseBody
 	public Map<String, Object> login(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		request.setCharacterEncoding("utf-8");
@@ -58,7 +58,7 @@ public class LogController {
 		
 	}
 	
-	@RequestMapping("/logout.do")
+	@RequestMapping("/logout")
 	@ResponseBody
 	public Map<String, Object> logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
 

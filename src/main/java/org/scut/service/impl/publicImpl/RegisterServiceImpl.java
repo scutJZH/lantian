@@ -46,6 +46,7 @@ public class RegisterServiceImpl implements IRegisterService {
 					 */
 				}
 			} else {
+				user = new User();
 				String id = UUID.randomUUID().toString();
 				String verifyCode = "000000";//调用生成验证码的短信接口
 				user.setId(id);
@@ -90,10 +91,9 @@ public class RegisterServiceImpl implements IRegisterService {
 						user.setPassword(password);
 						user.setToken(token);
 						user.setCreateTime(new Date());
-						this.inputUserByType(userType, user);
+						this.updateUserByType(userType, user);
 						userInfo.put("id", user.getId());
-						userInfo.put("nickname", nickname);
-						userInfo.put("img", user.getPicPath());
+						userInfo.put("picPath", user.getPicPath());
 						userInfo.put("token", token);
 						
 						GlobalVar.tokenMap.put(user.getId(), token);
@@ -139,14 +139,27 @@ public class RegisterServiceImpl implements IRegisterService {
 	private void inputUserByType(String userType, User user) throws Exception{
 		switch(userType){
 		case "1":
-			studentDao.insertStudent(user);
+			studentDao.insertUser(user);
 			break;
 		case "2":
-			teacherDao.insertTeacher(user);
+			teacherDao.insertUser(user);
 			break;
 		case "3":
-			parentDao.insertParent(user);
+			parentDao.insertUser(user);
 			break;
+		}
+	}
+	
+	private void updateUserByType(String userType, User user) throws Exception{
+		switch(userType){
+		case "1":
+			studentDao.updateStudent(user);
+			break;
+		case "2":
+			teacherDao.updateTeacher(user);
+			break;
+		case "3":
+			parentDao.updateParent(user);
 		}
 	}
 

@@ -8,5 +8,5 @@ public class GlobalVar {
 
 	public static ConcurrentMap<String, String> tokenMap = new ConcurrentHashMap<String, String>();
 
-	public static final String picPath = "/src/main/webapp/img/";
+	public static final String picPath = "/img/";
 }
