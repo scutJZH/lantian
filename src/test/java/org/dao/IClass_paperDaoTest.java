@@ -22,7 +22,7 @@ public class IClass_paperDaoTest {
        String teacherId="201430613253";
        String classId="10001";
        //papar_id,paper_name,assign_time,submit_number
-        List<HashMap<String,String>> test= class_paperDao.getCorrectionList(teacherId,classId);
+        List<HashMap<String,Object>> test= class_paperDao.get(teacherId,classId);
         System.out.println(test.get(1).get("papar_id")+" "+test.get(1).get("paper_name")+" "+test.get(1).get("assign_time")+" "+test.get(1).get("submit_number"));
     }
 }

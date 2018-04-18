@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class PostController {
 	
-	@Resource
+	/**@Resource
 	private IPostService postService;
 	@Resource
 	private IAnserService answerService;
@@ -48,6 +48,7 @@ public class PostController {
 						
 				
 	}
+	
 	@RequestMapping(value="/student/post/answerPost.do")
 	@ResponseBody
 	public Object answerPost(@RequestParam(value="postId",required=false)String postId,
@@ -67,6 +68,6 @@ public class PostController {
 			return Json.getJson(false,"errormsg","");
 		}
 	}
-	
+	**/
 
 }

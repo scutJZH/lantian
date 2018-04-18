@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.scut.dao.IStudent_paperDao" >
 
-<!-- 9.获取统计排名详情,但缺少学生名字，需要从student表查再合并在这个结果中 -->
+<!-- 9.获取统计排名详情,但缺少学生名字，需要从student表查再合并在这个结果中,这里注意每个学生只能做同一个作业1次才能用了natural join -->
 	<select id="getRankDetails" resultMap="getRankDetailsHashMap">
 		select student_id,score,nickname from student_paper natural join student where paper_id=#{paperId}
 	</select>
@@ -14,14 +14,14 @@
 	
 	<!-- 11.	获取批改作业学生列表（11-13为批改作业补充） -->
 	<select id="getCorrectStudentList" resultMap="getCorrectStudentListHashMap">
-	select student_id,nickname,choice_score,total_score from student_paper
+	select student_id,nickname,choice_score,score from student_paper
 	natural join student where paper_id=#{paperId}
 	<!-- 这里少用了一个teacherId参数，可能有问题 -->
 	</select>
 	<resultMap id="getCorrectStudentListHashMap" type="java.util.HashMap">
 	<id property="studentId" column="student_id"></id>
 	<result property="nickname" column="nickname"/>
-	<result property="choice_score" column="choice_score"/>
-	<result property="total_score" column="total_score"/>
+	<result property="choiceScore" column="choice_score"/>
+	<result property="score" column="score"/>
 	</resultMap>
 </mapper>

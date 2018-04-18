@@ -19,5 +19,5 @@ public interface ITitleDao {
 
     int updateByPrimaryKey(Title record);
     
-    public HashMap<String,String> getTitleContent(@Param("questionId")String questionId);
+    public HashMap<String,Object> getTitleContent(@Param("questionId")String questionId);
 }

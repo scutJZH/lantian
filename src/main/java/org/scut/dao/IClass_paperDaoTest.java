@@ -17,14 +17,19 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class IClass_paperDaoTest {
 
     @Resource
-    private IClass_paperDao class_paperDao;
+    private ITitleDao titleDao;
 
     @Test
     public void test2() throws Exception {
        String teacherId="201430613253";
        String classId="10001";
+       String paperId="1001";
+       String studentId="201830613253";
+       String subjectId="5";
+       String questionId="1";
        //papar_id,paper_name,assign_time,submit_number
-        List<HashMap<String,String>> test= class_paperDao.get(teacherId,classId);
-        System.out.println((test.get(1).get("assign_teacher_id")).toString()+" "+(test.get(2).get("assign_teacher_id")).toString());
+       HashMap<String,Object> test= titleDao.getTitleContent(questionId);
+       //int test= classDao.getStudentNumber(classId);System.out.println(test);
+       System.out.println(test.get("titleContent")+" "+test.get("titleContent"));
     }
 }

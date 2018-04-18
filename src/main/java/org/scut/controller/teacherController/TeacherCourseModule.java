@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class TeacherCourseModule {
 	@Resource
 	private ITeacherCourseModuleService teacherCourseModuleService;
-	@RequestMapping("/TeacherCourseModule_getHomeworkList.do")
+	@RequestMapping("/getHomeworkList")
 	@ResponseBody
 	//1.获取往期作业列表
 	public HashMap<String,Object> getHomeworkList(@RequestParam(value="teacherId",required=false)String teacherId,@RequestParam(value="classId",required=false)String classId) {
-	ArrayList<HashMap<String,Object>> resultpre=teacherCourseModuleService.selectList(teacherId, classId);
+	List<HashMap<String,Object>> resultpre=teacherCourseModuleService.selectList(teacherId, classId);
 	HashMap<String,Object> result=new HashMap<String,Object>();
 	result.put("status", "1");
 	result.put("result", resultpre);
@@ -78,7 +78,7 @@ public class TeacherCourseModule {
 	***/
 	//7.获取作业批改列表
 	public HashMap<String,Object> getCorrectionList(@RequestParam(value="teacherId")String teacherId,@RequestParam(value="classId")String classId){
-		List<HashMap<String,String>> resultpre=teacherCourseModuleService.getCorrectionList(teacherId,classId);
+		List<HashMap<String,Object>> resultpre=teacherCourseModuleService.getCorrectionList(teacherId,classId);
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("status", "1");
 		result.put("result", resultpre);
@@ -95,7 +95,7 @@ public class TeacherCourseModule {
 	***/
 	//9.获取统计排名列表
 	public HashMap<String,Object> getRankList(@RequestParam(value="teacherId")String teacherId,@RequestParam(value="classId")String classId){
-		List<HashMap<String,String>> resultpre=teacherCourseModuleService.getRankList(teacherId,classId);
+		List<HashMap<String,Object>> resultpre=teacherCourseModuleService.getRankList(teacherId,classId);
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("status", "1");
 		result.put("result", resultpre);
@@ -103,7 +103,7 @@ public class TeacherCourseModule {
 	}
 	//10.获取统计排名详情
 	public HashMap<String,Object> getRankDetails(@RequestParam(value="paperId")String paperId){
-		List<HashMap<String,String>> resultpre=teacherCourseModuleService.getRankDetails(paperId);
+		List<HashMap<String,Object>> resultpre=teacherCourseModuleService.getRankDetails(paperId);
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("status", "1");
 		result.put("result", resultpre);
@@ -111,7 +111,7 @@ public class TeacherCourseModule {
 	}
 	//11.	获取批改作业学生列表（11-13为批改作业补充）
 	public HashMap<String,Object> getCorrectStudentList(@RequestParam(value="teacherId")String teacherId,@RequestParam(value="paperId")String paperId){
-		List<HashMap<String,String>> resultpre=teacherCourseModuleService.getCorrectStudentList(teacherId,paperId);
+		List<HashMap<String,Object>> resultpre=teacherCourseModuleService.getCorrectStudentList(teacherId,paperId);
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("status", "1");
 		result.put("result", resultpre);
@@ -119,7 +119,7 @@ public class TeacherCourseModule {
 	}
 	//12.	获取待批改/修改学生作业详情
 	public HashMap<String,Object> getCorrectQuestionList(@RequestParam(value="teacherId")String teacherId,@RequestParam(value="paperId")String paperId,@RequestParam(value="studentId")String studentId){
-		List<HashMap<String,String>> resultpre=teacherCourseModuleService.getCorrectQuestionList(teacherId,paperId,studentId);
+		List<HashMap<String,Object>> resultpre=teacherCourseModuleService.getCorrectQuestionList(teacherId,paperId,studentId);
 		HashMap<String,Object> result=new HashMap<String,Object>();
 		result.put("status", "1");
 		result.put("result", resultpre);

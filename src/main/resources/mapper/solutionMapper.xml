@@ -6,9 +6,9 @@
 select question_id,content,point from solution where student_id=#{studentId}
 and paper_id=#{paperId}
 </select>
-<resultMap id="getSolutionHashMap" type="HashMap">
+<resultMap id="getSolutionHashMap" type="java.util.HashMap">
 <result property="questionId" column="question_id"/>
 <result property="content" column="content"/>
-<result property="point" column="content"/>
+<result property="point" column="point"/>
 </resultMap>
 </mapper>

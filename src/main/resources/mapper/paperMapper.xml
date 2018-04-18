@@ -114,4 +114,5 @@
       max_score = #{maxScore,jdbcType=INTEGER}
     where paper_id = #{paperId,jdbcType=VARCHAR}
   </update>
+  
 </mapper>

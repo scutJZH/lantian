@@ -15,9 +15,9 @@ import org.springframework.context.annotation.Configuration;
 @Repository
 public interface IClass_paperDao {
 	//注意Object可能要改
-	public ArrayList<HashMap<String,Object>> selectList(@Param("teacherId")String teacherId,@Param("classId")String classId);
+	public List<HashMap<String,Object>> selectList(@Param("teacherId")String teacherId,@Param("classId")String classId);
 	public int deleteList(List<String> paperId);
-	public List<HashMap<String,String>> getCorrectionList(@Param("teacherId")String teacherId,@Param("classId")String classId);
-	public List<HashMap<String,String>> get(@Param("teacherId")String teacherId,@Param("classId")String classId);
+	public List<HashMap<String,Object>> getCorrectionList(@Param("teacherId")String teacherId,@Param("classId")String classId);
+	public List<HashMap<String,Object>> get(@Param("teacherId")String teacherId,@Param("classId")String classId);
 
 }

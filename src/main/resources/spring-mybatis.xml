@@ -31,6 +31,8 @@
         <property name="autoCommitOnClose" value="${c3p0.autoCommitOnClose}"/>
         <property name="checkoutTimeout" value="${c3p0.checkoutTimeout}"/>
         <property name="acquireRetryAttempts" value="${c3p0.acquireRetryAttempts}"/>
+        <!-- 我加的初始化数据池大小 -->
+        <property name="initialPoolSize" value="10"/>
     </bean>
     <!-- 配置SqlSessionFactory对象 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">

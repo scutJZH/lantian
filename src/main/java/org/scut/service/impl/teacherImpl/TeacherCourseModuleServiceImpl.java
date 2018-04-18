@@ -20,7 +20,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	private IClassDao classDao;
 	@Resource
 	private IQuestionDao questionDao;
-	@Resource 
+	@Resource //这个功能还没测
 	private IPptDao pptDao;
 	@Resource
 	private IStudent_paperDao student_paperDao;
@@ -29,7 +29,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	@Resource
 	private ITitleDao titleDao;
 	
-	public ArrayList<HashMap<String,Object>> selectList(String teacherId,String classId){
+	public List<HashMap<String,Object>> selectList(String teacherId,String classId){
 		return class_paperDao.selectList(teacherId, classId);
 	}
 	@Override
@@ -45,25 +45,26 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	public List<HashMap<String,Object>> getPptList(String teacherId){
 		return this.pptDao.getPptList(teacherId);
 	}
-	public List<HashMap<String,String>> getCorrectionList(String teacherId,String classId){
-		List<HashMap<String,String>> r1= this.class_paperDao.getCorrectionList(teacherId,classId);
+	public List<HashMap<String,Object>> getCorrectionList(String teacherId,String classId){
+		List<HashMap<String,Object>> r1= this.class_paperDao.getCorrectionList(teacherId,classId);
 		int r2=this.classDao.getStudentNumber(classId);
+		/**for unsubmittedNumber**/
 		for(int i=0;i<r1.size();i++) {
-			int unsubmittedNumber=(r2-Integer.parseInt(r1.get(i).get("submitNumber")));
+			int unsubmittedNumber=(r2-(Integer)(r1.get(i).get("submitNumber")));
 			r1.get(i).put("unsubmittedNumber", Integer.toString(unsubmittedNumber));
 		}
 		return r1;
 	}
-	public List<HashMap<String,String>> getRankList(String teacherId,String classId){
+	public List<HashMap<String,Object>> getRankList(String teacherId,String classId){
 		return this.class_paperDao.getCorrectionList(teacherId, classId);
 	}
-	public List<HashMap<String,String>> getRankDetails(String paperId){
-		List<HashMap<String,String>> r1= this.student_paperDao.getRankDetails(paperId);
+	public List<HashMap<String,Object>> getRankDetails(String paperId){
+		List<HashMap<String,Object>> r1= this.student_paperDao.getRankDetails(paperId);
 		/**插入排序使得该结果是按分数从小到大排的**/
 		int n = r1.size();
-		HashMap<String,String>  temp;
+		HashMap<String,Object>  temp;
         for(int i = 1; i< n; i++) {
-            for(int j = i; j>0 && Integer.parseInt(r1.get(j-1).get("score"))> Integer.parseInt(r1.get(j).get("score")); j--) {
+            for(int j = i; j>0 && (Integer)(r1.get(j-1).get("score"))> (Integer)(r1.get(j).get("score")); j--) {
             	temp = r1.get(j);
             	r1.get(j).clear();
                 r1.get(j).putAll(r1.get(j-1));
@@ -80,11 +81,11 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
         
         return r1;
 	}
-	public List<HashMap<String,String>> getCorrectStudentList(String teacherId,String paperId){
-		List<HashMap<String,String>> r1= this.student_paperDao.getCorrectStudentList(teacherId,paperId);
+	public List<HashMap<String,Object>> getCorrectStudentList(String teacherId,String paperId){
+		List<HashMap<String,Object>> r1= this.student_paperDao.getCorrectStudentList(teacherId,paperId);
 		/**通过判断总分是否为0来判断是否已批改**/
 		for(int i=0;i<r1.size();i++) {
-			if(Integer.parseInt(r1.get(i).get("totalScore"))>0) {
+			if((Integer)(r1.get(i).get("totalScore"))>0) {
 				r1.get(i).put("correctedBox", "true");
 			}
 			else {
@@ -93,12 +94,12 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		}
 		return r1;
 	}
-	public List<HashMap<String,String>> getCorrectQuestionList(String teacherId,String paperId,String studentId){
-		List<HashMap<String,String>> r1= this.solutionDao.getSolution(teacherId,paperId,studentId);
+	public List<HashMap<String,Object>> getCorrectQuestionList(String teacherId,String paperId,String studentId){
+		List<HashMap<String,Object>> r1= this.solutionDao.getSolution(teacherId,paperId,studentId);
 		for(int i=0;i<r1.size();i++) {
 			/**这里需要注意使用了string参数的,
 			 * 这里把solutionDao.getSolution的查询结果当作了getTitleContent的参数。**/
-			HashMap<String,String> r2=this.titleDao.getTitleContent(r1.get(i).get("questionId"));
+			HashMap<String,Object> r2=this.titleDao.getTitleContent((String)(r1.get(i).get("questionId")));
 			r1.get(i).putAll(r2);
 		}
 		return r1;
