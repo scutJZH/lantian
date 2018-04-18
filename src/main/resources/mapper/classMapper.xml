@@ -104,4 +104,10 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where class_id = #{classId,jdbcType=VARCHAR}
   </update>
+  
+ <!--获取班级学生数量map-->
+ <select id="getStudentNumber" parameterType="java.lang.String" resultType="java.lang.Integer">
+ 	select student_number from class where class_id=#{classId}
+ </select>
+ 
 </mapper>

@@ -20,4 +20,5 @@ public interface IStudentDao {
 	public Map<String, Object> getchildInfoByTel(@Param("telnumber")String telnumber);
 	
 	public Map<String, Object> getchildInfoById(@Param("studentId")String studentId);
+
 }

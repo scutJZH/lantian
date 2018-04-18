@@ -68,4 +68,13 @@
       pic_path = #{picPath,jdbcType=VARCHAR}
     where title_id = #{titleId,jdbcType=VARCHAR}
   </update>
+  
+  <!-- 12.	获取待批改/修改学生作业详情 来获取title_content-->
+  <select id="getTitleContent" resultMap="getTitleContentHashMap">
+  	select  title_content  from  title  where	
+  	title_id  in  (select  title_id  from question  where  question_id=#{questionId}
+  </select>
+  <resultMap id="getTitleContentHashMap" type="HashMap">
+  <id property="titleContent" column="title_content"></id>
+  </resultMap>
 </mapper>

@@ -15,4 +15,5 @@ public interface IPostDao {
     int updateByPrimaryKeySelective(Post record);
 
     int updateByPrimaryKey(Post record);
+
 }

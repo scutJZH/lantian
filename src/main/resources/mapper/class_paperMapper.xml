@@ -1,4 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.scut.dao.IClass_paperDao">
+<!-- 获取作业列表 -->
+	<select id="selectList" resultMap="getHomeworkListHashMap">
+select paper_id,assign_time,submit_number,paper_name,student_number from class_paper natural join paper,class
+ where class_paper.class_id=class.class_id and class_paper.paper_id=paper.paper_id
+  and class_paper.assign_teacher_id=#{teacherId}
+  and class_paper.class_id=#{classId};
+	</select>
+<resultMap id="getHomeworkListHashMap" type="HashMap">
+<id property="paperId" column="paper_id"/>
+<result property="assignTime" column="assign_time"/>
+<result property="submitNumber" column="submit_number"/>
+<result property="paperName" column="paper_name"/>
+<result property="studentNumber" column="student_number"/>
+</resultMap>
+<!-- 删除作业列表 -->
+<delete id="deleteList" parameterType="java.util.List">
+	delete from class_paper where paper_id in
+	<foreach collection="List" index="index" item="item" open="(" separator="," close=")">
+	#{item}
+	</foreach>
+</delete>
+<!-- 获取作业批改列表 -->
+<select id="getCorrectionList" resultType="getCorrectionListHashMap">
+	select papar_id,paper_name,assign_time,submit_number from class_paper natural join paper
+	where assign_teacher_id=#{teacherId} and class_id=#{classId}
+</select>
+<resultMap id="getCorrectionList" type="HashMap">
+<id property="paperId" column="paper_id"></id>
+<result property="paperName" column="paper_name"/>
+<result property="assignTime" column="assign_time"/>
+<result property="submitNumber" column="submit_number"/>
+</resultMap>
+
 </mapper>
