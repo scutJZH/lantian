@@ -32,7 +32,7 @@
 	</insert>
 	
 	<update id="updateTeacher" parameterType="User">
-		update student set
+		update teacher set
 		phone = #{user.phone},
    	 	password = #{user.password},
    	 	create_time = #{user.createTime},

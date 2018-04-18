@@ -1,7 +1,10 @@
 package org.scut.controller.parentController;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +43,11 @@ public class ParentInfoController {
 		Map<String, Object> result = getMyInfoService.getMyInfo("3", parentId);
 		
 		return result;
+	}
+	
+	@RequestMapping("/mine/modify")
+	public void modifyInfo(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		System.out.println(request);
 	}
 
 }

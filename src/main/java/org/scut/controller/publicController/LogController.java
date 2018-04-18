@@ -48,7 +48,9 @@ public class LogController {
 		if(status.equals("1")){
 			Map<String, Object> userInfo = (Map<String, Object>)result.get("result");
 			Cookie idCookie = new Cookie("id",(String)userInfo.get("id"));
+			idCookie.setPath("/");
 			Cookie tokenCookie = new Cookie("token",(String)userInfo.get("token"));
+			tokenCookie.setPath("/");
 			response.addCookie(tokenCookie);
 			response.addCookie(idCookie);
 			userInfo.remove("token");
