@@ -12,6 +12,7 @@ import org.scut.model.Parent;
 import org.scut.model.Student;
 import org.scut.model.Teacher;
 import org.scut.service.publicService.IGetMyInfoService;
+import org.scut.util.GlobalVar;
 import org.springframework.stereotype.Service;
 
 @Service("myInfoService")
@@ -34,11 +35,11 @@ public class GetMyInfoService implements IGetMyInfoService {
 		try {
 			switch (userType) {
 			case "1":
-				Student student = studentDao.getStduetnById(id);
+				Student student = studentDao.getStudentById(id);
 				if (student != null) {
 					userInfo.put("telnumber", student.getPhone());
 					userInfo.put("createTime", student.getCreateTime());
-					userInfo.put("picPath", student.getPicPath());
+					userInfo.put("picPath", GlobalVar.picPath+student.getPicPath());
 					userInfo.put("birthday", student.getBirthday());
 					userInfo.put("nickname", student.getNickname());
 					userInfo.put("sex", student.getSex());
@@ -52,7 +53,7 @@ public class GetMyInfoService implements IGetMyInfoService {
 				if (teacher != null) {
 					userInfo.put("telnumber", teacher.getPhone());
 					userInfo.put("createTime", teacher.getCreateTime());
-					userInfo.put("picPath", teacher.getPicPath());
+					userInfo.put("picPath", GlobalVar.picPath+teacher.getPicPath());
 					userInfo.put("birthday", teacher.getBirthday());
 					userInfo.put("nickname", teacher.getNickname());
 					userInfo.put("sex", teacher.getSex());
@@ -67,7 +68,7 @@ public class GetMyInfoService implements IGetMyInfoService {
 				if (parent != null) {
 					userInfo.put("telnumber", parent.getPhone());
 					userInfo.put("createTime", parent.getCreateTime());
-					userInfo.put("picPath", parent.getPicPath());
+					userInfo.put("picPath", GlobalVar.picPath+parent.getPicPath());
 					userInfo.put("birthday", parent.getBirthday());
 					userInfo.put("nickname", parent.getNickname());
 					userInfo.put("sex", parent.getSex());

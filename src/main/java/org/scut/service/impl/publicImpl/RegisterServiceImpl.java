@@ -93,7 +93,7 @@ public class RegisterServiceImpl implements IRegisterService {
 						user.setCreateTime(new Date());
 						this.updateUserByType(userType, user);
 						userInfo.put("id", user.getId());
-						userInfo.put("picPath", user.getPicPath());
+						userInfo.put("picPath", GlobalVar.picPath+user.getPicPath());
 						userInfo.put("token", token);
 						
 						GlobalVar.tokenMap.put(user.getId(), token);

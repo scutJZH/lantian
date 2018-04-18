@@ -14,9 +14,9 @@ public interface ITeacherDao {
     
 	public void insertTeacher(Teacher Teacher);
 	
-	public void insertUser(User user);
+	public void insertUser(@Param("user")User user);
 	
-	public void updateTeacher(User user);
+	public void updateTeacher(@Param("user")User user);
 	
 	public Teacher getTeacherById(@Param("teacherId")String teacherId);
 }

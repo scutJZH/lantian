@@ -23,5 +23,7 @@ public interface IStudentDao {
 	
 	public HashMap<String, Object> getchildInfoById(@Param("studentId")String studentId);
 	
-	public Student getStduetnById(@Param("studentId")String studentId);
+	public Student getStudentById(@Param("studentId")String studentId);
+	
+	public String getClassIdById(@Param("studentId")String studentId);
 }

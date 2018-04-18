@@ -19,8 +19,6 @@ public class LoginInterceptor implements HandlerInterceptor {
 	public synchronized boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		
-		request.setCharacterEncoding("UTF-8");
-		response.setCharacterEncoding("UTF-8");
 		
 		String id = null;
 		String token = null;
@@ -33,7 +31,10 @@ public class LoginInterceptor implements HandlerInterceptor {
 				if (cookies[i].getName().equals("id")) {
 					id = cookies[i].getValue();
 				}
+				System.out.println(cookies[i].getName());
 			}
+		}else{
+			System.out.println("cookieÎª¿Õ");
 		}
 		if (id != null && !id.equals("")&&token!=null&&!token.equals("")) {
 			if (GlobalVar.tokenMap.containsKey(id)&&token.equals(GlobalVar.tokenMap.get(id))) {

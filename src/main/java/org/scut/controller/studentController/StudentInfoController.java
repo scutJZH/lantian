@@ -21,12 +21,12 @@ public class StudentInfoController {
 
 	@RequestMapping("/mine")
 	@ResponseBody
-	public Map<String, Object> getParentInfo(HttpServletRequest request, HttpServletResponse response) throws IOException{
+	public Map<String, Object> getStudentInfo(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		Map<String, Object> m = ParamsTransport.getParams(request);
 		
-		String parentId = (String)m.get("studentId");
+		String studentId = (String)m.get("studentId");
 		
-		Map<String, Object> result = getMyInfoService.getMyInfo("1", parentId);
+		Map<String, Object> result = getMyInfoService.getMyInfo("1", studentId);
 		
 		return result;
 	}
