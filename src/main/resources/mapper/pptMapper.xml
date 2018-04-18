@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.scut.dao.IPptDao">
+	<select id="getPptList" resultMap="getPptListHashMap">
+	select ppt_name,ppt_id from ppt where teacherId=#{teacherId}
+	</select>
+<resultMap id="getPptListHashMap" type="HashMap">
+<id property="pptName" column="ppt_name"/>
+<result property="pptId" column="ppt_id"/>
+</resultMap>
+
+</mapper>

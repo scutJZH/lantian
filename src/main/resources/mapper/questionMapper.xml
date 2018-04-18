@@ -139,4 +139,13 @@
       grade = #{grade,jdbcType=INTEGER}
     where question_id = #{questionId,jdbcType=VARCHAR}
   </update>
+  
+  <select id="getQuestionList" resultMap="getQuestionListHashMap">
+	select question_id,title_content from question natural join title
+	 where subject=#{subjectId}
+  </select>
+<resultMap id="getQuestionListHashMap" type="HashMap">
+	<id property="questionId" column="question_id"></id>
+	<result property="titleContent" column="title_content"/>
+</resultMap>
 </mapper>
