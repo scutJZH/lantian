@@ -50,6 +50,7 @@ public class ParentInfoController {
 		String nickname = request.getParameter("nickname");
 		String birthdayStr = request.getParameter("birthday");
 		String sex = request.getParameter("sex");
+		String filePath = request.getSession().getServletContext().getRealPath("/")+"img\\";
 		
 		if(filesList.size() > 1){
 			String status = "-1";
@@ -57,7 +58,7 @@ public class ParentInfoController {
 			result.put("status", status);
 			result.put("result", new HashMap<String, Object>());
 		}else{
-			result = parentInfoService.modifyParentInfo(parentId, filesList, nickname, birthdayStr, sex);
+			result = parentInfoService.modifyParentInfo(parentId, filesList, nickname, birthdayStr, sex, filePath);
 		}
 		
 		return result;

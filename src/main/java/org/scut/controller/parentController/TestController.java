@@ -50,7 +50,6 @@ public class TestController {
 		List<MultipartFile> files = request.getFiles("img");
 		//获取前端key为“id”的text类型参数
 		String id = request.getParameter("id");
-		System.out.println("id= " +id);
 		for(MultipartFile file :files){
 			if(!file.isEmpty()){
 				//创建图片文件，request.getSession().getServletContext().getRealPath("/")为项目根目录，
