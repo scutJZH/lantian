@@ -47,7 +47,6 @@ public class TestController {
 		try{
 		List<MultipartFile> files = request.getFiles("img");
 		String id = request.getParameter("id");
-		System.out.println("id= " +id);
 		for(MultipartFile file :files){
 			if(!file.isEmpty()){
 				File img = new File(request.getSession().getServletContext().getRealPath("/")+"img\\"+file.getOriginalFilename());
