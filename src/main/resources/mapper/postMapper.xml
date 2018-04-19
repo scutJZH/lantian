@@ -127,6 +127,27 @@
     </set>
     where post_id = #{postId,jdbcType=VARCHAR}
   </update>
+  <select id="findpostbyid" resultMap="BaseResultMap">
+  SELECT
+  <include refid="Base_Column_List" />
+  from post where post_id = #{postId,jdbcType=VARCHAR}
+  </select>
+  <select id="getpostfuzzy" resultMap="BaseResultMap">
+  SELECT
+    <include refid="Base_Column_List" />
+    from post
+    where post_title like CONCAT(CONCAT('%',#{sort,jdbcType=VARCHAR}),'%')
+    or post_content like CONCAT(CONCAT('%',#{sort,jdbcType=VARCHAR}),'%')
+    or subject_id like CONCAT(CONCAT('%',#{sort,jdbcType=VARCHAR}),'%')
+   
+  </select>
+  <select id="getpostfuzzycount">
+  SELECT
+  count(post_id)
+  from post where  post_title like CONCAT(CONCAT('%',#{sort,jdbcType=VARCHAR}),'%')
+    or post_content like CONCAT(CONCAT('%',#{sort,jdbcType=VARCHAR}),'%') 
+    or subject_id like CONCAT(CONCAT('%',#{sort,jdbcType=VARCHAR}),'%')
+  </select>
   <update id="updateByPrimaryKey" parameterType="org.scut.model.Post" >
     update post
     set student_id = #{studentId,jdbcType=VARCHAR},

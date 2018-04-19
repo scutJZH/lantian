@@ -1,9 +1,10 @@
 package org.scut.dao;
 
-import org.scut.model.Answer;
-import org.springframework.stereotype.Repository;
 
-@Repository
+import java.util.List;
+
+import org.scut.model.Answer;
+
 public interface IAnswerDao {
     int deleteByPrimaryKey(String answerId);
 
@@ -16,4 +17,7 @@ public interface IAnswerDao {
     int updateByPrimaryKeySelective(Answer record);
 
     int updateByPrimaryKey(Answer record);
+    Answer findanswerbyid (String answerId);
+    List<Answer>findanswerbypostid(String postId);
+
 }

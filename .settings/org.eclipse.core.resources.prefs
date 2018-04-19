@@ -2,8 +2,6 @@
 <<<<<<<=HEAD
 >>>>>>>=refs/remotes/origin/weiguan
 eclipse.preferences.version=1
-encoding//src/main/java/org/scut/controller/Json.java=GBK
-encoding//src/main/java/org/scut/controller/PostController.java=UTF-8
 encoding//src/main/java/org/scut/controller/publicController/LogController.java=GBK
 encoding//src/main/java/org/scut/controller/publicController/RegisterController.java=GBK
 encoding//src/main/java/org/scut/model/Parent.java=GBK
