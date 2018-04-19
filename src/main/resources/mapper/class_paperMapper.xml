@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.scut.dao.IClass_paperDao">
+	
+	<select id="getClassPaperByCId" resultType="hashmap" parameterType="String">
+		select * from class_paper where class_id = #{classId}
+	</select>
 </mapper>

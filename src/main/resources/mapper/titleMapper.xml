@@ -15,6 +15,11 @@
     from title
     where title_id = #{titleId,jdbcType=VARCHAR}
   </select>
+    
+  <select id="getTitle" resultType="hashmap" parameterType="String">
+		select * from title where title_id = #{titleId}
+  </select>
+    
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from title
     where title_id = #{titleId,jdbcType=VARCHAR}

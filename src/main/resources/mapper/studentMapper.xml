@@ -56,6 +56,10 @@
 		from student left join class on student.student_id = #{studentId} and student.class_id = class.class_id
 	</select>
 	
+	<select id="getClassIDBySId" resultType="hashmap" parameterType="String">
+		select class_id from student where student_id = #{studentId}
+	</select>
+	
 	<resultMap type="Student" id="studentMap">
 		<id property="id" column="student_id"/>
 		<result property="phone" column="phone"/>

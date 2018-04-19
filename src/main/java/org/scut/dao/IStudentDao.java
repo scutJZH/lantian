@@ -1,6 +1,8 @@
 package org.scut.dao;
 
 import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 import org.scut.model.Student;
 import org.scut.model.User;
@@ -24,4 +26,6 @@ public interface IStudentDao {
 	public HashMap<String, Object> getchildInfoById(@Param("studentId")String studentId);
 	
 	public Student getStduetnById(@Param("studentId")String studentId);
+	
+	public Map<String, Object> getClassIDBySId(@Param("studentId")String studentId);
 }
