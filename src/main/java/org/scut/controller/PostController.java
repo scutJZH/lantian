@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class PostController {
 	
-	@Resource
-	private IPostService postService;
-	@Resource
-	private IAnserService answerService;
+//	@Resource
+//	private IPostService postService;
+//	@Resource
+//	private IAnserService answerService;
 	
 	@RequestMapping(value="/student/post/publish.do")
 	@ResponseBody
