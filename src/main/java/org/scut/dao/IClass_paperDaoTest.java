@@ -1,13 +1,11 @@
 package org.scut.dao;
+
 import java.util.HashMap;
 import java.util.List;
-
 import javax.annotation.Resource;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.scut.dao.IClass_paperDao;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 

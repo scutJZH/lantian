@@ -33,9 +33,14 @@ public class ParentInfoServiceImpl implements IParentInfoService{
 			Parent parent = parentDao.getParentById(parentId);
 			if (parent != null) {
 				userInfo.put("telnumber", parent.getPhone());
-				userInfo.put("createTime", parent.getCreateTime());
+				userInfo.put("createTime", String.valueOf(parent.getCreateTime().getTime()));
 				userInfo.put("picPath", GlobalVar.picPath+parent.getPicPath());
-				userInfo.put("birthday", parent.getBirthday());
+				String birthdayStamp = null;
+				if(parent.getBirthday() != null){
+					long timeStamp = parent.getBirthday().getTime();
+					birthdayStamp = String.valueOf(timeStamp);
+				}
+				userInfo.put("birthday", birthdayStamp);
 				userInfo.put("nickname", parent.getNickname());
 				userInfo.put("sex", parent.getSex());
 			} else {
@@ -83,9 +88,9 @@ public class ParentInfoServiceImpl implements IParentInfoService{
 				parent.setNickname(nickname);
 				parent.setSex(sex);
 				
-				parentDao.insertParent(parent);
+				parentDao.updateParent(parent);
 				
-				parentInfo.put("picPath", picPath);
+				parentInfo.put("picPath", "/img/"+picPath);
 			}else{
 				status = "-1";
 			}
