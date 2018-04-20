@@ -3,6 +3,6 @@
 <mapper namespace="org.scut.dao.IQuestion_paperDao" >
 
 	<select id="getQuestionIds" resultType="hashmap" parameterType="String">
-		select question_id from question_paper where paper_id = #{paperId}
+		select question_id as questionId from question_paper where paper_id = #{paperId}
 	</select>
 </mapper>

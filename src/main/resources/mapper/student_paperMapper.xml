@@ -3,7 +3,7 @@
 <mapper namespace="org.scut.dao.IStudent_paperDao" >
 
 	<select id="getStudentPaperBySId" resultType="hashmap" parameterType="String">
-		select * from student_paper where student_id = #{studentId} AND submit = #{submit}
+		select paper_id as paperId,submit_time as submitTime,score, used_time as usedTime,start_time as startTime from student_paper where student_id = #{studentId} AND submit = #{submit}
 	</select>
 
 <!-- 9.获取统计排名详情,但缺少学生名字，需要从student表查再合并在这个结果中 -->

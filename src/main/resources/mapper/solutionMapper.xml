@@ -11,4 +11,15 @@ and paper_id=#{paperId}
 <result property="content" column="content"/>
 <result property="point" column="content"/>
 </resultMap>
+
+  <insert id="insertSolution">
+		insert into solution (student_id , paper_id , question_id , content) 
+		values (#{studentId},#{paperId},#{questionId},#{solutionContent})
+  </insert>
+  
+  <update id="updateSolution">
+		update solution set content=#{solutionContent}
+		where student_id=#{studentId} AND paper_id=#{paperId} AND question_id=#{questionId}
+  </update>
+  
 </mapper>
