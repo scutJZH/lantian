@@ -26,4 +26,9 @@ public interface IQuestionDao {
 
     public List<HashMap<String,Object>> getQuestionList(String subjectId);
 
+    
+    public List<Map<String,Object>> getSubjectiveList(String subjectId,String d);
+    
+    public List<Map<String,Object>> getObjectiveList(String subjectId);
+
 }

@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import javax.annotation.Resource;
 import org.scut.model.Answer;
 import org.scut.model.Post;
@@ -34,9 +33,9 @@ public class PostController {
 						@RequestParam(value="studentId",required=false)String studentId,
 						@RequestParam(value="postSubject",required=false)String postSubject) {
 //					      if (postTittle==null) {
-//					    	  return Json.getJson(false,"帖子标题为空")；
+//					    	  return Json.getJson(false,"甯栧瓙鏍囬涓虹┖")锛�
 //					    			  
-//					      }，
+//					      }锛�
 		                            
 						Post post= new Post();
 						post.setPostId(UUID.randomUUID().toString());

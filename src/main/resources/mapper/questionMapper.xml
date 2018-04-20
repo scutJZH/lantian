@@ -147,10 +147,26 @@
   
   <select id="getQuestionList" resultMap="getQuestionListHashMap">
 	select question_id,title_content from question natural join title
-	 where subject=#{subjectId}
+	 where subject_id=#{subjectId}
   </select>
 <resultMap id="getQuestionListHashMap" type="HashMap">
 	<id property="questionId" column="question_id"></id>
 	<result property="titleContent" column="title_content"/>
 </resultMap>
+
+<!-- 14.获取主观/客观题列表,待修改 -->
+<select id="getSubjectiveList" resultMap="getSubjectiveListMap">
+drop table b;
+create TEMPORARY table d as (select question_id,option_a,title_content 
+from title natural join question where 
+question.title_id=title.title_id and question.subject_id ="1");
+
+SELECT question_id,title_content from d where option_a  is NULL ;
+
+</select>
+<resultMap id="getSubjectiveListMap" type="java.util.Map">
+	<id property="questionId" column="question_id"></id>
+	<result property="titleContent" column="title_content"/>
+</resultMap>
+
 </mapper>

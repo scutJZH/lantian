@@ -17,8 +17,8 @@ public interface IStudent_paperDao {
 	public List<Map> getHomeworkInfo(@Param("studentId") String studentId, @Param("classId") String classid,
 			@Param("subjectId") String subjectId, @Param("paperType") String paperType);
 
-	public List<HashMap<String,String>> getRankDetails(@Param("paperId")String paperId);
-	public List<HashMap<String,String>> getCorrectStudentList(@Param("teacherId")String teacherId,@Param("paperId")String paperId);
+	public List<HashMap<String,Object>> getRankDetails(@Param("paperId")String paperId);
+	public List<HashMap<String,Object>> getCorrectStudentList(@Param("teacherId")String teacherId,@Param("paperId")String paperId);
 
 
 }
