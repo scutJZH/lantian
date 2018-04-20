@@ -31,7 +31,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 				if (cookies[i].getName().equals("id")) {
 					id = cookies[i].getValue();
 				}
-				System.out.println(cookies[i].getName());
+//				System.out.println(cookies[i].getName());
 			}
 		}else{
 			System.out.println("cookieΪ��");

@@ -1,25 +1,20 @@
 package org.scut.controller.studentController;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-<<<<<<< HEAD
 
 import org.apache.coyote.Request;
 import org.scut.service.impl.studentImpl.StudentServiceImpl;
-import org.scut.service.publicService.IGetMyInfoService;
 import org.scut.service.studentService.IStudentService;
-=======
 import org.scut.service.studentService.IStudentInfoService;
->>>>>>> branch 'master' of https://github.com/scutJZH/lantian.git
 import org.scut.util.ParamsTransport;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,13 +26,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 @RequestMapping("/student")
 public class StudentInfoController {
 	@Resource
-<<<<<<< HEAD
-	private IGetMyInfoService getMyInfoService;
-	@Resource
 	private IStudentService studentService;
-=======
 	private IStudentInfoService studentInfoService;
->>>>>>> branch 'master' of https://github.com/scutJZH/lantian.git
 
 	@RequestMapping("/mine")
 	@ResponseBody
@@ -115,7 +105,34 @@ public class StudentInfoController {
 					fos.close();
 				}
 			}
-		}catch (Exception e) {
+		}catch (Exception e) {}
+	}
+	
+	@RequestMapping("/mine/modify")
+	@ResponseBody
+	public Map<String, Object> modifyInfo(MultipartHttpServletRequest request, HttpServletResponse response) throws IOException{
+		
+		Map<String, Object> result = null;
+		
+		String studentId = request.getParameter("studentId");
+		List<MultipartFile> filesList = request.getFiles("img");
+		String nickname = request.getParameter("nickname");
+		String birthdayStr = request.getParameter("birthday");
+		String sex = request.getParameter("sex");
+		String schoolName = request.getParameter("schoolName");
+		String filePath = request.getSession().getServletContext().getRealPath("/")+"img\\";
+		
+		if(filesList.size() > 1){
+			String status = "-1";
+			result = new HashMap<String, Object>();
+			result.put("status", status);
+			result.put("result", new HashMap<String, Object>());
+		}else{
+			result = studentInfoService.modifyStudentInfo(studentId, filesList, nickname, birthdayStr, sex, schoolName, filePath);
+		}
+		
+		return result;
+	}
 
 		}
 	}

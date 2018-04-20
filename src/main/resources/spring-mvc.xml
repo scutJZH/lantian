@@ -40,11 +40,7 @@
         <property name="suffix" value=".jsp"/>
     </bean>
     
-<<<<<<< HEAD
      <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-=======
-    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
->>>>>>> branch 'master' of https://github.com/scutJZH/lantian.git
 		<property name="maxUploadSize" value="-1" />
 	</bean>
 

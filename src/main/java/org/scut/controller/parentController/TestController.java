@@ -5,13 +5,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,7 +46,7 @@ public class TestController {
 			//获取前端key为“img”的图片列表
 		List<MultipartFile> files = request.getFiles("img");
 		//获取前端key为“id”的text类型参数
-		String id = request.getParameter("id");
+//		String id = request.getParameter("id");
 		for(MultipartFile file :files){
 			if(!file.isEmpty()){
 				//创建图片文件，request.getSession().getServletContext().getRealPath("/")为项目根目录，
