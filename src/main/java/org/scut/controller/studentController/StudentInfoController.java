@@ -1,18 +1,15 @@
 package org.scut.controller.studentController;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.coyote.Request;
-import org.scut.service.impl.studentImpl.StudentServiceImpl;
 import org.scut.service.studentService.IStudentService;
 import org.scut.service.studentService.IStudentInfoService;
 import org.scut.util.ParamsTransport;
@@ -134,12 +131,11 @@ public class StudentInfoController {
 		return result;
 	}
 
-		}
-	}
+		
 	
 	@RequestMapping("/getSchedules")
 	@ResponseBody
-	public void getSchedules(HttpServletRequest request, HttpServletResponse response) throws IOException{
+	public Map<String, Object> getSchedules(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		
 		
 		Map<String, Object> m  = ParamsTransport.getParams(request);
@@ -148,20 +144,20 @@ public class StudentInfoController {
 		
 		Map<String, Object> responseBody = this.studentService.getSchedules(studentId);
 		
-		ParamsTransport.returnParams(response, responseBody);
+		return responseBody;
 		
 	}
 	
 	@RequestMapping("/addSchedule")
 	@ResponseBody
-	public void addSchedule(HttpServletRequest request, HttpServletResponse response) throws IOException{
+	public Map<String, Object> addSchedule(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		
 		
 		Map<String, Object> m  = ParamsTransport.getParams(request);	
 		
 		Map<String, Object> responseBody = this.studentService.addSchedule(m);
 		
-		ParamsTransport.returnParams(response, responseBody);
+		return responseBody;
 		
 	}
 }

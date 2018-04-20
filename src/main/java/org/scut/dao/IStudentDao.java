@@ -18,7 +18,9 @@ public interface IStudentDao {
 	
 	public void insertUser(@Param("user")User user);
 	
-	public void updateStudent(@Param("user")User user);
+	public void updateUser(@Param("user")User user);
+	
+	public void updateStudent(@Param("student")Student student);
 	
 	public HashMap<String, Object> getchildInfoByTel(@Param("telnumber")String telnumber);
 	
