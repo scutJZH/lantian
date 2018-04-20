@@ -19,7 +19,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 	public synchronized boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		
-		
+		System.out.println(request.getSession().getId());
 		String id = null;
 		String token = null;
 		Cookie[] cookies = request.getCookies();

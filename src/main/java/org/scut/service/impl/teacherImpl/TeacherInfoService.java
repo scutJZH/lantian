@@ -95,7 +95,7 @@ public class TeacherInfoService implements ITeacherInfoService{
 				
 				teacherDao.updateTeacher(teacher);
 				
-				teacherInfo.put("picPath", "/img/"+picPath);
+				teacherInfo.put("picPath", GlobalVar.picPath+picPath);
 			}else{
 				status = "-1";
 			}

@@ -95,7 +95,7 @@ public class StudentInfoService implements IStudentInfoService{
 				
 				studentDao.updateStudent(student);
 				
-				studentInfo.put("picPath", "/img/"+picPath);
+				studentInfo.put("picPath", GlobalVar.picPath+picPath);
 			}else{
 				status = "-1";
 			}

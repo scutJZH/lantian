@@ -30,7 +30,7 @@ public class ChildInfoController {
 		
 		Map<String, Object> result = childInfoService.getChildHomework(studentId, subjectId);
 		
-				return result;
+		return result;
 	}
 
 }

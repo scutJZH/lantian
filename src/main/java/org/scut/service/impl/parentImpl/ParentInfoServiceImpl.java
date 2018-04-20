@@ -90,7 +90,7 @@ public class ParentInfoServiceImpl implements IParentInfoService{
 				
 				parentDao.updateParent(parent);
 				
-				parentInfo.put("picPath", "/img/"+picPath);
+				parentInfo.put("picPath", GlobalVar.picPath+picPath);
 			}else{
 				status = "-1";
 			}

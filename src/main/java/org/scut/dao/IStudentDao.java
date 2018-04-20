@@ -1,6 +1,6 @@
 package org.scut.dao;
 
-import java.util.HashMap;
+import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 import org.scut.model.Student;
 import org.scut.model.User;
@@ -18,9 +18,9 @@ public interface IStudentDao {
 	
 	public void updateUser(@Param("user")User user);
 	
-	public HashMap<String, Object> getchildInfoByTel(@Param("telnumber")String telnumber);
+	public Map<String, Object> getchildInfoByTel(@Param("telnumber")String telnumber);
 	
-	public HashMap<String, Object> getchildInfoById(@Param("studentId")String studentId);
+	public Map<String, Object> getchildInfoById(@Param("studentId")String studentId);
 	
 	public Student getStudentById(@Param("studentId")String studentId);
 	

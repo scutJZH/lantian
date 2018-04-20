@@ -20,4 +20,13 @@ public interface IClass_paperDao {
 	public List<HashMap<String,String>> getCorrectionList(@Param("teacherId")String teacherId,@Param("classId")String classId);
 	public List<HashMap<String,String>> get(@Param("teacherId")String teacherId,@Param("classId")String classId);
 
+	/**
+	 * @author jzh
+	 * @param classId
+	 * @param subjectId
+	 * @param studyType
+	 * @return paperIdsList
+	 */
+	public List<String> getChildPaperIds(@Param("classId")String classId,
+			@Param("subjectId")String subjectId, @Param("studyType")String studyType);
 }

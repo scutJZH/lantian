@@ -27,17 +27,14 @@ select paper_id,assign_time,submit_number,paper_name,student_number from class_p
 	select papar_id,paper_name,assign_time,submit_number from class_paper natural join paper
 	where assign_teacher_id=#{teacherId,javaType=String,jdbcType=VARCHAR} and class_id=#{classId,javaType=String,jdbcType=VARCHAR}
 </select>
+
+<!-- 取得孩子作业的paperMap -->
+
 <resultMap id="getCorrectionListHashMap" type="java.util.HashMap">
 <id property="paperId" column="paper_id"></id>
 <result property="paperName" column="paper_name"/>
 <result property="assignTime" column="assign_time"/>
 <result property="submitNumber" column="submit_number"/>
 </resultMap>
-<!-- test用 -->
-<select id="get" resultMap="getmap">
-	select assign_teacher_id from class_paper
-</select>
-<resultMap id="getmap" type="HashMap">
-<id property="assign_teacher_id" column="assign_teacher_id"></id>
-</resultMap>
+
 </mapper>

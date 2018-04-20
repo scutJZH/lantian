@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IStudent_paperDao {
 
-	public List<Map> getHomeworkInfo(@Param("studentId") String studentId, @Param("classId") String classid,
+	public List<Map<String, Object>> getHomeworkInfo(@Param("studentId") String studentId, @Param("classId") String classid,
 			@Param("subjectId") String subjectId, @Param("paperType") String paperType);
 
 	public List<HashMap<String,String>> getRankDetails(@Param("paperId")String paperId);
