@@ -159,9 +159,7 @@ public class StudentServiceImpl implements IStudentService{
 			
 			List<Map<String, Object>> result = new ArrayList<>();
 						
-			sourceDataResult = scheduleDao.getSchedules(studentId);
-			
-			//List<Map<String, Object>> daysResult = new ArrayList<>();
+			sourceDataResult = scheduleDao.getSchedules(studentId);			
 			
 			for (Map<String, Object> map : sourceDataResult) {
 				
@@ -233,5 +231,7 @@ public class StudentServiceImpl implements IStudentService{
 				return responseBody;
 			}
 		}
+		
+		
 
 }
