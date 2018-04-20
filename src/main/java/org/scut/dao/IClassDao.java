@@ -1,7 +1,5 @@
 package org.scut.dao;
 
-import java.util.HashMap;
-import java.util.List;
 
 import org.scut.model.Class;
 import org.springframework.stereotype.Repository;

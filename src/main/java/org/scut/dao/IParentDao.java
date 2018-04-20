@@ -16,7 +16,9 @@ public interface IParentDao {
 	
 	public void insertUser(@Param("user")User user);
 	
-	public void updateParent(@Param("user")User user);
+	public void updateUser(@Param("user")User user);
+	
+	public void updateParent(@Param("parent")Parent parent);
 	
 	public Parent getParentById(@Param("parentId")String parentId);
 	

@@ -1,15 +1,8 @@
 package org.scut.controller.publicController;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
-
 import javax.annotation.Resource;
-import javax.imageio.spi.RegisterableService;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -78,9 +71,9 @@ public class RegisterController {
 		if(status.equals("1")){
 			Map<String, Object> userInfo = (Map<String, Object>)result.get("result");
 			Cookie idCookie = new Cookie("id",(String)userInfo.get("id"));
-			idCookie.setPath("/");
+			idCookie.setPath("/lantian");
 			Cookie tokenCookie = new Cookie("token",(String)userInfo.get("token"));
-			tokenCookie.setPath("/");
+			tokenCookie.setPath("/lantian");
 			response.addCookie(tokenCookie);
 			response.addCookie(idCookie);
 			userInfo.remove("token");

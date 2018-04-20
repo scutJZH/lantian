@@ -32,7 +32,7 @@
   		 #{user.verifyCode, javaType=String, jdbcType=VARCHAR})
 	</insert>
 	
-	<update id="updateParent" parameterType="User">
+	<update id="updateUser" parameterType="User">
 		update parent set
 		phone = #{user.phone},
    	 	password = #{user.password},
@@ -45,6 +45,25 @@
     	state = #{user.state},
     	verify_code = #{user.verifyCode, javaType=String, jdbcType=VARCHAR}
   		where parent_id = #{user.id}
+	</update>
+	
+	<select id="getParentById" resultMap="parentMap" parameterType="String">
+		select * from parent where parent_id = #{parentId}
+	</select>
+	
+	<update id="updateParent" parameterType="Parent">
+		update parent set
+		phone = #{parent.phone},
+   	 	password = #{parent.password},
+   	 	create_time = #{parent.createTime},
+    	pic_path = #{parent.picPath},
+    	nickname = #{parent.nickname},
+    	birthday = #{parent.birthday, javaType=Date, jdbcType=DATE},
+    	sex = #{parent.sex},
+    	token = #{parent.token, javaType=String, jdbcType=VARCHAR},
+    	state = #{parent.state},
+    	verify_code = #{parent.verifyCode, javaType=String, jdbcType=VARCHAR}
+  		where parent_id = #{parent.id}
 	</update>
 	
 	<resultMap type="Parent" id="parentMap">
