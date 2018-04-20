@@ -59,11 +59,10 @@
 		select * from student where student_id = #{studentId}
 	</select>
 	
-
 	<select id="getClassIDBySId" resultType="hashmap" parameterType="String">
 		select class_id from student where student_id = #{studentId}
 	</select>
-
+	
 	<update id="updateStudent" parameterType="Student">
 		update student set
 		phone = #{student.phone},
