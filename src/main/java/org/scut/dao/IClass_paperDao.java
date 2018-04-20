@@ -10,8 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.context.annotation.ComponentScan;  
 import org.springframework.context.annotation.Configuration;  
 
-@Configuration  
-@ComponentScan 
+
 @Repository
 public interface IClass_paperDao {
 	//注意Object可能要改

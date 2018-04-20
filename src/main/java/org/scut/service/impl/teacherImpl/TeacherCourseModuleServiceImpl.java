@@ -3,6 +3,7 @@ package org.scut.service.impl.teacherImpl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -85,7 +86,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		List<HashMap<String,Object>> r1= this.student_paperDao.getCorrectStudentList(teacherId,paperId);
 		/**通过判断总分是否为0来判断是否已批改**/
 		for(int i=0;i<r1.size();i++) {
-			if((Integer)(r1.get(i).get("totalScore"))>0) {
+			if((Integer)((r1.get(i)).get("score"))>0) {
 				r1.get(i).put("correctedBox", "true");
 			}
 			else {
@@ -104,4 +105,17 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		}
 		return r1;
 	}
+	//14.获取主观/客观题列表
+	public List<Map<String,Object>> getSubjectiveOrObjectiveList(String teacherId,String questionType){
+		//下面这个分功能可能需要用到subjectId，不过暂时前端没传
+		if(questionType=="1")return questionDao.getSubjectiveList();
+		if(questionType=="2")return questionDao.getObjectiveList();
+	}
+	/**15.删除一道题目
+	public int deleteQuestion(String teacherId,String questionnId) {
+		return this.questionDao
+	}
+	**/
+	//16.	创建客观题
+	
 }

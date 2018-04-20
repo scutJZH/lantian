@@ -33,11 +33,6 @@ select paper_id,assign_time,submit_number,paper_name,student_number from class_p
 <result property="submitNumber" column="submit_number"/>
 <result property="paperName" column="paper_name"/>
 </resultMap>
-<!-- test用 -->
-<select id="get" resultMap="getmap">
-	select assign_teacher_id from class_paper
-</select>
-<resultMap id="getmap" type="java.util.HashMap">
-<result property="assign_teacher_id" column="assign_teacher_id" />
-</resultMap>
+
+
 </mapper>
