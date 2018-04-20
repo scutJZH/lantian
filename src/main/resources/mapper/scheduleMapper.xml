@@ -92,11 +92,11 @@
   </update>
   
   <select id="getSchedules" resultType="hashmap" parameterType="String">
-		select * from schedule where student_id = #{studentId}
+		select schedule_id as scheduleId, student_id as studentId,start_time as startTime ,end_time as endTime ,schedule_content,year,month,day,day_of_week as dayOfWeek from schedule where student_id = #{studentId}
   </select>
   
   <select id="getSchedulesByDate" resultType="hashmap">
-		select start_time,end_time,schedule_content from schedule where student_id = #{studentId} AND year = #{year} AND month = #{month} AND day = #{day}
+		select start_time as startTime ,end_time as endTime ,schedule_content as ScheduleContent from schedule where student_id = #{studentId} AND year = #{year} AND month = #{month} AND day = #{day}
   </select>
   
   <insert id="addSchedule">

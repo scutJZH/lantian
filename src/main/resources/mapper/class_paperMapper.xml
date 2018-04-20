@@ -3,7 +3,7 @@
 <mapper namespace="org.scut.dao.IClass_paperDao">
 	
 	<select id="getClassPaperByCId" resultType="hashmap" parameterType="String">
-		select * from class_paper where class_id = #{classId}
+		select paper_id as paperId,assign_time as assignTime,dead_line as deadLine from class_paper where class_id = #{classId}
 	</select>
 <!-- 获取作业列表 -->
 	<select id="selectList" resultMap="getHomeworkListHashMap">

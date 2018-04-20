@@ -60,7 +60,7 @@
 	</select>
 	
 	<select id="getClassIDBySId" resultType="hashmap" parameterType="String">
-		select class_id from student where student_id = #{studentId}
+		select class_id as classId from student where student_id = #{studentId}
 	</select>
 	
 	<update id="updateStudent" parameterType="Student">

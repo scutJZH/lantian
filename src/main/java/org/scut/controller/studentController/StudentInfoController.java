@@ -1,10 +1,14 @@
 package org.scut.controller.studentController;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
@@ -21,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import com.google.gson.Gson;
 
 @Controller
 @RequestMapping("/student")
@@ -76,36 +82,22 @@ public class StudentInfoController {
 	@ResponseBody
 	public void getPaperDetails(MultipartHttpServletRequest request, HttpServletResponse response) throws IOException{
 		request.setCharacterEncoding("UTF-8"); 
-		System.out.println(request.getMultipartContentType(null));
-		try {
+
 			
-			List<MultipartFile> files =  request.getFiles("img");
+		    Iterator<String> fileNames = request.getFileNames();
+			List<MultipartFile> files = new ArrayList<>();
+			for(;fileNames.hasNext();) {
+				files.add(request.getFile(fileNames.next()));
+			}
 			String paperId = request.getParameter("paperId");
 			String studentId = request.getParameter("studentId");
 			String solutionList = request.getParameter("solutionList");
+			Gson gson = new Gson();
+			List<Map<String, Object>>sList = gson.fromJson(solutionList, List.class);
 			
-			System.out.println(paperId);
-			System.out.println();
+			Map<String, Object> responseBody = this.studentService.uploadSolutions(studentId,paperId,sList,files,request);
 			
-			System.out.println(studentId);
-			System.out.println();
-			
-			System.out.println(solutionList);
-			System.out.println();
-			
-			//this.studentService.uploadSolutions();
-			
-			for (MultipartFile file : files) {
-				if(!file.isEmpty()) {
-					File img = new File(request.getSession().getServletContext().getRealPath("/")+"img\\"+file.getOriginalFilename());
-					FileOutputStream fos = new FileOutputStream(img);
-					BufferedOutputStream bos = new BufferedOutputStream(fos);
-					bos.write(file.getBytes());
-					bos.close();
-					fos.close();
-				}
-			}
-		}catch (Exception e) {}
+			ParamsTransport.returnParams(response, responseBody);
 	}
 	
 	@RequestMapping("/mine/modify")
@@ -134,8 +126,8 @@ public class StudentInfoController {
 		return result;
 	}
 
-		}
-	}
+		
+	
 	
 	@RequestMapping("/getSchedules")
 	@ResponseBody
@@ -164,4 +156,5 @@ public class StudentInfoController {
 		ParamsTransport.returnParams(response, responseBody);
 		
 	}
+
 }

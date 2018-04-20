@@ -1,5 +1,8 @@
 package org.scut.service.impl.studentImpl;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -18,12 +21,14 @@ import javax.annotation.Resource;
 import javax.ejb.Schedule;
 import javax.swing.Spring;
 
+import org.apache.coyote.Request;
 import org.apache.ibatis.annotations.Param;
 import org.scut.dao.IClass_paperDao;
 import org.scut.dao.IPaperDao;
 import org.scut.dao.IQuestionDao;
 import org.scut.dao.IQuestion_paperDao;
 import org.scut.dao.IScheduleDao;
+import org.scut.dao.ISolutionDao;
 import org.scut.dao.IStudentDao;
 import org.scut.dao.IStudent_paperDao;
 import org.scut.dao.ITitleDao;
@@ -33,6 +38,8 @@ import org.scut.model.Title;
 import org.scut.service.studentService.IStudentService;
 import org.springframework.scheduling.config.ScheduledTasksBeanDefinitionParser;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 @Service("studentService")
 public class StudentServiceImpl implements IStudentService{
@@ -53,6 +60,8 @@ public class StudentServiceImpl implements IStudentService{
 		private IQuestionDao questionDao;
 		@Resource
 		private IScheduleDao scheduleDao;
+		@Resource
+		private ISolutionDao solutionDao;
 		
 	    
 
@@ -64,7 +73,7 @@ public class StudentServiceImpl implements IStudentService{
 		try {	
 			List<Map<String, Object>>result = student_paperDao.getStudentPaperBySId(studentId,submit);
 					
-			String classId = (String) studentDao.getClassIDBySId(studentId).get("class_id");
+			String classId = (String) studentDao.getClassIDBySId(studentId).get("classId");
 			
 			List<Map<String, Object>>cpList = class_paperDao.getClassPaperByCId(classId);
 		
@@ -72,18 +81,18 @@ public class StudentServiceImpl implements IStudentService{
 			for(Map<String,Object> x:cpList) {
 				
 				for(Map<String,Object> y:result) {
-					if(x.get("paper_id").equals(y.get("paper_id"))) {
-						y.put("assign_time" , x.get("assigh_time") );
-						y.put("dead_line" , x.get("dead_line") );
+					if(x.get("paperId").equals(y.get("paperId"))) {
+						y.put("assignTime" , x.get("assighTime") );
+						y.put("deadLine" , x.get("deadLine") );
 						}				
 				}
 				
 			}
 	
 			for(Map<String,Object> y:result) {
-				org.scut.model.Paper ptemp = paperDao.selectByPrimaryKey((String) y.get("paper_id"));
-				y.put("paper_name", ptemp.getPaperName());
-				y.put("subject_id", ptemp.getSubjectId());	
+				org.scut.model.Paper ptemp = paperDao.selectByPrimaryKey((String) y.get("paperId"));
+				y.put("paperName", ptemp.getPaperName());
+				y.put("subjectId", ptemp.getSubjectId());	
 				
 			}
 			
@@ -115,7 +124,7 @@ public class StudentServiceImpl implements IStudentService{
 										
 			for(Map<String,Object> x:questionIdList) {
 				
-				Map<String, Object> eachQuestion = questionDao.getQuestion((String) x.get("question_id"));
+				Map<String, Object> eachQuestion = questionDao.getQuestion((String) x.get("questionId"));
 				optionsList.add(eachQuestion);
 
 				}
@@ -124,7 +133,7 @@ public class StudentServiceImpl implements IStudentService{
 			
 			for(Map<String,Object> x:optionsList) {
 				
-				Map<String, Object> title = titleDao.getTitle((String) x.get("title_id"));
+				Map<String, Object> title = titleDao.getTitle((String) x.get("titleId"));
 				if(titleList.contains(title)!=true){
 					titleList.add(title);
 					}
@@ -166,12 +175,12 @@ public class StudentServiceImpl implements IStudentService{
 				int year = (int) map.get("year");
 				int month = (int) map.get("month");
 				int day = (int) map.get("day");
-				int dayOfWeek = (int) map.get("day_of_week");
+				int dayOfWeek = (int) map.get("dayOfWeek");
 				Map<String, Object> dateMap = new HashMap<>();
 				dateMap.put("year",year);
 				dateMap.put("month",month);
 				dateMap.put("day",day);
-				dateMap.put("day_of_week",dayOfWeek);
+				dateMap.put("dayOfWeek",dayOfWeek);
 				
 				if(!result.contains(dateMap)) {
 					result.add(dateMap);
@@ -231,7 +240,48 @@ public class StudentServiceImpl implements IStudentService{
 				return responseBody;
 			}
 		}
-		
-		
 
+		@Override
+		public Map<String, Object> uploadSolutions(String studentId, String paperId, List<Map<String, Object>> sList,
+				List<MultipartFile> files,MultipartHttpServletRequest request) {
+			Map<String, Object> responseBody = new HashMap<String, Object>();
+             
+			for (Map<String, Object> map : sList) {
+				String questionId = (String) map.get("questionId");
+				String solutionContent = (String) map.get("solutionContent");
+			    solutionDao.insertSolution(studentId,paperId,questionId,solutionContent);
+			}
+			
+			
+				
+			try {				
+				for (MultipartFile file : files) {
+
+						System.out.println(request.getSession().getServletContext().getRealPath("/")+"img\\"+file.getOriginalFilename());
+						System.out.println();
+						File img = new File(request.getSession().getServletContext().getRealPath("/")+"img\\"+file.getOriginalFilename());						
+						FileOutputStream fos = new FileOutputStream(img);
+						BufferedOutputStream bos = new BufferedOutputStream(fos);
+						bos.write(file.getBytes());
+						bos.close();
+						fos.close();
+						
+						String fileName = file.getOriginalFilename();
+						int length = fileName.indexOf(".");						
+						String [] paramList = fileName.substring(0, length).split("\\+");
+					
+						String pic_path = request.getSession().getServletContext().getRealPath("/")+"img\\"+file.getOriginalFilename();
+						
+						if(paramList.length<3) {responseBody.put("status", "-3");return responseBody;}
+						else {
+							solutionDao.updateSolution(paramList[0],paramList[1],paramList[2],pic_path);
+						
+					}
+				}
+			}			
+			catch (Exception e) {System.out.println(e);responseBody.put("status","-1");return responseBody;}
+			responseBody.put("status", "1");
+			return responseBody;
+		}
+		
 }
