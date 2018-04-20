@@ -1,22 +1,27 @@
-package org.scut.controller;
+package org.scut.controller.studentController;
+
 
 import java.util.Date;
-
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import javax.annotation.Resource;
-
 import org.scut.model.Answer;
 import org.scut.model.Post;
-import org.scut.service.IAnserService;
-import org.scut.service.IPostService;
+import org.scut.service.studentService.IAnserService;
+import org.scut.service.studentService.IPostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+	
+
 @Controller
 public class PostController {
 	
-	/**@Resource
+	@Resource
 	private IPostService postService;
 	@Resource
 	private IAnserService answerService;
@@ -28,10 +33,12 @@ public class PostController {
 						@RequestParam(value="studentId",required=false)String studentId,
 						@RequestParam(value="postSubject",required=false)String postSubject) {
 //					      if (postTittle==null) {
-//					    	  return Json.getJson(false,"帖子标题为空")；
+//					    	  return Json.getJson(false,"甯栧瓙鏍囬涓虹┖")锛�
 //					    			  
-//					      }，
+//					      }锛�
+		                            
 						Post post= new Post();
+						post.setPostId(UUID.randomUUID().toString());
 						post.setPostTitle(postTitle);
 						post.setStudentId(studentId);
 						post.setSubjectId(postSubject);
@@ -43,12 +50,17 @@ public class PostController {
 							return Json.getJson();
 						}
 						else {
-							return Json.getJson(false,"errormsg","");
+							return Json.getJson(-1,"");
 						}
 						
 				
 	}
-	
+//	@RequestMapping(value="/student/post/search.do")
+//	@ResponseBody
+//	public Object search(@RequestParam(value="keyWord",required=false)String keyWord) {
+//		postService.
+//		
+//	}
 	@RequestMapping(value="/student/post/answerPost.do")
 	@ResponseBody
 	public Object answerPost(@RequestParam(value="postId",required=false)String postId,
@@ -65,9 +77,29 @@ public class PostController {
 			return Json.getJson();
 		}
 		else {
-			return Json.getJson(false,"errormsg","");
+			return Json.getJson(-1,"");
 		}
 	}
-	**/
-
+	@RequestMapping(value="/student/post/getanswer.do")
+	@ResponseBody
+	public Object answerlist(@RequestParam(value="postId",required=false)String postId) {
+		List<Answer>answers=answerService.findanswerbypostid(postId);
+		Map<String, Object> map	=new HashMap<String,Object>();
+		map.put("answerlist", answers);
+		return Json.getJson(1,map);
+	}
+	@RequestMapping(value="/student/post/getpost.do")
+	@ResponseBody
+	public Object postdetail(@RequestParam(value="postId",required=false)String postId) {
+		Post post=postService.findpostbyid(postId);
+		Map<String, Object> map =new HashMap<String,Object>();
+		map.put("post", post);
+		return Json.getJson(1,map);
+	
+			
+		
+		
+	}
+	
 }
+

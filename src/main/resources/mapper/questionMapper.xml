@@ -22,6 +22,11 @@
     from question
     where question_id = #{questionId,jdbcType=VARCHAR}
   </select>
+   
+  <select id="getQuestion" resultType="hashmap" parameterType="String">
+		select question_id as questionId,title_id as titleId, subject_id as subjectId, option_a as optionA,option_b as optionB,option_c as optionC,option_d as optionD,answer,grade from question where question_id = #{questionId}
+  </select>
+	
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from question
     where question_id = #{questionId,jdbcType=VARCHAR}

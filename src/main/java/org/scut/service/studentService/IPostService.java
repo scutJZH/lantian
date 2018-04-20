@@ -1,9 +1,9 @@
-package org.scut.service;
+package org.scut.service.studentService;
 
 import org.scut.model.Post;
 
 public interface IPostService {
 	int addpost(Post post);
-	Post findpostbypostid(Integer postId);
+	Post findpostbyid(String postId);
 
 }

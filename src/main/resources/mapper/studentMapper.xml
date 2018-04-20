@@ -31,7 +31,7 @@
   		 #{user.verifyCode, javaType=String, jdbcType=VARCHAR})
 	</insert>
 	
-	<update id="updateStudent" parameterType="User">
+	<update id="updateUser" parameterType="User">
 		update student set
 		phone = #{user.phone},
    	 	password = #{user.password},
@@ -52,12 +52,34 @@
 	</select>
 	
 	<select id="getchildInfoById" parameterType="String" resultType="hashmap">
-		select (phone, nickname, class_id, class_name, pic_path)
+		select (phone, nickname, student.class_id, class_name, pic_path)
 		from student left join class on student.student_id = #{studentId} and student.class_id = class.class_id
 	</select>
-	<select id="getStudentById" resultType="Student" parameterType="String">
+	<select id="getStudentById" resultMap="studentMap" parameterType="String">
 		select * from student where student_id = #{studentId}
 	</select>
+	
+	<select id="getClassIDBySId" resultType="hashmap" parameterType="String">
+		select class_id as classId from student where student_id = #{studentId}
+	</select>
+	
+	<update id="updateStudent" parameterType="Student">
+		update student set
+		phone = #{student.phone},
+   	 	password = #{student.password},
+   	 	create_time = #{student.createTime},
+    	pic_path = #{student.picPath},
+    	nickname = #{student.nickname},
+    	birthday = #{student.birthday, javaType=Date, jdbcType=DATE},
+    	sex = #{student.sex},
+    	class_id = #{student.classId, javaType=String, jdbcType=VARCHAR},
+    	token = #{student.token, javaType=String, jdbcType=VARCHAR},
+    	school_name = #{student.schoolName, javaType=String, jdbcType=VARCHAR},
+    	state = #{student.state},
+    	verify_code = #{student.verifyCode, javaType=String, jdbcType=VARCHAR}
+  		where student_id = #{student.id}
+
+	</update>
 	
 	<resultMap type="Student" id="studentMap">
 		<id property="id" column="student_id"/>

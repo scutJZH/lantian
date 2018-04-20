@@ -1,6 +1,5 @@
 package org.scut.service.impl.teacherImpl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +21,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	private IClassDao classDao;
 	@Resource
 	private IQuestionDao questionDao;
-	@Resource //这个功能还没测
+	@Resource //杩欎釜鍔熻兘杩樻病娴�
 	private IPptDao pptDao;
 	@Resource
 	private IStudent_paperDao student_paperDao;
@@ -62,7 +61,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	}
 	public List<HashMap<String,Object>> getRankDetails(String paperId){
 		List<HashMap<String,Object>> r1= this.student_paperDao.getRankDetails(paperId);
-		/**插入排序使得该结果是按分数从小到大排的**/
+		/**鎻掑叆鎺掑簭浣垮緱璇ョ粨鏋滄槸鎸夊垎鏁颁粠灏忓埌澶ф帓鐨�**/
 		int n = r1.size();
 		HashMap<String,Object>  temp;
         for(int i = 1; i< n; i++) {
@@ -74,8 +73,8 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
                 r1.get(j-1).putAll(temp);
             }
         }
-        /**插入排序使得该结果是按分数从小到大排的**/
-       /**上面的结果没有排名，下面给结果加入排名数字rankNumber**/
+        /**鎻掑叆鎺掑簭浣垮緱璇ョ粨鏋滄槸鎸夊垎鏁颁粠灏忓埌澶ф帓鐨�**/
+       /**涓婇潰鐨勭粨鏋滄病鏈夋帓鍚嶏紝涓嬮潰缁欑粨鏋滃姞鍏ユ帓鍚嶆暟瀛梤ankNumber**/
         int n2 = r1.size();
         for(int i = 0; i< n2; i++) {
         	r1.get(i).put("rankNumber", String.valueOf(r1.size()-(i+1)));
@@ -85,7 +84,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	}
 	public List<HashMap<String,Object>> getCorrectStudentList(String teacherId,String paperId){
 		List<HashMap<String,Object>> r1= this.student_paperDao.getCorrectStudentList(teacherId,paperId);
-		/**通过判断总分是否为0来判断是否已批改**/
+		/**閫氳繃鍒ゆ柇鎬诲垎鏄惁涓�0鏉ュ垽鏂槸鍚﹀凡鎵规敼**/
 		for(int i=0;i<r1.size();i++) {
 			if((Integer)((r1.get(i)).get("score"))>0) {
 				r1.get(i).put("correctedBox", "true");
@@ -99,25 +98,27 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	public List<HashMap<String,Object>> getCorrectQuestionList(String teacherId,String paperId,String studentId){
 		List<HashMap<String,Object>> r1= this.solutionDao.getSolution(teacherId,paperId,studentId);
 		for(int i=0;i<r1.size();i++) {
-			/**这里需要注意使用了string参数的,
-			 * 这里把solutionDao.getSolution的查询结果当作了getTitleContent的参数。**/
+			/**杩欓噷闇�瑕佹敞鎰忎娇鐢ㄤ簡string鍙傛暟鐨�,
+			 * 杩欓噷鎶妔olutionDao.getSolution鐨勬煡璇㈢粨鏋滃綋浣滀簡getTitleContent鐨勫弬鏁般��**/
 			HashMap<String,Object> r2=this.titleDao.getTitleContent((String)(r1.get(i).get("questionId")));
 			r1.get(i).putAll(r2);
 		}
 		return r1;
 	}
-	/**
-	//14.获取主观/客观题列表
+
+	//14.鑾峰彇涓昏/瀹㈣棰樺垪琛�
+/**
 	public List<Map<String,Object>> getSubjectiveOrObjectiveList(String teacherId,String questionType){
-		//下面这个分功能可能需要用到subjectId，不过暂时前端没传
+		//涓嬮潰杩欎釜鍒嗗姛鑳藉彲鑳介渶瑕佺敤鍒皊ubjectId锛屼笉杩囨殏鏃跺墠绔病浼�
 		if(questionType=="1")return questionDao.getSubjectiveList();
 		if(questionType=="2")return questionDao.getObjectiveList();
-	}
-	/**15.删除一道题目
+	}*/
+	/**15.鍒犻櫎涓�閬撻鐩�
 	public int deleteQuestion(String teacherId,String questionnId) {
 		return this.questionDao
 	}
 	**/
+
 	//16.create objective completed!
 	public int createObjective(String teacherId,
 			String titleContent,
@@ -146,5 +147,5 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 }

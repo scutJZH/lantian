@@ -4,16 +4,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class ParamsTransport {
 /**
- * ·µ»ØMapµÄkeyÊÇºÍÇ°¶ËÉÌÁ¿µÄ²ÎÊýÃû£¬valueÊÇ²ÎÊýÖµ
+ * ï¿½ï¿½ï¿½ï¿½Mapï¿½ï¿½keyï¿½Çºï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½valueï¿½Ç²ï¿½ï¿½ï¿½Öµ
  * @param request
  * @param response
  * @return Map<String, Object>
@@ -34,7 +36,10 @@ public class ParamsTransport {
 	
 	public static void returnParams(HttpServletResponse response,Map<String, Object> result) throws IOException{
 		
-		Gson gson = new Gson();
+		response.setCharacterEncoding("UTF-8"); 
+		response.setContentType("text/json");
+		
+		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 		
 		PrintWriter out = response.getWriter();
 		out.write(gson.toJson(result));
@@ -43,5 +48,19 @@ public class ParamsTransport {
 		out.close();
 		
 	}
+	
+	public static List<Map<String, Object>>getParamsList(HttpServletRequest request) throws IOException{
+		BufferedReader br = request.getReader();
+		StringBuffer sb = new StringBuffer();
+		String input = null;
+		while((input = br.readLine()) != null){
+			sb.append(input);
+		}
+		
+		Gson gson = new Gson();
+		List<Map<String, Object>> paramsMapList = gson.fromJson(sb.toString(), List.class);
+		return paramsMapList;
+	}
+	
 
 }

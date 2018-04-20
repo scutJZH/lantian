@@ -31,7 +31,7 @@
   		 #{user.verifyCode, javaType=String, jdbcType=VARCHAR})
 	</insert>
 	
-	<update id="updateTeacher" parameterType="User">
+	<update id="updateUser" parameterType="User">
 		update teacher set
 		phone = #{user.phone},
    	 	password = #{user.password},
@@ -45,6 +45,28 @@
     	verify_code = #{user.verifyCode, javaType=String, jdbcType=VARCHAR}
   		where teacher_id = #{user.id}
 	</update>
+	
+	<update id="updateTeacher" parameterType="Teacher">
+		update teacher set
+		phone = #{teacher.phone},
+   	 	password = #{teacher.password},
+   	 	create_time = #{teacher.createTime},
+    	pic_path = #{teacher.picPath},
+    	nickname = #{teacher.nickname},
+    	birthday = #{teacher.birthday, javaType=Date, jdbcType=DATE},
+    	sex = #{teacher.sex},
+    	token = #{teacher.token, javaType=String, jdbcType=VARCHAR},
+    	school_name = #{teacher.schoolName, javaType=String, jdbcType=VARCHAR},
+    	name = #{teacher.name, javaType=String, jdbcType=VARCHAR},
+    	state = #{teacher.state},
+    	verify_code = #{teacher.verifyCode, javaType=String, jdbcType=VARCHAR}
+  		where teacher_id = #{teacher.id}
+		
+	</update>
+	
+	<select id="getTeacherById" resultMap="teacherMap" parameterType="Teacher">
+		select * from teacher where teacher_id = #{teacherId}
+	</select>
 	
 	<resultMap type="Teacher" id="teacherMap">
 		<id property="id" column="teacher_id"/>
