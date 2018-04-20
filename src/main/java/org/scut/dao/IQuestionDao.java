@@ -3,6 +3,7 @@ package org.scut.dao;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.scut.model.Question;
 import org.springframework.stereotype.Repository;
@@ -25,4 +26,10 @@ public interface IQuestionDao {
     public List<Map<String,Object>> getSubjectiveList(String subjectId,String d);
     
     public List<Map<String,Object>> getObjectiveList(String subjectId);
+    
+    public int createObjective(String teacherId,
+			String titleContent,UUID titleId,
+			String optioanA,String optionB,String optionC,String optionD,
+			String answer);
+    public Map<String,Object> checkTitle(String question);
 }

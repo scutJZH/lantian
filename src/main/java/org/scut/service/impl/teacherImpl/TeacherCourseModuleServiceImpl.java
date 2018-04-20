@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -105,6 +106,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		}
 		return r1;
 	}
+	/**
 	//14.获取主观/客观题列表
 	public List<Map<String,Object>> getSubjectiveOrObjectiveList(String teacherId,String questionType){
 		//下面这个分功能可能需要用到subjectId，不过暂时前端没传
@@ -116,6 +118,33 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		return this.questionDao
 	}
 	**/
-	//16.	创建客观题
+	//16.create objective completed!
+	public int createObjective(String teacherId,
+			String titleContent,
+			String optioanA,String optionB,String optionC,String optionD,
+			String answer) {
+		//generate UUID
+		UUID titleId=UUID.randomUUID();
+		int r1=this.questionDao.createObjective(teacherId,
+				titleContent,titleId,
+				optioanA,optionB,optionC,optionD,
+				answer);
+		int r2=this.titleDao.createObjective(titleId,titleContent);
+		if(r1==1&&r2==1)return 1;
+		else return 0;
+	}
+	//17.
+	//18.checkTitle
+	public Map<String,Object> checkTitle(String questionId){
+		Map<String,Object> r1=this.questionDao.checkTitle(questionId);
+		if(((String)r1.get("optionA")).length()>0) r1.put("questionType", 2) ;
+		else r1.put("questionType", 1);
+		return r1;
+	}
+	@Override
+	public int createSubjective(String teacherId, String pic) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 }

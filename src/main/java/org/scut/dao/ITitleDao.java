@@ -1,6 +1,7 @@
 package org.scut.dao;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.apache.ibatis.annotations.Param;
 import org.scut.model.Title;
@@ -20,4 +21,6 @@ public interface ITitleDao {
     int updateByPrimaryKey(Title record);
     
     public HashMap<String,Object> getTitleContent(@Param("questionId")String questionId);
+    
+    public int createObjective(@Param("titleId")UUID titleId,@Param("titleContent")String titleContent);
 }

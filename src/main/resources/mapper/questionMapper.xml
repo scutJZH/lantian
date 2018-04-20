@@ -164,4 +164,16 @@ SELECT question_id,title_content from d where option_a  is NULL ;
 	<result property="titleContent" column="title_content"/>
 </resultMap>
 
+<!-- titleContent will be insert into tab title-->
+<insert id="createObjective">
+	insert into question
+	(question_id,title_id,subject_id,grade,option_a,option_b,option_c,option_d,answer)
+	values
+	(#{questionId,jdbcType=VARCHAR},#{titleId},#{subjectId,jdbcType=VARCHAR},
+	#{grade,jdbcType=INT},#{optionA,jdbcType=VARCHAR},
+	#{optionB,jdbcType=VARCHAR},#{optionC,jdbcType=VARCHAR},#{optionD,jdbcType=VARCHAR},
+	#{answer,jdbcType=VARCHAR})
+</insert>
+
+
 </mapper>

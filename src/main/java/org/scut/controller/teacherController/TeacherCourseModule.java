@@ -198,7 +198,7 @@ public class TeacherCourseModule {
 	}
 	**/
 	//16.	创建客观题
-	/**@RequestMapping(value="/createObjective", method=RequestMethod.POST)
+	@RequestMapping(value="/createObjective", method=RequestMethod.POST)
 	@ResponseBody
 	public int createObjective(@RequestBody Map<String,Object> request) {
 		String teacherId=String.valueOf(request.get("teacherId"));
@@ -216,5 +216,25 @@ public class TeacherCourseModule {
 																optioanA,optionB,optionC,optionD,
 																answer);
 	}
-	**/
+	/**17.create subjective
+	@RequestMapping(value="/createSubjective", method=RequestMethod.POST)
+	@ResponseBody
+	public int createSubjective(@RequestBody Map<String,Object> request) {
+		String teacherId=String.valueOf(request.get("teacherId"));
+		//图片路径也存到titleContent
+		String pic=String.valueOf(request.get("pic"));
+		String answer=String.valueOf(request.get("answer"));
+
+		
+		return this.teacherCourseModuleService.createSubjective(teacherId,
+																pic,
+																answer);
+	}**/
+	//18.checkTitle
+	@RequestMapping(value="/checkTitle", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> checkTitle(@RequestBody Map<String,Object> request) {
+		String questionId=String.valueOf(request.get("questionId"));
+		return this.teacherCourseModuleService.checkTitle(questionId);
+	}
 }

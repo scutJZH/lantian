@@ -77,4 +77,11 @@
   <resultMap id="getTitleContentHashMap" type="HashMap">
   <id property="titleContent" column="title_content"></id>
   </resultMap>
+  
+  <!--创建客观题 -->
+  <insert id="createObject">
+  	insert into title(title_id,title_content)
+  	values
+  	(#{titleId,javaType=java.util.UUID,jdbcType=VARCHAR},#{titleContent,javaType=String,jdbcType=VARCHAR})
+  </insert>
 </mapper>
