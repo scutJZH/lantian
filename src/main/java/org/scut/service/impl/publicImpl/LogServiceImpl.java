@@ -49,7 +49,7 @@ public class LogServiceImpl implements ILogService {
 					user.setToken(token);
 					userInfo.put("id", user.getId());
 					userInfo.put("nickname", user.getNickname());
-					userInfo.put("picPath", user.getPicPath());
+					userInfo.put("picPath", GlobalVar.picPath+user.getPicPath());
 					userInfo.put("token", token);
 				} else {
 					status = "0";

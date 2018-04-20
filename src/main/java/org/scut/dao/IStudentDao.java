@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Param;
 import org.scut.model.Student;
 import org.scut.model.User;
 import org.springframework.stereotype.Repository;
-
 @Repository
 public interface IStudentDao {
 
@@ -25,7 +24,10 @@ public interface IStudentDao {
 	
 	public HashMap<String, Object> getchildInfoById(@Param("studentId")String studentId);
 	
-	public Student getStduetnById(@Param("studentId")String studentId);
+	public Student getStudentById(@Param("studentId")String studentId);
 	
 	public Map<String, Object> getClassIDBySId(@Param("studentId")String studentId);
+
+	public String getClassIdById(@Param("studentId")String studentId);
+
 }

@@ -1,8 +1,11 @@
 package org.scut.dao;
 
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 import org.scut.model.Post;
-import org.springframework.stereotype.Repository;
-@Repository
+
 public interface IPostDao {
     int deleteByPrimaryKey(String postId);
 
@@ -15,4 +18,10 @@ public interface IPostDao {
     int updateByPrimaryKeySelective(Post record);
 
     int updateByPrimaryKey(Post record);
+
+	Post findpostbyid(@Param("postId")String postId);
+	List<Post>getpostfuzzy(@Param("keyWord")String keyWord);
+	int getpostfuzzycount(@Param("sort")String sort);
+	List<Post>getallpost();
+
 }
