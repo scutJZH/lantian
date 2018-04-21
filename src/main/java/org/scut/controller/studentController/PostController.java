@@ -39,7 +39,7 @@ public class PostController {
 	@Resource
 	private ILikeService ILikeService;
 	
-	@RequestMapping("/post/publish")
+	@RequestMapping("/student/post/publish")
 	@ResponseBody
 	public Map<String, Object>  addpost(HttpServletRequest request, HttpServletResponse response) throws  IOException{
 		
@@ -68,7 +68,7 @@ public class PostController {
 		
 		
 	}
-	@RequestMapping(value="/post/search")
+	@RequestMapping(value="/student/post/search")
 	@ResponseBody
 public Map<String, Object>  search(HttpServletRequest request, HttpServletResponse response) throws  IOException{
 		
@@ -84,7 +84,7 @@ public Map<String, Object>  search(HttpServletRequest request, HttpServletRespon
 		return Json.getJson(1,posts);
 		
 	}
-	@RequestMapping(value="/post/answerPost")
+	@RequestMapping(value="/student/post/answerPost")
 	@ResponseBody
 public Map<String, Object>  answerpost(HttpServletRequest request, HttpServletResponse response) throws  IOException{
 		
@@ -135,7 +135,7 @@ public Map<String, Object>  answerAnswer(HttpServletRequest request, HttpServlet
 			return Json.getJson(-1,"");
 		}
 	}
-	@RequestMapping(value="/post/getanswer")
+	@RequestMapping(value="/student/post/getanswer")
 	@ResponseBody
   public Map<String, Object>  getAnswerbean(HttpServletRequest request, HttpServletResponse response) throws  IOException{
 		
@@ -166,7 +166,7 @@ public Map<String, Object>  answerAnswer(HttpServletRequest request, HttpServlet
 		}
 		
 	}
-	@RequestMapping("/post")
+	@RequestMapping("/student/post")
 	@ResponseBody
 	public Map<String, Object> getpost(HttpServletRequest request, HttpServletResponse response) throws  IOException{
 		
@@ -179,7 +179,7 @@ public Map<String, Object>  answerAnswer(HttpServletRequest request, HttpServlet
 		return Json.getJson(1,post);
 	
 	}
-	@RequestMapping("/post/post")
+	@RequestMapping("/student/post")
 	@ResponseBody
 	public Map<String, Object> gettotal(HttpServletRequest request, HttpServletResponse response) throws  IOException{
 		
