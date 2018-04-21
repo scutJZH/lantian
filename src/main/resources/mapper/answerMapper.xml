@@ -10,6 +10,20 @@
     <result column="likes" property="likes" jdbcType="INTEGER" />
     <result column="at_student_id" property="atStudentId" jdbcType="VARCHAR" />
   </resultMap>
+  
+  
+  <resultMap id="AnswerBeanResultMap" type="org.scut.model.Answerbean" >
+    <id column="answer_id" property="answerId" jdbcType="VARCHAR" />
+    <result column="student_id" property="studentId" jdbcType="VARCHAR" />
+    <result column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="answer_content" property="answerContent" jdbcType="VARCHAR" />
+    <result column="answer_time" property="answerTime" jdbcType="TIMESTAMP" />
+    <result column="likes" property="likes" jdbcType="INTEGER" />
+    <result column="at_student_id" property="atStudentId" jdbcType="VARCHAR" />
+    <result column="nickname" property="studentName" jdbcType="VARCHAR" />
+    <result column="pic_path" property="picPath" jdbcType="VARCHAR" />
+  </resultMap>
+  
   <sql id="Base_Column_List" >
     answer_id, student_id, post_id, answer_content, answer_time, likes, at_student_id
   </sql>
@@ -110,9 +124,20 @@
   </select>
   <select id="findanswerbypostid" resultMap="BaseResultMap">
   SELECT
-  <include refid="Base_Column_List" />
+  <include refid="Base_Column_List" />S
   from answer where post_id =#{postId,jdbcType=VARCHAR}
   </select>
+  
+  <select id="findAnswerBeanByPostId" resultMap="AnswerBeanResultMap">
+  SELECT
+  a.*,s.nickname, s.pic_path 
+  from answer a
+   inner join student s
+   on a.student_id = s.student_id
+  where post_id =#{postId,jdbcType=VARCHAR}
+  </select>
+  
+  
   <update id="updateByPrimaryKey" parameterType="org.scut.model.Answer" >
     update answer
     set student_id = #{studentId,jdbcType=VARCHAR},

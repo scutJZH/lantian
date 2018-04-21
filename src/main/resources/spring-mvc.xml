@@ -13,6 +13,8 @@
 
     <!-- 扫描web相关的bean -->
     <context:component-scan base-package="org.scut.controller"/>
+    <context:component-scan base-package="org.scut.service"/>
+    
 
     <!-- 开启SpringMVC注解模式 -->
     <mvc:annotation-driven/>

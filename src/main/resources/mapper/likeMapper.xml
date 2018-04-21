@@ -1,4 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.scut.dao.ILikeDao" >
+<resultMap id="BaseResultMap" type="org.scut.model.Answer" >
+   
+    <result column="student_id" property="studentId" jdbcType="VARCHAR" />
+    <result column="answer_id" property="answerId" jdbcType="VARCHAR"/>
+ 
+  </resultMap>
+  <sql id="Base_Column_List" >
+    student_id  answer_id
+  </sql>
+  <insert id="addlike" >
+  insert into user_like_answer
+  <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="answerId != null" >
+        student_id,
+      </if>
+      <if test="studentId != null" >
+        answer_id,
+      </if>
+     
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test=" studentId!= null" >
+        #{studentId,jdbcType=VARCHAR},
+      </if>
+      <if test="answerId != null" >
+        #{answerId,jdbcType=VARCHAR},
+      </if>
+      
+    </trim>
+  
+  
+  </insert>
+  <select id="find" resultType="java.lang.Integer">
+  	         select count(*)
+  	         from user_like_answer where student_id= #{studentId,jdbcType=VARCHAR} and answer_id= #{answerId,jdbcType=VARCHAR}
+  
+  
+  
+  </select>
+  <delete id="delete" parameterType="java.lang.String" >
+    delete from user_like_answer
+    where student_id= #{studentId,jdbcType=VARCHAR} and answer_id= #{answerId,jdbcType=VARCHAR}
+  </delete>
 </mapper>
