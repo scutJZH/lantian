@@ -90,4 +90,19 @@
       schedule_content = #{scheduleContent,jdbcType=VARCHAR}
     where schedule_id = #{scheduleId,jdbcType=VARCHAR}
   </update>
+  
+  <select id="getSchedules" resultType="hashmap" parameterType="String">
+		select schedule_id as scheduleId, student_id as studentId,start_time as startTime ,end_time as endTime ,schedule_content,year,month,day,day_of_week as dayOfWeek from schedule where student_id = #{studentId}
+  </select>
+  
+  <select id="getSchedulesByDate" resultType="hashmap">
+		select start_time as startTime ,end_time as endTime ,schedule_content as ScheduleContent from schedule where student_id = #{studentId} AND year = #{year} AND month = #{month} AND day = #{day}
+  </select>
+  
+  <insert id="addSchedule">
+		insert into schedule (schedule_id , student_id , start_time , end_time , schedule_content , year , month , day ,day_of_week) 
+		values (#{scheduleId},#{studentId},#{startTime},#{endTime},#{scheduleContext}, #{year}, #{month}, #{day},#{dayOfWeek})
+  </insert>
+  
+  
 </mapper>

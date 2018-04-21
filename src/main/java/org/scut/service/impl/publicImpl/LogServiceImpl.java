@@ -89,14 +89,10 @@ public class LogServiceImpl implements ILogService {
 		Map<String, Object> result = new HashMap<String, Object>();
 		String status = "1";
 
-		// System.out.println(TokenMap.tokenMap);
+		System.out.println(GlobalVar.tokenMap);
 
-		if (GlobalVar.tokenMap.containsKey(id)) {
-			if (GlobalVar.tokenMap.get(id).equals(token)) {
-				GlobalVar.tokenMap.remove(id, token);
-			}
-		}
-		// System.out.println(TokenMap.tokenMap);
+		GlobalVar.tokenMap.remove(id, token);
+		System.out.println(GlobalVar.tokenMap);
 		result.put("status", status);
 		return result;
 	}

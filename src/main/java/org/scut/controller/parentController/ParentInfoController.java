@@ -1,12 +1,9 @@
 package org.scut.controller.parentController;
-import java.io.File;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -50,6 +47,7 @@ public class ParentInfoController {
 		String nickname = request.getParameter("nickname");
 		String birthdayStr = request.getParameter("birthday");
 		String sex = request.getParameter("sex");
+		String filePath = request.getSession().getServletContext().getRealPath("/")+"img\\";
 		
 		if(filesList.size() > 1){
 			String status = "-1";
@@ -57,7 +55,7 @@ public class ParentInfoController {
 			result.put("status", status);
 			result.put("result", new HashMap<String, Object>());
 		}else{
-			result = parentInfoService.modifyParentInfo(parentId, filesList, nickname, birthdayStr, sex);
+			result = parentInfoService.modifyParentInfo(parentId, filesList, nickname, birthdayStr, sex, filePath);
 		}
 		
 		return result;

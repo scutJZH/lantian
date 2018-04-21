@@ -12,11 +12,13 @@ public interface ITeacherDao {
 	
 	public void updateToken(@Param("teacherId")String id, @Param("token")String token);
     
-	public void insertTeacher(Teacher Teacher);
+	public void insertTeacher(@Param("teacher")Teacher Teacher);
 	
 	public void insertUser(@Param("user")User user);
 	
-	public void updateTeacher(@Param("user")User user);
+	public void updateUser(@Param("user")User user);
 	
 	public Teacher getTeacherById(@Param("teacherId")String teacherId);
+
+	public void updateTeacher(@Param("teacher")Teacher Teacher);
 }

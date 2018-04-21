@@ -1,6 +1,9 @@
 package org.scut.dao;
 
+
+import java.util.Map;
 import java.util.HashMap;
+
 
 import org.apache.ibatis.annotations.Param;
 import org.scut.model.Title;
@@ -18,6 +21,9 @@ public interface ITitleDao {
     int updateByPrimaryKeySelective(Title record);
 
     int updateByPrimaryKey(Title record);
-    
-    public HashMap<String,String> getTitleContent(@Param("questionId")String questionId);
+
+	Map<String, Object> getTitle(@Param("titleId")String string);
+
+    public HashMap<String,Object> getTitleContent(@Param("questionId")String questionId);
+
 }

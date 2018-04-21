@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +40,7 @@ public class PostController {
 	
 	@RequestMapping("/student/post/publish")
 	@ResponseBody
+
 	public Map<String, Object>  addpost(HttpServletRequest request, HttpServletResponse response) throws  IOException{
 		
 		Map<String, Object> map =ParamsTransport.getParams(request);
@@ -64,10 +64,8 @@ public class PostController {
 			return Json.getJson(-1,"");
 		}
 	
-		
-		
-		
 	}
+	
 	@RequestMapping(value="/student/post/search")
 	@ResponseBody
 public Map<String, Object>  search(HttpServletRequest request, HttpServletResponse response) throws  IOException{

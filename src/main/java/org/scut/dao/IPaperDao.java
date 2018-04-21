@@ -1,5 +1,9 @@
 package org.scut.dao;
 
+import java.util.HashMap;
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 import org.scut.model.Paper;
 import org.springframework.stereotype.Repository;
 

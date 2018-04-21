@@ -11,5 +11,5 @@ public interface IParentInfoService {
 	public Map<String, Object> getParentInfo(String parentId);
 
 	public Map<String, Object> modifyParentInfo(String parentId, List<MultipartFile> filesList, String nickname,
-			String birthdayStr, String sex);
+			String birthdayStr, String sex, String filePath);
 }

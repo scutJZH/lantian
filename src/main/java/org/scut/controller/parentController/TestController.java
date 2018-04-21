@@ -5,13 +5,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,14 +42,22 @@ public class TestController {
 	@RequestMapping("/formdata")
 	public void formdataTest(MultipartHttpServletRequest request, HttpServletResponse response) throws IOException{
 		try{
+			//图片用form表单上传
+			//获取前端key为“img”的图片列表
 		List<MultipartFile> files = request.getFiles("img");
-		String id = request.getParameter("id");
-		System.out.println("id= " +id);
+		//获取前端key为“id”的text类型参数
+//		String id = request.getParameter("id");
 		for(MultipartFile file :files){
 			if(!file.isEmpty()){
+				//创建图片文件，request.getSession().getServletContext().getRealPath("/")为项目根目录，
+				//img为根目录下的img文件夹，file.getOriginalFilename()为上传文件的名字（取得这个名字后，用正则表达式读取到后缀名，
+				//用uuid生成文件名，以避免文件名重复，数据库存uuid+后缀名）
 				File img = new File(request.getSession().getServletContext().getRealPath("/")+"img\\"+file.getOriginalFilename());
+				//建立文件输入流
 				FileOutputStream fos = new FileOutputStream(img);
+				//建立输入流
 				BufferedOutputStream bos = new BufferedOutputStream(fos);
+				//对输入流进行输入
 	            bos.write(file.getBytes());
 	            bos.close();
 	            fos.close();
