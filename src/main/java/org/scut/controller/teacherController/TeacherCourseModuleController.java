@@ -1,71 +1,51 @@
 package org.scut.controller.teacherController;
-import java.util.Date;
-import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.scut.service.teacherService.ITeacherCourseModuleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 //@RequestMapping(value="/teacher", method=RequestMethod.POST)
 @Controller
-public class TeacherCourseModule {
+public class TeacherCourseModuleController {
 	@Resource
 	private ITeacherCourseModuleService teacherCourseModuleService;
 	
-	//1.获取往期作业列表，测试通过
-	@RequestMapping(value="/getHomeworkList", method=RequestMethod.POST)
+	@RequestMapping(value="/getHomeworkList")
 	@ResponseBody
 	public HashMap<String,Object> getHomeworkList(@RequestBody Map<String,Object> request) {
 	String teacherId=String.valueOf(request.get("teacherId"));
 	String classId=String.valueOf(request.get("classId"));
-	List<HashMap<String,Object>> resultpre=teacherCourseModuleService.selectList(teacherId, classId);
-	HashMap<String,Object> result=new HashMap<String,Object>();
-	result.put("status", "1");
-	result.put("result", resultpre);
+	HashMap<String,Object> result=teacherCourseModuleService.selectList(teacherId, classId);
 	return result;
 }
-	//2.删除往期作业列表 因为是删除数据功能，所以暂时没测
 	@RequestMapping(value="/deleteHomeworkList", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> deleteHomeworkList(@RequestBody List<String> paperId){
-		int resultPre=teacherCourseModuleService.deleteList(paperId);
-		HashMap<String,Object> result=new HashMap<String,Object>();
-		if(resultPre<0) {
-			resultPre=-2;
-		}
-		result.put("status", resultPre);
+		HashMap<String,Object> result=teacherCourseModuleService.deleteList(paperId);
 		return result;
 	}
-	//3.1 获取班级,test completed
+	//3.1
 	@RequestMapping(value="/getClassList", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> getClassList(@RequestBody Map<String,Object> request) {
 		String teacherId=String.valueOf(request.get("teacherId"));
 		
-		List<HashMap<String,Object>> resultpre=teacherCourseModuleService.getClassList(teacherId);
-		HashMap<String,Object> result=new HashMap<String,Object>();
-		result.put("success", true);
-		result.put("result", resultpre);
-		
+		HashMap<String,Object> result=teacherCourseModuleService.getClassList(teacherId);
 		return result;
 	}
-	//3.3 获取题目,test completed
+	//3.3
 	@RequestMapping(value="/getQuestionList", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> getQuestionList(@RequestBody Map<String,Object> request){
 		String subjectId=String.valueOf(request.get("subjectId"));
-		List<HashMap<String,Object>> resultpre=teacherCourseModuleService.getQuestionList(subjectId);
-		HashMap<String,Object> result=new HashMap<String,Object>();
-		result.put("success", true);
-		result.put("result", resultpre);
+		HashMap<String,Object> result=teacherCourseModuleService.getQuestionList(subjectId);
 		return result;
 	}
 	//4.布置作业,先不做。
@@ -76,92 +56,52 @@ public class TeacherCourseModule {
 		result.put("result", resultpre);
 		return result;
 	}*/
-	
-	/***这两个功能第一版不做
-	//5.获取备课资料列表
-	public HashMap<String,Object> getPptList(@RequestParam(value="teacherId")String teacherId){
-		List<HashMap<String,Object>> resultpre=teacherCourseModuleService.getPptList(teacherId);
-		HashMap<String,Object> result=new HashMap<String,Object>();
-		result.put("status", "1");
-		result.put("result", resultpre);
-		return result;
-	}
-	//6.获取我的收藏列表
-	public HashMap<String,Object> getPptList(@RequestParam(value="teacherId")String teacherId){
-		List<HashMap<String,Object>> resultpre=teacherCourseModuleService.getPptList(teacherId);
-		HashMap<String,Object> result=new HashMap<String,Object>();
-		result.put("status", "1");
-		result.put("result", resultpre);
-		return result;
-	}
-	***/
-	//7.获取作业批改列表
+	//5
+	//6
+	//7
 	@RequestMapping(value="/getCorrectionList", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> getCorrectionList(@RequestBody Map<String,Object> request){
 		String teacherId=String.valueOf(request.get("teacherId"));
 		String classId=String.valueOf(request.get("classId"));
-		List<HashMap<String,Object>> resultpre=teacherCourseModuleService.getCorrectionList(teacherId,classId);
-		HashMap<String,Object> result=new HashMap<String,Object>();
-		result.put("status", "1");
-		result.put("result", resultpre);
+		HashMap<String,Object> result=teacherCourseModuleService.getCorrectionList(teacherId,classId);
 		return result;
 	}
-	/***8.查看作业详情,第一版前端未做。
-	public HashMap<String,Object> getPptList(@RequestParam(value="teacherId")String teacherId){
-		List<HashMap<String,Object>> resultpre=teacherCourseModuleService.getPptList(teacherId);
-		HashMap<String,Object> result=new HashMap<String,Object>();
-		result.put("status", "1");
-		result.put("result", resultpre);
-		return result;
-	}
-	***/
-	//9.获取统计排名列表
+	//8.
+	//9.
 	@RequestMapping(value="/getRankList", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> getRankList(@RequestBody Map<String,Object> request){
 		String teacherId=String.valueOf(request.get("teacherId"));
 		String classId=String.valueOf(request.get("classId"));
-		List<HashMap<String,Object>> resultpre=teacherCourseModuleService.getRankList(teacherId,classId);
-		HashMap<String,Object> result=new HashMap<String,Object>();
-		result.put("status", "1");
-		result.put("result", resultpre);
+		HashMap<String,Object> result=teacherCourseModuleService.getRankList(teacherId,classId);
 		return result;
 	}
-	//10.获取统计排名详情
+	//10
 	@RequestMapping(value="/getRankDetails", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> getRankDetails(@RequestBody Map<String,Object> request){
 		String paperId=String.valueOf(request.get("paperId"));
-		List<HashMap<String,Object>> resultpre=teacherCourseModuleService.getRankDetails(paperId);
-		HashMap<String,Object> result=new HashMap<String,Object>();
-		result.put("status", "1");
-		result.put("result", resultpre);
+		HashMap<String,Object> result=teacherCourseModuleService.getRankDetails(paperId);
 		return result;
 	}
-	//11.	获取批改作业学生列表（11-13为批改作业补充）
+	//11
 	@RequestMapping(value="/getCorrectStudentList", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> getCorrectStudentList(@RequestBody Map<String,Object> request){
 		String teacherId=String.valueOf(request.get("teacherId"));
 		String paperId=String.valueOf(request.get("paperId"));
-		List<HashMap<String,Object>> resultpre=teacherCourseModuleService.getCorrectStudentList(teacherId,paperId);
-		HashMap<String,Object> result=new HashMap<String,Object>();
-		result.put("status", "1");
-		result.put("result", resultpre);
+		HashMap<String,Object> result=teacherCourseModuleService.getCorrectStudentList(teacherId,paperId);
 		return result;
 	}
-	//12.	获取待批改/修改学生作业详情
+	//12
 	@RequestMapping(value="/getCorrectQuestionList", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> getCorrectQuestionList(@RequestBody Map<String,Object> request){
 		String teacherId=String.valueOf(request.get("teacherId"));
 		String paperId=String.valueOf(request.get("paperId"));
 		String studentId=String.valueOf(request.get("studentId"));
-		List<HashMap<String,Object>> resultpre=teacherCourseModuleService.getCorrectQuestionList(teacherId,paperId,studentId);
-		HashMap<String,Object> result=new HashMap<String,Object>();
-		result.put("status", "1");
-		result.put("result", resultpre);
+		HashMap<String,Object> result=teacherCourseModuleService.getCorrectQuestionList(teacherId,paperId,studentId);
 		return result;
 	}
 	/***13.	提交/修改批改结果，比较难，先放着
@@ -197,39 +137,56 @@ public class TeacherCourseModule {
 		return this.teacherCourseModuleService.deleteQuestion(teacherId,questionId);
 	}
 	**/
-	//16.	创建客观题
+	//16createObjective
 	@RequestMapping(value="/createObjective", method=RequestMethod.POST)
 	@ResponseBody
-	public int createObjective(@RequestBody Map<String,Object> request) {
-		String teacherId=String.valueOf(request.get("teacherId"));
-		//图片路径也存到titleContent
-		String titleContent=String.valueOf(request.get("titleContent"));
-		String optioanA=String.valueOf(request.get("optioanA"));
-		String optionB=String.valueOf(request.get("optionB"));
-		String optionC=String.valueOf(request.get("optionC"));
-		String optionD=String.valueOf(request.get("optionD"));
-		String answer=String.valueOf(request.get("answer"));
-
+	public HashMap<String,Object> createObjective(MultipartHttpServletRequest request) {
+		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+		String createTime=date.format(new Date());
+		String teacherId=String.valueOf(request.getParameter("teacherId"));
+		String subjectId=String.valueOf(request.getParameter("subjectId"));
+		int grade=Integer.parseInt(request.getParameter("grade"));
+		String optionA=String.valueOf(request.getParameter("optionA"));
+		String optionB=String.valueOf(request.getParameter("optionB"));
+		String optionC=String.valueOf(request.getParameter("optionC"));
+		String optionD=String.valueOf(request.getParameter("optionD"));
+		//the answer is one of ABCD
+		String answer=String.valueOf(request.getParameter("answer"));
+		String titleContent=String.valueOf(request.getParameter("titleContent"));
 		
-		return this.teacherCourseModuleService.createObjective(teacherId,
-																titleContent,
-																optioanA,optionB,optionC,optionD,
-																answer);
+		MultipartFile picA=request.getFile("picA");
+		MultipartFile picB=request.getFile("picB");
+		MultipartFile picC=request.getFile("picC");
+		MultipartFile picD=request.getFile("picD");
+		//title'picture
+		MultipartFile picPathPicture=request.getFile("picPathPicture");
+		String opaPicPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+createTime+picA.getOriginalFilename();
+		String opbPicPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+createTime+picB.getOriginalFilename();
+		String opcPicPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+createTime+picC.getOriginalFilename();
+		String opdPicPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+createTime+picD.getOriginalFilename();
+		String picPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+createTime+picPathPicture.getOriginalFilename();
+		return this.teacherCourseModuleService.createObjective(subjectId,grade,optionA,optionB,optionC,optionD,
+				answer,picA,picB,picC,picD,picPathPicture,opaPicPath,opbPicPath,opcPicPath,opdPicPath,picPath,titleContent);
 	}
-	/**17.create subjective
+	//17create subjective completed
 	@RequestMapping(value="/createSubjective", method=RequestMethod.POST)
 	@ResponseBody
-	public int createSubjective(@RequestBody Map<String,Object> request) {
-		String teacherId=String.valueOf(request.get("teacherId"));
-		//图片路径也存到titleContent
-		String pic=String.valueOf(request.get("pic"));
-		String answer=String.valueOf(request.get("answer"));
-
+	public HashMap<String,Object> createSubjective(MultipartHttpServletRequest request) {
+		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+		String createTime=date.format(new Date());
+		String teacherId=String.valueOf(request.getParameter("teacherId"));
+		String subjectId=String.valueOf(request.getParameter("subjectId"));
+		int grade=Integer.parseInt(request.getParameter("grade"));
+		MultipartFile picSubjective=request.getFile("pic");
+		String picPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+createTime+picSubjective.getOriginalFilename();
+		MultipartFile picAnswer=request.getFile("answer");
+		String answer=request.getSession().getServletContext().getRealPath("/")+"img\\"+createTime+picAnswer.getOriginalFilename();
 		
-		return this.teacherCourseModuleService.createSubjective(teacherId,
-																pic,
-																answer);
-	}**/
+		
+		return this.teacherCourseModuleService.createSubjective(teacherId,picSubjective,
+																picPath,picAnswer,
+																answer,subjectId,grade);
+	}
 	//18.checkTitle
 	@RequestMapping(value="/checkTitle", method=RequestMethod.POST)
 	@ResponseBody

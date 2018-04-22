@@ -26,5 +26,6 @@ public interface ITitleDao {
 
     public HashMap<String,Object> getTitleContent(@Param("questionId")String questionId);
 
-    public int createObjective(@Param("titleId")UUID titleId,@Param("titleContent")String titleContent);
+    public int createObjective(@Param("titleId")String titleId,@Param("titleContent")String titleContent,@Param("picPath")String picPath);
+    public int createSubjective(String titleId,String picPath);
 }

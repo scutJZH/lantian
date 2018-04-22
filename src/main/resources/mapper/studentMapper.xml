@@ -96,4 +96,26 @@
 		<result property="schoolName" column="school_name"/>
 		<result property="classId" column="class_id"/>
 	</resultMap>
+	<!--getStudentByClassId  -->
+	<select id="getStudentByClassId" resultMap="getStudentByClassIdHashMap">
+	select student_id,nickname from student where class_id=#{classId}
+	</select>
+	<resultMap type="HashMap" id="getStudentByClassIdHashMap">
+	<id property="studentId" column="student_id"/>
+	<result property="nickname" column="nickname"/>
+	</resultMap>
+	
+	<!-- checkStudentExist -->
+	<select id="checkStudentExist" resultMap="checkStudentExistHashMap">
+		select student_id,class_id from student where student_id=#{studentId}
+	</select>
+	<resultMap id="checkStudentExistHashMap" type="HashMap">
+	<id property="studentId" column="student_id"/>
+	<result property="classId" column="class_id"/>
+	</resultMap>
+	
+	<!-- addStudent --><!-- this tab associate other tab,maybe problem -->
+	<insert id="addStudent">
+	insert into student(class_id) values(#{classId}) where student_id=#{studentId}
+	</insert>
 </mapper>

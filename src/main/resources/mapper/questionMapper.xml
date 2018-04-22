@@ -175,10 +175,34 @@ SELECT question_id,title_content from d where option_a  is NULL ;
 	(question_id,title_id,subject_id,grade,option_a,option_b,option_c,option_d,answer)
 	values
 	(#{questionId,jdbcType=VARCHAR},#{titleId},#{subjectId,jdbcType=VARCHAR},
-	#{grade,jdbcType=INT},#{optionA,jdbcType=VARCHAR},
+	#{grade,jdbcType=INTEGER},#{optionA,jdbcType=VARCHAR},
 	#{optionB,jdbcType=VARCHAR},#{optionC,jdbcType=VARCHAR},#{optionD,jdbcType=VARCHAR},
 	#{answer,jdbcType=VARCHAR})
 </insert>
+<!-- 18.checkTitle -->
+<select id="checkTitle" resultMap="checkTitleMap">
+select title_content,option_a,option_b,option_c,
+option_d,answer,pic_path from question join title on question.title_id=title.title_id 
+and question.question_id=#{questionId}
+</select>
+<resultMap id="checkTitleMap" type="Map">
+<id property="titleContent" column="title_content"></id>
+<result property="optionA" column="option_a"/>
+<result property="optionB" column="option_b"/>
+<result property="optionC" column="option_c"/>
+<result property="optionD" column="opption_D"/>
+<result property="answer" column="answer"/>
+<result property="picPath" column="pic_path"/>
+</resultMap>
 
-
+<!-- createSubjective -->
+<insert id="createSubjective">
+insert into question(question_id,title_id,subject_id,grade,answer)values(#{questionId,javaType=String,jdbcType=VARCHAR},#{titleId,javaType=String,jdbcType=VARCHAR},#{subjectId,javaType=String,jdbcType=VARCHAR},#{grade,jdbcType=INTEGER},#{answer,javaType=String,jdbcType=VARCHAR})
+</insert>
+<!-- createObjective -->
+<insert id="createObjective">
+insert into question(question_id,title_id,subject_id,grade,option_a,option_b,option_c,option_d,
+			answer,opa_pic_path,opb_pic_path,opc_pic_path,opd_pic_path)values(#{questionId,javaType=String,jdbcType=VARCHAR},#{titleId,javaType=String,jdbcType=VARCHAR},#{subjectId,javaType=String,jdbcType=VARCHAR},#{grade,jdbcType=INTEGER},#{optionA,javaType=String,jdbcType=VARCHAR},#{optionB,javaType=String,jdbcType=VARCHAR},#{optionC,javaType=String,jdbcType=VARCHAR},#{optionD,javaType=String,jdbcType=VARCHAR},
+			#{answer,javaType=String,jdbcType=VARCHAR},#{opaPicPath,javaType=String,jdbcType=VARCHAR},#{opbPicPath,javaType=String,jdbcType=VARCHAR},#{opcPicPath,javaType=String,jdbcType=VARCHAR},#{opdPicPath,javaType=String,jdbcType=VARCHAR})
+</insert>
 </mapper>

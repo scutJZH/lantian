@@ -31,9 +31,8 @@ public interface IQuestionDao {
     public List<Map<String,Object>> getSubjectiveList(String subjectId,String d);
     
     public List<Map<String,Object>> getObjectiveList(String subjectId);
-    public int createObjective(String teacherId,
-			String titleContent,UUID titleId,
-			String optioanA,String optionB,String optionC,String optionD,
-			String answer);
+    public int createObjective(String questionId,String titleId,String subjectId,int grade,String optionA,String optionB,String optionC,String optionD,
+			String answer,String opaPicPath,String opbPicPath,String opcPicPath,String opdPicPath);
     public Map<String,Object> checkTitle(String question);
+    public int createSubjective(String questionId,String titleId,String subjectId,int grade,String answer);
 }
