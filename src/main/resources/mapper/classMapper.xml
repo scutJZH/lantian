@@ -116,7 +116,7 @@
  </update>
  
 <insert id="addClass">
-insert into class (schoolName,teacherId,grade,classId,className,createTime,studentNumber) values(#{schoolName},#{teacherId},#{grade},#{classId},#{className},#{createTime},#{studentNumber})
+insert into class (school_name,teacher_id,grade,class_id,class_name,create_time,student_number) values(#{schoolName},#{teacherId},#{grade},#{classId},#{className},#{createTime},#{studentNumber})
 </insert>
 <!-- judgeClassExist -->
 <select id="judgeClassExist" resultMap="judgeClassExistHashMap">
@@ -126,8 +126,4 @@ select class_id from class where class_id=#{class_id}
 <id property="classId" column="classId"/>
 </resultMap>
 
-<insert id="addClass">
-insert into class(school_name,teacher_id,grade,class_id,class_name,create_time,student_number)
-values(#{schoolName},#{teacherId},#{grade},#{classId},#{className},#{createTime},#{studentNumber})
-</insert>
 </mapper>

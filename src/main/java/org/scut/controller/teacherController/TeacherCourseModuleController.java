@@ -40,6 +40,8 @@ public class TeacherCourseModuleController {
 	private IPaperDao paperDao;
 	@Resource
 	private IQuestion_paperDao question_paperDao;
+	
+	
 	@RequestMapping(value="/getHomeworkList")
 	@ResponseBody
 	public HashMap<String,Object> getHomeworkList(@RequestBody Map<String,Object> request) {

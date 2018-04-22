@@ -28,6 +28,4 @@ public interface IClassDao {
     					@Param("grade")String grade,@Param("classId")String classId,@Param("className")String className,
     					@Param("createTime")String createTime,@Param("studentNumber")String studentNumber);
     public HashMap<String,Object> judgeClassExist(@Param("classId")String classId);
-    public int addClass(String schoolName,String teacherId,int grade,String classId,String className,String createTime,int studentNumber);
-	
 }
