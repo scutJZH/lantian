@@ -71,7 +71,7 @@ public class TeacherCourseModuleController {
 		HashMap<String,Object> result=teacherCourseModuleService.getQuestionList(subjectId);
 		return result;
 	}
-	//4assign homework,all actions were done in controller,completed!
+	//4assign homework,all actions were done in controller,completed!!!
 	@RequestMapping(value="/assignHomework", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> assignHomework(@RequestBody Map<String,Object> request){
