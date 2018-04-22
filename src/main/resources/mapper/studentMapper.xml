@@ -118,4 +118,11 @@
 	<insert id="addStudent">
 	insert into student(class_id) values(#{classId}) where student_id=#{studentId}
 	</insert>
+	<!-- getStudentIdByClassId -->
+	<select id="getStudentIdByClassId" resultMap="getStudentIdByClassIdHashMap">
+	select student_id from student where class_id=#{classId}
+	</select>
+	<resultMap type="HashMap" id="getStudentIdByClassIdHashMap">
+	<id property="studentId" column="student_id"/>
+	</resultMap>
 </mapper>

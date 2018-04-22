@@ -3,6 +3,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.annotation.Resource;
+
+import org.scut.dao.*;
 import org.scut.service.teacherService.ITeacherCourseModuleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +18,28 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 public class TeacherCourseModuleController {
 	@Resource
 	private ITeacherCourseModuleService teacherCourseModuleService;
-	
+	@Resource
+	private IStudentDao studentDao;
+	@Resource
+	private IClass_paperDao class_paperDao;
+	@Resource
+	private ITeacher_classDao teacher_classDao;
+	@Resource
+	private IClassDao classDao;
+	@Resource
+	private IQuestionDao questionDao;
+	@Resource //杩欎釜鍔熻兘杩樻病娴�
+	private IPptDao pptDao;
+	@Resource
+	private IStudent_paperDao student_paperDao;
+	@Resource
+	private ISolutionDao solutionDao; 
+	@Resource
+	private ITitleDao titleDao;
+	@Resource
+	private IPaperDao paperDao;
+	@Resource
+	private IQuestion_paperDao question_paperDao;
 	@RequestMapping(value="/getHomeworkList")
 	@ResponseBody
 	public HashMap<String,Object> getHomeworkList(@RequestBody Map<String,Object> request) {
@@ -48,14 +71,98 @@ public class TeacherCourseModuleController {
 		HashMap<String,Object> result=teacherCourseModuleService.getQuestionList(subjectId);
 		return result;
 	}
-	//4.布置作业,先不做。
-	/*public HashMap<String,Object> getQuestionList(@RequestParam(value="subjecId")String subjectId){
-		List<HashMap<String,Object>> resultpre=teacherCourseModuleService.getQuestionList(subjectId);
+	//4assign homework,all actions were done in controller,completed!
+	@RequestMapping(value="/assignHomework", method=RequestMethod.POST)
+	@ResponseBody
+	public HashMap<String,Object> assignHomework(@RequestBody Map<String,Object> request){
+		String status="1";
 		HashMap<String,Object> result=new HashMap<String,Object>();
-		result.put("status", "1");
-		result.put("result", resultpre);
+		/**table paper**/
+		String paperId=UUID.randomUUID().toString();
+		String paperName=String.valueOf(request.get("paperName"));
+		int grade=Integer.parseInt(String.valueOf(request.get("grade")));
+		String subjectId=String.valueOf(request.get("subjectId"));
+		String createTeacherId=String.valueOf(request.get("teacherId"));
+		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+		String createTime=date.format(new Date());
+		int maxScore=0;
+		@SuppressWarnings("unchecked")
+		List<HashMap<String,Object>>questionArr= (List<HashMap<String,Object>>)request.get("questionArr");
+		for(int i=0;i<questionArr.size();i++) {
+			int temp=Integer.parseInt(String.valueOf(questionArr.get(i).get("point")));
+			maxScore+=temp;
+		}
+		//action
+		try {
+			this.paperDao.assignHomework(paperId,paperName,grade,subjectId,createTeacherId,createTime,maxScore);
+		}catch(Exception e){
+			e.printStackTrace();
+			status="-2";
+			result.put("result", status);
+		}
+		/**table class_paper**/
+		//paperId
+		String classId=String.valueOf(request.get("classId"));
+		//none ave_time
+		//none ave_score
+		String assignTeacherId=createTeacherId;
+		String deadLine=String.valueOf(request.get("deadLine"));
+		int submitNumber=0;
+		String assignTime=createTime;
+		String paperType=String.valueOf(request.get("paperType"));
+		int examTime=Integer.parseInt(String.valueOf(request.get("examTime")));
+		//none rank
+		//action
+		try {
+			this.class_paperDao.assignHomework(paperId,classId,assignTeacherId,deadLine,submitNumber,assignTime,paperType,examTime);
+		}catch(Exception e) {
+			e.printStackTrace();
+			status="-2";
+			result.put("result", status);
+		}
+		/**table question_paper**/
+		//paperId
+		//questionArr:include questionIdArr,pointArr
+		//action
+		for(HashMap<String,Object> i:questionArr){
+			String questionId=String.valueOf(i.get("questionId"));
+			int point=Integer.parseInt(String.valueOf(i.get("point")));
+			try {
+			
+				this.question_paperDao.assignHomework(paperId,questionId,point);
+			}catch(Exception e) {
+				e.printStackTrace();
+				status="-2";
+				result.put("result", status);
+			}
+		}
+		/**table student**/
+		ArrayList<HashMap<String,Object>> studentIdArr=new ArrayList<HashMap<String,Object>>();
+		try {
+			studentIdArr=this.studentDao.getStudentIdByClassId(classId);
+		}catch(Exception e){
+			e.printStackTrace();
+			status="-2";
+			result.put("result", status);
+		}
+		/**table student_paper**/
+		for(HashMap<String,Object> i:studentIdArr) {
+			String studentId=String.valueOf(i.get("studentId"));
+			try{
+				String submit="0";
+				int score=0;
+				//paperType
+				this.student_paperDao.assignmentHomework(paperId,studentId,submit,score,paperType);
+			}catch(Exception e){
+				e.printStackTrace();
+				status="-2";
+				result.put("result", status);
+			}
+		}
+		result.put("status", status);
 		return result;
-	}*/
+	}
+	
 	//5
 	//6
 	//7

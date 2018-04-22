@@ -30,4 +30,10 @@
 	<result property="choiceScore" column="choice_score"/>
 	<result property="score" column="score"/>
 	</resultMap>
+	
+	<!-- assignmentHomework -->
+<insert id="assignmentHomework">
+insert into student_paper (paper_id,student_id,submit,score,paper_type)
+values (#{paperId},#{studentId},#{submit},#{score},#{paperType})
+</insert>
 </mapper>

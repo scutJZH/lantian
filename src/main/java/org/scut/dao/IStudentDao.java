@@ -1,5 +1,6 @@
 package org.scut.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,4 +39,6 @@ public interface IStudentDao {
 	public HashMap<String,Object> checkStudentExist(@Param("studentId")String studentId);
 	
 	public int addStudent(@Param("studentId")String studentId,@Param("classId")String classId);
+	
+	public ArrayList<HashMap<String,Object>> getStudentIdByClassId(String classId);
 }
