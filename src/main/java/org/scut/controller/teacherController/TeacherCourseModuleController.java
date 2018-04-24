@@ -323,7 +323,7 @@ public class TeacherCourseModuleController {
 		int grade=Integer.parseInt(request.getParameter("grade"));
 		MultipartFile picSubjective=null;
 		MultipartFile picAnswer=null;
-		if(request.getFile("picD") != null) {
+		if(request.getFile("pic") != null) {
 			picSubjective=request.getFile("pic");
 		}
 		if(request.getFile("answer") != null) {
