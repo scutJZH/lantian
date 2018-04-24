@@ -335,7 +335,7 @@ public class TeacherCourseModuleController {
 																picPath,picAnswer,
 																answer,subjectId,grade);
 	}
-	//18.checkTitle test well
+	//18.checkTitle test well.
 	@RequestMapping(value="/checkTitle", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String,Object> checkTitle(@RequestBody Map<String,Object> request) {
