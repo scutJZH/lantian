@@ -186,10 +186,6 @@ and question.question_id=#{questionId}
 <result property="optionD" column="opption_D"/>
 <result property="answer" column="answer"/>
 <result property="picPath" column="pic_path"/>
-<result property="opaPicPath" column="opa_pic_path"/>
-<result property="opbPicPath" column="opb_pic_path"/>
-<result property="opcPicPath" column="opc_pic_path"/>
-<result property="opdPicPath" column="opd_pic_path"/>
 </resultMap>
 
 <!-- createSubjective -->
