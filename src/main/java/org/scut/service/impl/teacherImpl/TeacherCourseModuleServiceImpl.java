@@ -50,13 +50,12 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		result.put("status", status);
 		return result;
 	}
-	@Override
 	public HashMap<String,Object> deleteList(List<String> paperId) {
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			int r1=this.class_paperDao.deleteList(paperId);
-			result.put("result",r1);
+			this.class_paperDao.deleteList(paperId);
+			result.put("result",status);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -81,11 +80,11 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		result.put("status", status);
 		return result;
 	}
-	public HashMap<String,Object> getQuestionList(String sunjectId){
+	public HashMap<String,Object> getQuestionList(String sunjectId,int grade){
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			List<HashMap<String,Object>> r1=this.questionDao.getQuestionList(sunjectId);
+			List<HashMap<String,Object>> r1=this.questionDao.getQuestionList(sunjectId,grade);
 			result.put("result",r1);
 		}
 		catch(Exception e) {
@@ -155,22 +154,19 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		try{
 			List<HashMap<String,Object>> r1= this.student_paperDao.getRankDetails(paperId);
 			/**鎻掑叆鎺掑簭浣垮緱璇ョ粨鏋滄槸鎸夊垎鏁颁粠灏忓埌澶ф帓鐨�**/
-			int n = r1.size();
-			HashMap<String,Object>  temp;
-	        for(int i = 1; i< n; i++) {
-	            for(int j = i; j>0 && (Integer)(r1.get(j-1).get("score"))> (Integer)(r1.get(j).get("score")); j--) {
-	            	temp = r1.get(j);
-	            	r1.get(j).clear();
-	                r1.get(j).putAll(r1.get(j-1));
-	                r1.get(j-1).clear();
-	                r1.get(j-1).putAll(temp);
-	            }
+	        for(int i = 1; i< r1.size(); i++) {
+	        	HashMap<String,Object>  temp=r1.get(i);
+	        		int k;
+	        		for(k = i-1; k>=0 && Integer.parseInt(String.valueOf((( this.student_paperDao.getRankDetails(paperId).get(k).get("score")))))> Integer.parseInt(String.valueOf((( this.student_paperDao.getRankDetails(paperId).get(i).get("score"))))); k--) {
+	            		r1.set(k+1,r1.get(k));
+	        		}      
+	            r1.set(k+1, temp);
 	        }
 	        /**鎻掑叆鎺掑簭浣垮緱璇ョ粨鏋滄槸鎸夊垎鏁颁粠灏忓埌澶ф帓鐨�**/
 	       /**涓婇潰鐨勭粨鏋滄病鏈夋帓鍚嶏紝涓嬮潰缁欑粨鏋滃姞鍏ユ帓鍚嶆暟瀛梤ankNumber**/
 	        int n2 = r1.size();
 	        for(int i = 0; i< n2; i++) {
-	        	r1.get(i).put("rankNumber", String.valueOf(r1.size()-(i+1)));
+	        	r1.get(i).put("rankNumber", String.valueOf(r1.size()-(i+1)+1));
 	        }
 	        result.put("result",r1);
 		}
@@ -189,7 +185,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 			List<HashMap<String,Object>> r1= this.student_paperDao.getCorrectStudentList(teacherId,paperId);
 			/**閫氳繃鍒ゆ柇鎬诲垎鏄惁涓�0鏉ュ垽鏂槸鍚﹀凡鎵规敼**/
 			for(int i=0;i<r1.size();i++) {
-				if((Integer)((r1.get(i)).get("score"))>0) {
+				if(((Integer)((r1.get(i)).get("score"))-(Integer)((r1.get(i)).get("choiceScore")))>0) {
 					r1.get(i).put("correctedBox", "true");
 				}
 				else {
@@ -227,14 +223,20 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		result.put("status", status);
 		return result;
 	}
-
-	//14.鑾峰彇涓昏/瀹㈣棰樺垪琛�
-/**
-	public List<Map<String,Object>> getSubjectiveOrObjectiveList(String teacherId,String questionType){
-		//涓嬮潰杩欎釜鍒嗗姛鑳藉彲鑳介渶瑕佺敤鍒皊ubjectId锛屼笉杩囨殏鏃跺墠绔病浼�
-		if(questionType=="1")return questionDao.getSubjectiveList();
-		if(questionType=="2")return questionDao.getObjectiveList();
-	}*/
+	public HashMap<String,Object> getSubjectiveOrObjectiveList(String teacherId,String questionType,String subjectId,int grade){
+		String status = "1";
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		try {
+			if(questionType=="1") result.put("result",this.questionDao.getSubjectiveList(subjectId,grade));
+			if(questionType=="2") result.put("result",this.questionDao.getSubjectiveList(subjectId,grade));
+		}catch(Exception e) {
+			e.printStackTrace();
+			status = "-2";
+			result.put("result",status);
+		}
+		result.put("status", status);
+		return result;
+	}
 	/**15.鍒犻櫎涓�閬撻鐩�
 	public int deleteQuestion(String teacherId,String questionnId) {
 		return this.questionDao
@@ -318,7 +320,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 			Map<String,Object> r1=this.questionDao.checkTitle(questionId);
 			if(((String)r1.get("optionA"))==null) r1.put("questionType", 1);
 			else if(((String)r1.get("optionA")).length()>0) r1.put("questionType", 2);
-			result.put("result",status);
+			result.put("result",r1);
 		}
 		catch(Exception e) {
 			e.printStackTrace();

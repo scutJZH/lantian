@@ -22,4 +22,9 @@ and paper_id=#{paperId}
 		where student_id=#{studentId} AND paper_id=#{paperId} AND question_id=#{questionId}
   </update>
   
+  
+ <!-- submitCorrection -->
+ <insert id="submitCorrection">
+ insert into solution (student_id,paper_id,question_id,point,isright)values(#{studentId},#{paperId},#{questionId},#{point},#{isright})
+ </insert>
 </mapper>

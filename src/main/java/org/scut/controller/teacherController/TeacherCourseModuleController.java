@@ -41,7 +41,7 @@ public class TeacherCourseModuleController {
 	@Resource
 	private IQuestion_paperDao question_paperDao;
 	
-	
+	//1.test well
 	@RequestMapping(value="/getHomeworkList")
 	@ResponseBody
 	public HashMap<String,Object> getHomeworkList(@RequestBody Map<String,Object> request) {
@@ -50,13 +50,16 @@ public class TeacherCourseModuleController {
 	HashMap<String,Object> result=teacherCourseModuleService.selectList(teacherId, classId);
 	return result;
 }
+	//2.haven't delete table student_paper,other test well
 	@RequestMapping(value="/deleteHomeworkList", method=RequestMethod.POST)
 	@ResponseBody
-	public HashMap<String,Object> deleteHomeworkList(@RequestBody List<String> paperId){
-		HashMap<String,Object> result=teacherCourseModuleService.deleteList(paperId);
+	public HashMap<String,Object> deleteHomeworkList(@RequestBody Map<String,Object> paperId){
+		@SuppressWarnings("unchecked")
+		List<String> paperIdArr=(ArrayList<String>)paperId.get("paperId");
+		HashMap<String,Object> result=teacherCourseModuleService.deleteList(paperIdArr);
 		return result;
 	}
-	//3.1
+	//3.1test well
 	@RequestMapping(value="/getClassList", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> getClassList(@RequestBody Map<String,Object> request) {
@@ -65,15 +68,16 @@ public class TeacherCourseModuleController {
 		HashMap<String,Object> result=teacherCourseModuleService.getClassList(teacherId);
 		return result;
 	}
-	//3.3
+	//3.3wait for test
 	@RequestMapping(value="/getQuestionList", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> getQuestionList(@RequestBody Map<String,Object> request){
 		String subjectId=String.valueOf(request.get("subjectId"));
-		HashMap<String,Object> result=teacherCourseModuleService.getQuestionList(subjectId);
+		int grade=Integer.parseInt(String.valueOf(request.get("grade")));
+		HashMap<String,Object> result=teacherCourseModuleService.getQuestionList(subjectId,grade);
 		return result;
 	}
-	//4assign homework,all actions were done in controller,completed!!!
+	//4assign homework,all actions were done in controller,completed!!! wait for test
 	@RequestMapping(value="/assignHomework", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> assignHomework(@RequestBody Map<String,Object> request){
@@ -167,7 +171,7 @@ public class TeacherCourseModuleController {
 	
 	//5
 	//6
-	//7
+	//7getCorrectionList test well
 	@RequestMapping(value="/getCorrectionList", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> getCorrectionList(@RequestBody Map<String,Object> request){
@@ -177,7 +181,7 @@ public class TeacherCourseModuleController {
 		return result;
 	}
 	//8.
-	//9.
+	//9.test well
 	@RequestMapping(value="/getRankList", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> getRankList(@RequestBody Map<String,Object> request){
@@ -186,7 +190,7 @@ public class TeacherCourseModuleController {
 		HashMap<String,Object> result=teacherCourseModuleService.getRankList(teacherId,classId);
 		return result;
 	}
-	//10
+	//10test well
 	@RequestMapping(value="/getRankDetails", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> getRankDetails(@RequestBody Map<String,Object> request){
@@ -194,7 +198,7 @@ public class TeacherCourseModuleController {
 		HashMap<String,Object> result=teacherCourseModuleService.getRankDetails(paperId);
 		return result;
 	}
-	//11
+	//11test well
 	@RequestMapping(value="/getCorrectStudentList", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> getCorrectStudentList(@RequestBody Map<String,Object> request){
@@ -203,7 +207,7 @@ public class TeacherCourseModuleController {
 		HashMap<String,Object> result=teacherCourseModuleService.getCorrectStudentList(teacherId,paperId);
 		return result;
 	}
-	//12
+	//12test well
 	@RequestMapping(value="/getCorrectQuestionList", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> getCorrectQuestionList(@RequestBody Map<String,Object> request){
@@ -213,30 +217,47 @@ public class TeacherCourseModuleController {
 		HashMap<String,Object> result=teacherCourseModuleService.getCorrectQuestionList(teacherId,paperId,studentId);
 		return result;
 	}
-	/***13.	提交/修改批改结果，比较难，先放着
+	//13submitCorrection
 	@RequestMapping(value="/submitCorrection", method=RequestMethod.POST)
 	@ResponseBody
-	public List<Map<String,Object>> submitCorrection(@RequestBody Map<String,Object> request){
+	public Map<String,Object> submitCorrection(@RequestBody Map<String,Object> request){
+		String status = "1";
+		HashMap<String, Object> result = new HashMap<String, Object>();
 		String teacherId=String.valueOf(request.get("teacherId"));
-		String paperId=String.valueOf(request.get("paperId"));
 		String studentId=String.valueOf(request.get("studentId"));
-		//下面的做法是可以的，test completed。
-		List<Map<String,Object>> questionArr=(List<Map<String,Object>>)request.get("questionArr");
-		questionArr.get(0).get("point");
+		String paperId=String.valueOf(request.get("paperId"));
+		//the method below is ok，test completed
+		ArrayList<Map<String,Object>> questionArr=(ArrayList<Map<String,Object>>)request.get("questionArr");
+		for(int i=0;i<questionArr.size();i++) {
+			 int point=Integer.parseInt(String.valueOf(questionArr.get(0).get("point")));
+			 String isright="0";
+			 if(point>0) isright="1";
+			 else isright="0";
+			 String questionId=String.valueOf(questionArr.get(0).get("questionId"));
+			 try{
+				 this.solutionDao.submitCorrection(studentId,paperId,questionId,point,isright);
+				 result.put("result",status);
+			 }catch(Exception e) {
+					e.printStackTrace();
+					status = "-2";
+					result.put("result",status);
+			}
+		} 
 		//int resultpre=teacherCourseModuleService.submitCorrection(teacherId,paperId,studentId,questionArr);
-		return questionArr;
-	}***/
-	//14.获取主观/客观题列表
-	/**@RequestMapping(value="/getSubjectiveOrObjectiveList", method=RequestMethod.POST)
+		result.put("status", status);
+		return result;
+	}
+	//14
+	@RequestMapping(value="/getSubjectiveOrObjectiveList", method=RequestMethod.POST)
 	@ResponseBody
-	public List<Map<String,Object>> getSubjectiveOrObjectiveList(@RequestBody Map<String,Object> request){
+	public Map<String,Object> getSubjectiveOrObjectiveList(@RequestBody Map<String,Object> request){
 		String teacherId=String.valueOf(request.get("teacherId"));
-		String questionType=String.valueOf(request.get("questionType"));	
-		//下面的做法是可以的，test completed。
-		List<Map<String,Object>> result=(List<Map<String,Object>>)request.getSubjectiveOrObjectiveList(teacherId,questionType);
+		String questionType=String.valueOf(request.get("questionType"));
+		String subjectId=String.valueOf(request.get("subjectId"));
+		int grade=Integer.parseInt(String.valueOf(request.get("grade")));
+		Map<String,Object> result=this.teacherCourseModuleService.getSubjectiveOrObjectiveList(teacherId,questionType,subjectId,grade);
 		return result;
 		}
-	**/
 	//15.删除一道题目
 	/**@RequestMapping(value="/deleteQuestion", method=RequestMethod.POST)
 	@ResponseBody
@@ -262,13 +283,27 @@ public class TeacherCourseModuleController {
 		//the answer is one of ABCD
 		String answer=String.valueOf(request.getParameter("answer"));
 		String titleContent=String.valueOf(request.getParameter("titleContent"));
-		
-		MultipartFile picA=request.getFile("picA");
-		MultipartFile picB=request.getFile("picB");
-		MultipartFile picC=request.getFile("picC");
-		MultipartFile picD=request.getFile("picD");
+		MultipartFile picA=null;
+		MultipartFile picB = null;
+		MultipartFile picC = null;
+		MultipartFile picD = null;
+		MultipartFile picPathPicture=null;
+		if(request.getFile("picA") != null) {
+			picA=request.getFile("picA");
+		}
+		if(request.getFile("picB") != null) {
+			picB=request.getFile("picB");
+		}
+		if(request.getFile("picC") != null) {
+			picC=request.getFile("picC");
+		}
+		if(request.getFile("picD") != null) {
+			picD=request.getFile("picD");
+		}
 		//title'picture
-		MultipartFile picPathPicture=request.getFile("picPathPicture");
+		if(request.getFile("picPathPicture") != null) {
+			picPathPicture=request.getFile("picPathPicture");
+		}
 		String opaPicPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+createTime+picA.getOriginalFilename();
 		String opbPicPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+createTime+picB.getOriginalFilename();
 		String opcPicPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+createTime+picC.getOriginalFilename();
@@ -286,17 +321,21 @@ public class TeacherCourseModuleController {
 		String teacherId=String.valueOf(request.getParameter("teacherId"));
 		String subjectId=String.valueOf(request.getParameter("subjectId"));
 		int grade=Integer.parseInt(request.getParameter("grade"));
-		MultipartFile picSubjective=request.getFile("pic");
+		MultipartFile picSubjective=null;
+		MultipartFile picAnswer=null;
+		if(request.getFile("picD") != null) {
+			picSubjective=request.getFile("pic");
+		}
+		if(request.getFile("answer") != null) {
+			picAnswer=request.getFile("answer");
+			}
 		String picPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+createTime+picSubjective.getOriginalFilename();
-		MultipartFile picAnswer=request.getFile("answer");
 		String answer=request.getSession().getServletContext().getRealPath("/")+"img\\"+createTime+picAnswer.getOriginalFilename();
-		
-		
 		return this.teacherCourseModuleService.createSubjective(teacherId,picSubjective,
 																picPath,picAnswer,
 																answer,subjectId,grade);
 	}
-	//18.checkTitle
+	//18.checkTitle test well
 	@RequestMapping(value="/checkTitle", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String,Object> checkTitle(@RequestBody Map<String,Object> request) {

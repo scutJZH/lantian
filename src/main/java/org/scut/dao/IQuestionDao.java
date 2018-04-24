@@ -25,12 +25,12 @@ public interface IQuestionDao {
 
     Map<String, Object> getQuestion(@Param("questionId")String questionId);
 
-    public List<HashMap<String,Object>> getQuestionList(String subjectId);
+    public List<HashMap<String,Object>> getQuestionList(String subjectId,int grade);
 
     
-    public List<Map<String,Object>> getSubjectiveList(String subjectId,String d);
+    public List<HashMap<String,Object>> getSubjectiveList(String subjectId,int grade);
     
-    public List<Map<String,Object>> getObjectiveList(String subjectId);
+    public List<HashMap<String,Object>> getObjectiveList(String subjectId,int grade);
     public int createObjective(String questionId,String titleId,String subjectId,int grade,String optionA,String optionB,String optionC,String optionD,
 			String answer,String opaPicPath,String opbPicPath,String opcPicPath,String opdPicPath);
     public Map<String,Object> checkTitle(String question);
