@@ -19,12 +19,12 @@ select paper_id,assign_time,submit_number,paper_name,student_number from class_p
 <result property="paperName" column="paper_name"/>
 <result property="studentNumber" column="student_number"/>
 </resultMap>
-<!-- 删除作业列表 -->
-<delete id="deleteList" parameterType="java.util.List">
-	delete from class_paper where paper_id in
-	<foreach collection="List" index="index" item="item" open="(" separator="," close=")">
+<!-- 2.deleteList -->
+<delete id="deleteList" parameterType = "java.util.List">
+	delete from class_paper where paper_id in(
+	<foreach collection="paperIdList" index="index" item="item" separator=",">
 	#{item}
-	</foreach>
+	</foreach>)
 </delete>
 <!-- 7.获取作业批改列表 -->
 <select id="getCorrectionList" resultMap="getCorrectionListHashMap">
@@ -38,5 +38,10 @@ select paper_id,assign_time,submit_number,paper_name,student_number from class_p
 <result property="paperName" column="paper_name"/>
 </resultMap>
 
+<!-- assignHomework -->
+<insert id="assignHomework">
+insert into class_paper (paper_id,class_id,assign_teacher_id,dead_line,submit_number,assign_time,paper_type,exam_time)
+values (#{paperId},#{classId},#{assignTeacherId},#{deadLine},#{submitNumber},#{assignTime},#{paperType},#{examTime});
 
+</insert>
 </mapper>

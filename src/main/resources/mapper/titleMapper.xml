@@ -76,10 +76,22 @@
   
   <!-- 12.	获取待批改/修改学生作业详情 来获取title_content-->
   <select id="getTitleContent" resultMap="getTitleContentHashMap">
-  	select  title_content  from  title  where	
+  	select  title_content,pic_path  from  title  where	
   	title_id  in  (select  title_id  from question  where  question_id=#{questionId})
   </select>
   <resultMap id="getTitleContentHashMap" type="HashMap">
   <id property="titleContent" column="title_content"></id>
+  <result property="picPath" column="pic_path"/>
   </resultMap>
+  
+  <!--createObjective -->
+  <insert id="createObject">
+  	insert into title(title_id,title_content,picPath)
+  	values
+  	(#{titleId,javaType=String,jdbcType=VARCHAR},#{titleContent,javaType=String,jdbcType=VARCHAR}#{picPath,javaType=String,jdbcType=VARCHAR})
+  </insert>
+  <!-- createSubjective -->
+  <insert id="createSubjective">
+  insert into title (title_id,pic_path)values(#{titleId},#{picPath})
+  </insert>
 </mapper>

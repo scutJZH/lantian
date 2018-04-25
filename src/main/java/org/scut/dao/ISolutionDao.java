@@ -14,5 +14,5 @@ public interface ISolutionDao {
 	public void insertSolution(@Param("studentId")String studentId,@Param("paperId") String paperId,@Param("questionId") String questionId,@Param("solutionContent") String solutionContent);
 
 	public void updateSolution(@Param("studentId")String studentId,@Param("paperId") String paperId,@Param("questionId") String questionId,@Param("solutionContent") String solutionContent);
-
+	public int submitCorrection(String studentId,String paperId,String questionId,int point,String isright);
 }

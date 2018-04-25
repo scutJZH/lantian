@@ -1,6 +1,8 @@
 package org.scut.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
@@ -31,5 +33,12 @@ public interface IStudentDao {
 	public Map<String, Object> getClassIDBySId(@Param("studentId")String studentId);
 
 	public String getClassIdById(@Param("studentId")String studentId);
-
+	
+	public List<HashMap<String,Object>> getStudentByClassId(@Param("classId")String classId);
+	
+	public HashMap<String,Object> checkStudentExist(@Param("studentId")String studentId);
+	
+	public int addStudent(@Param("studentId")String studentId,@Param("classId")String classId);
+	
+	public ArrayList<HashMap<String,Object>> getStudentIdByClassId(String classId);
 }

@@ -147,26 +147,55 @@
   
   <select id="getQuestionList" resultMap="getQuestionListHashMap">
 	select question_id,title_content from question natural join title
-	 where subject_id=#{subjectId}
+	 where subject_id=#{subjectId} and grade=#{grade} 
   </select>
 <resultMap id="getQuestionListHashMap" type="HashMap">
 	<id property="questionId" column="question_id"></id>
 	<result property="titleContent" column="title_content"/>
 </resultMap>
 
-<!-- 14.获取主观/客观题列表,待修改 -->
+<!-- 14getSubjectiveListOrObjective -->
 <select id="getSubjectiveList" resultMap="getSubjectiveListMap">
-drop table b;
-create TEMPORARY table d as (select question_id,option_a,title_content 
-from title natural join question where 
-question.title_id=title.title_id and question.subject_id ="1");
-
-SELECT question_id,title_content from d where option_a  is NULL ;
-
+select question_id,title_content from question natural join title
+	 where subject_id=#{subjectId} and grade=#{grade} and option_a is null
 </select>
-<resultMap id="getSubjectiveListMap" type="java.util.Map">
+<resultMap id="getSubjectiveListMap" type="java.util.HashMap">
+	<id property="questionId" column="question_id"></id>
+	<result property="titleContent" column="title_content"/>
+</resultMap>
+<select id="getObjectiveList" resultMap="getObjectiveListMap">
+select question_id,title_content from question natural join title
+	 where subject_id=#{subjectId} and grade=#{grade} and option_a is not null
+</select>
+<resultMap id="getObjectiveListMap" type="java.util.HashMap">
 	<id property="questionId" column="question_id"></id>
 	<result property="titleContent" column="title_content"/>
 </resultMap>
 
+<!-- 18.checkTitle -->
+<select id="checkTitle" resultMap="checkTitleMap">
+select title_content,option_a,option_b,option_c,
+option_d,answer,pic_path,opa_pic_path,opb_pic_path,opc_pic_path,opd_pic_path from question join title on question.title_id=title.title_id 
+and question.question_id=#{questionId}
+</select>
+<resultMap id="checkTitleMap" type="Map">
+<id property="titleContent" column="title_content"></id>
+<result property="optionA" column="option_a"/>
+<result property="optionB" column="option_b"/>
+<result property="optionC" column="option_c"/>
+<result property="optionD" column="opption_D"/>
+<result property="answer" column="answer"/>
+<result property="picPath" column="pic_path"/>
+</resultMap>
+
+<!-- createSubjective -->
+<insert id="createSubjective">
+insert into question(question_id,title_id,subject_id,grade,answer)values(#{questionId,javaType=String,jdbcType=VARCHAR},#{titleId,javaType=String,jdbcType=VARCHAR},#{subjectId,javaType=String,jdbcType=VARCHAR},#{grade,jdbcType=INTEGER},#{answer,javaType=String,jdbcType=VARCHAR})
+</insert>
+<!-- createObjective -->
+<insert id="createObjective">
+insert into question(question_id,title_id,subject_id,grade,option_a,option_b,option_c,option_d,
+			answer,opa_pic_path,opb_pic_path,opc_pic_path,opd_pic_path)values(#{questionId,javaType=String,jdbcType=VARCHAR},#{titleId,javaType=String,jdbcType=VARCHAR},#{subjectId,javaType=String,jdbcType=VARCHAR},#{grade,jdbcType=INTEGER},#{optionA,javaType=String,jdbcType=VARCHAR},#{optionB,javaType=String,jdbcType=VARCHAR},#{optionC,javaType=String,jdbcType=VARCHAR},#{optionD,javaType=String,jdbcType=VARCHAR},
+			#{answer,javaType=String,jdbcType=VARCHAR},#{opaPicPath,javaType=String,jdbcType=VARCHAR},#{opbPicPath,javaType=String,jdbcType=VARCHAR},#{opcPicPath,javaType=String,jdbcType=VARCHAR},#{opdPicPath,javaType=String,jdbcType=VARCHAR})
+</insert>
 </mapper>

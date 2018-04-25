@@ -4,7 +4,7 @@ package org.scut.dao;
 import java.util.Map;
 import java.util.HashMap;
 
-
+import java.util.UUID;
 import org.apache.ibatis.annotations.Param;
 import org.scut.model.Title;
 import org.springframework.stereotype.Repository;
@@ -26,4 +26,6 @@ public interface ITitleDao {
 
     public HashMap<String,Object> getTitleContent(@Param("questionId")String questionId);
 
+    public int createObjective(@Param("titleId")String titleId,@Param("titleContent")String titleContent,@Param("picPath")String picPath);
+    public int createSubjective(String titleId,String picPath);
 }

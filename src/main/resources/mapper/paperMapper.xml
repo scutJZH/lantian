@@ -115,4 +115,9 @@
     where paper_id = #{paperId,jdbcType=VARCHAR}
   </update>
   
+  <!-- assignHomework -->
+  <insert id="assignHomework">
+  insert into paper (paper_id,paper_name,grade,subject_id,create_teacher_id,create_time,max_score)
+  values(#{paperId,jdbcType=VARCHAR},#{paperName,jdbcType=VARCHAR},#{grade,jdbcType=INTEGER},#{subjectId,jdbcType=VARCHAR},#{createTeacherId,jdbcType=VARCHAR},#{createTime,jdbcType=DATE},#{maxScore,jdbcType=INTEGER})
+  </insert>
 </mapper>

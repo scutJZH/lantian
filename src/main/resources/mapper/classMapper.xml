@@ -110,4 +110,20 @@
  	select student_number from class where class_id=#{classId}
  </select>
  
+ <!-- addStudent for student_number -->
+ <update id="addStudent">
+ update class set student_number=#{recentStudentNumber} where class_id=#{classId}
+ </update>
+ 
+<insert id="addClass">
+insert into class (school_name,teacher_id,grade,class_id,class_name,create_time,student_number) values(#{schoolName},#{teacherId},#{grade},#{classId},#{className},#{createTime},#{studentNumber})
+</insert>
+<!-- judgeClassExist -->
+<select id="judgeClassExist" resultMap="judgeClassExistHashMap">
+select class_id from class where class_id=#{class_id}
+</select>
+<resultMap type="HashMap" id="judgeClassExistHashMap">
+<id property="classId" column="classId"/>
+</resultMap>
+
 </mapper>
