@@ -3,8 +3,8 @@
 <mapper namespace="org.scut.dao.ISolutionDao" >
 <!-- 用来完成12.	获取待批改/修改学生作业详情 -->
 <select id="getSolution" resultMap="getSolutionHashMap">
-select question_id,content,point from solution where student_id=#{studentId}
-and paper_id=#{paperId}
+select solution.question_id,content,point from solution 
+join question on solution.question_id=question.question_id where student_id=#{studentId} and question.option_a is null
 </select>
 <resultMap id="getSolutionHashMap" type="java.util.HashMap">
 <result property="questionId" column="question_id"/>
@@ -24,7 +24,7 @@ and paper_id=#{paperId}
   
   
  <!-- submitCorrection -->
- <insert id="submitCorrection">
- insert into solution (student_id,paper_id,question_id,point,isright)values(#{studentId},#{paperId},#{questionId},#{point},#{isright})
- </insert>
+ <update id="submitCorrection">
+ update solution set point=#{point},isright=#{isright} where student_id=#{studentId} and paper_id=#{paperId} and question_id=#{questionId}
+ </update>
 </mapper>

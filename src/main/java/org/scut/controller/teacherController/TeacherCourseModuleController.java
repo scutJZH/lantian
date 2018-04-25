@@ -55,7 +55,7 @@ public class TeacherCourseModuleController {
 	@ResponseBody
 	public HashMap<String,Object> deleteHomeworkList(@RequestBody Map<String,Object> paperId){
 		@SuppressWarnings("unchecked")
-		List<String> paperIdArr=(ArrayList<String>)paperId.get("paperId");
+		List<String> paperIdArr=(List<String>)paperId.get("paperId");
 		HashMap<String,Object> result=teacherCourseModuleService.deleteList(paperIdArr);
 		return result;
 	}
@@ -73,8 +73,9 @@ public class TeacherCourseModuleController {
 	@ResponseBody
 	public HashMap<String,Object> getQuestionList(@RequestBody Map<String,Object> request){
 		String subjectId=String.valueOf(request.get("subjectId"));
-		int grade=Integer.parseInt(String.valueOf(request.get("grade")));
-		HashMap<String,Object> result=teacherCourseModuleService.getQuestionList(subjectId,grade);
+		//we drop the grade function for test
+		//int grade=Integer.parseInt(String.valueOf(request.get("grade")));
+		HashMap<String,Object> result=teacherCourseModuleService.getQuestionList(subjectId);
 		return result;
 	}
 	//4assign homework,all actions were done in controller,completed!!! wait for test
@@ -218,6 +219,7 @@ public class TeacherCourseModuleController {
 		return result;
 	}
 	//13submitCorrection
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/submitCorrection", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String,Object> submitCorrection(@RequestBody Map<String,Object> request){
@@ -228,12 +230,12 @@ public class TeacherCourseModuleController {
 		String paperId=String.valueOf(request.get("paperId"));
 		//the method below is ok，test completed
 		ArrayList<Map<String,Object>> questionArr=(ArrayList<Map<String,Object>>)request.get("questionArr");
-		for(int i=0;i<questionArr.size();i++) {
-			 int point=Integer.parseInt(String.valueOf(questionArr.get(0).get("point")));
+		for(int i=0;i<((ArrayList<Map<String,Object>>)request.get("questionArr")).size();i++) {
+			 int point=Integer.parseInt(String.valueOf(questionArr.get(i).get("point")));
 			 String isright="0";
 			 if(point>0) isright="1";
 			 else isright="0";
-			 String questionId=String.valueOf(questionArr.get(0).get("questionId"));
+			 String questionId=String.valueOf(questionArr.get(i).get("questionId"));
 			 try{
 				 this.solutionDao.submitCorrection(studentId,paperId,questionId,point,isright);
 				 result.put("result",status);

@@ -1,6 +1,7 @@
 package org.scut.service.teacherService;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -10,7 +11,7 @@ public interface ITeacherCourseModuleService {
 	public HashMap<String,Object> deleteList(List<String> paperId);
 	
 	public HashMap<String,Object> getClassList(String teacherId);
-	public HashMap<String,Object> getQuestionList(String sunjectId,int grade);
+	public HashMap<String,Object> getQuestionList(String sunjectId);
 	public HashMap<String,Object> getPptList(String teacherId);
 	public HashMap<String,Object> getCorrectionList(String teacherId,String classId);
 	public HashMap<String,Object> getRankList(String teacherId,String classId);

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -80,11 +81,20 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		result.put("status", status);
 		return result;
 	}
-	public HashMap<String,Object> getQuestionList(String sunjectId,int grade){
+	public HashMap<String,Object> getQuestionList(String sunjectId){
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			List<HashMap<String,Object>> r1=this.questionDao.getQuestionList(sunjectId,grade);
+			List<HashMap<String,Object>> r1=this.questionDao.getQuestionList(sunjectId);
+			HashMap<String,Object> questionTypeId=new HashMap<String,Object>();
+			for(int i=0;i<r1.size();i++) {
+			if(r1.get(i).get("optionA")!=null)
+				questionTypeId.put("questionTypeId", "2");
+			else questionTypeId.put("questionTypeId", "1");
+			HashMap<String,Object> temp=r1.get(i);
+			temp.putAll(questionTypeId);
+			r1.set(i, temp);
+			}
 			result.put("result",r1);
 		}
 		catch(Exception e) {
@@ -152,23 +162,18 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
         String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			List<HashMap<String,Object>> r1= this.student_paperDao.getRankDetails(paperId);
+			List<LinkedHashMap<String,Object>> a= this.student_paperDao.getRankDetails(paperId);
 			/**鎻掑叆鎺掑簭浣垮緱璇ョ粨鏋滄槸鎸夊垎鏁颁粠灏忓埌澶ф帓鐨�**/
-	        for(int i = 1; i< r1.size(); i++) {
-	        	HashMap<String,Object>  temp=r1.get(i);
-	        		int k;
-	        		for(k = i-1; k>=0 && Integer.parseInt(String.valueOf((( this.student_paperDao.getRankDetails(paperId).get(k).get("score")))))> Integer.parseInt(String.valueOf((( this.student_paperDao.getRankDetails(paperId).get(i).get("score"))))); k--) {
-	            		r1.set(k+1,r1.get(k));
-	        		}      
-	            r1.set(k+1, temp);
-	        }
+			
 	        /**鎻掑叆鎺掑簭浣垮緱璇ョ粨鏋滄槸鎸夊垎鏁颁粠灏忓埌澶ф帓鐨�**/
 	       /**涓婇潰鐨勭粨鏋滄病鏈夋帓鍚嶏紝涓嬮潰缁欑粨鏋滃姞鍏ユ帓鍚嶆暟瀛梤ankNumber**/
-	        int n2 = r1.size();
+	        int n2 = a.size();
 	        for(int i = 0; i< n2; i++) {
-	        	r1.get(i).put("rankNumber", String.valueOf(r1.size()-(i+1)+1));
+	        	LinkedHashMap<String,Object> temp=a.get(i);
+	        	temp.put("rankNumber", String.valueOf(i+1));
+	        	a.set(i, temp);
 	        }
-	        result.put("result",r1);
+	        result.put("result",a);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -184,12 +189,14 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		try{
 			List<HashMap<String,Object>> r1= this.student_paperDao.getCorrectStudentList(teacherId,paperId);
 			/**閫氳繃鍒ゆ柇鎬诲垎鏄惁涓�0鏉ュ垽鏂槸鍚﹀凡鎵规敼**/
+			boolean a=true;
+			boolean b=false;
 			for(int i=0;i<r1.size();i++) {
 				if(((Integer)((r1.get(i)).get("score"))-(Integer)((r1.get(i)).get("choiceScore")))>0) {
-					r1.get(i).put("correctedBox", "true");
+					r1.get(i).put("correctedBox", a);
 				}
 				else {
-					r1.get(i).put("correctedBox", "false");
+					r1.get(i).put("correctedBox", b);
 					}
 			}
 			result.put("result",r1);

@@ -146,12 +146,13 @@
   </update>
   
   <select id="getQuestionList" resultMap="getQuestionListHashMap">
-	select question_id,title_content from question natural join title
-	 where subject_id=#{subjectId} and grade=#{grade} 
+	select question_id,title_content,option_a from question natural join title
+	 where subject_id=#{subjectId} 
   </select>
 <resultMap id="getQuestionListHashMap" type="HashMap">
 	<id property="questionId" column="question_id"></id>
 	<result property="titleContent" column="title_content"/>
+	<result property="optionA" column="option_a"/>
 </resultMap>
 
 <!-- 14getSubjectiveListOrObjective -->

@@ -32,15 +32,9 @@ public class ClassManageModuleController {
 		String teacherId=String.valueOf(request.get("teacherId"));
 		String studentId=String.valueOf(request.get("studentId"));
 		String classId=String.valueOf(request.get("classId"));
-		
-		int r1=this.classManageModuleService.addStudent(teacherId,studentId,classId);
-		HashMap<String,Object> resultpre1=new HashMap<String,Object>();
-		resultpre1.put("status", r1);
-		HashMap<String,Object> result=new HashMap<String,Object>();
-		result.put("status",1);
-		result.put("result",resultpre1);
-		return result;
+		return this.classManageModuleService.addStudent(teacherId,studentId,classId);
 	}
+	/**
 	@RequestMapping(value="/addClass")
 	@ResponseBody
 	public HashMap<String,Object> addClass(@RequestBody Map<String,Object> request){
@@ -51,6 +45,6 @@ public class ClassManageModuleController {
 		String className=String.valueOf(request.get("className"));
 		HashMap<String,Object> result= this.classManageModuleService.addClass(schoolName,teacherId,grade,classId,className);
 		return result;
-	}	
+	}	**/
 }
  

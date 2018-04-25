@@ -64,7 +64,7 @@ public class ClassManageModuleServiceImpl implements IClassManageModuleService{
 			if(String.valueOf(r1.get("studentId"))==null)status="-3";//-3means student doesn't exist
 			else {
 				if (String.valueOf(r1.get("classId"))!=null) {
-					status="-2";//-2means student already in other class
+					status="-4";//-4means student already in other class
 				}
 				else {
 					try {
