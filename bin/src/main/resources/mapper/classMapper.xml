@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.scut.dao.IClassDao" >
+
+  <resultMap id="BaseResultMap" type="org.scut.model.Class" >
+    <id column="class_id" property="classId" jdbcType="VARCHAR" />
+    <result column="pic_path" property="picPath" jdbcType="VARCHAR" />
+    <result column="student_number" property="studentNumber" jdbcType="INTEGER" />
+    <result column="grade" property="grade" jdbcType="INTEGER" />
+    <result column="class_name" property="className" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    class_id, pic_path, student_number, grade, class_name, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from class
+    where class_id = #{classId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from class
+    where class_id = #{classId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="org.scut.model.Class" >
+    insert into class (class_id, pic_path, student_number, 
+      grade, class_name, create_time
+      )
+    values (#{classId,jdbcType=VARCHAR}, #{picPath,jdbcType=VARCHAR}, #{studentNumber,jdbcType=INTEGER}, 
+      #{grade,jdbcType=INTEGER}, #{className,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.scut.model.Class" >
+    insert into class
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="classId != null" >
+        class_id,
+      </if>
+      <if test="picPath != null" >
+        pic_path,
+      </if>
+      <if test="studentNumber != null" >
+        student_number,
+      </if>
+      <if test="grade != null" >
+        grade,
+      </if>
+      <if test="className != null" >
+        class_name,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="classId != null" >
+        #{classId,jdbcType=VARCHAR},
+      </if>
+      <if test="picPath != null" >
+        #{picPath,jdbcType=VARCHAR},
+      </if>
+      <if test="studentNumber != null" >
+        #{studentNumber,jdbcType=INTEGER},
+      </if>
+      <if test="grade != null" >
+        #{grade,jdbcType=INTEGER},
+      </if>
+      <if test="className != null" >
+        #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.scut.model.Class" >
+    update class
+    <set >
+      <if test="picPath != null" >
+        pic_path = #{picPath,jdbcType=VARCHAR},
+      </if>
+      <if test="studentNumber != null" >
+        student_number = #{studentNumber,jdbcType=INTEGER},
+      </if>
+      <if test="grade != null" >
+        grade = #{grade,jdbcType=INTEGER},
+      </if>
+      <if test="className != null" >
+        class_name = #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where class_id = #{classId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.scut.model.Class" >
+    update class
+    set pic_path = #{picPath,jdbcType=VARCHAR},
+      student_number = #{studentNumber,jdbcType=INTEGER},
+      grade = #{grade,jdbcType=INTEGER},
+      class_name = #{className,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where class_id = #{classId,jdbcType=VARCHAR}
+  </update>
+  
+ <!--获取班级学生数量map-->
+ <select id="getStudentNumber" parameterType="java.lang.String" resultType="java.lang.Integer">
+ 	select student_number from class where class_id=#{classId}
+ </select>
+ 
+ <!-- addStudent for student_number -->
+ <update id="addStudent">
+ update class set student_number=#{recentStudentNumber} where class_id=#{classId}
+ </update>
+ 
+<insert id="addClass">
+insert into class (school_name,teacher_id,grade,class_id,class_name,create_time,student_number) values(#{schoolName},#{teacherId},#{grade},#{classId},#{className},#{createTime},#{studentNumber})
+</insert>
+<!-- judgeClassExist -->
+<select id="judgeClassExist" resultMap="judgeClassExistHashMap">
+select class_id from class where class_id=#{class_id}
+</select>
+<resultMap type="HashMap" id="judgeClassExistHashMap">
+<id property="classId" column="classId"/>
+</resultMap>
+
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.scut.dao.IParent_studentDao">
+	
+	<select id="isExist" resultType="String">
+		if exists (
+		select * from parent_student
+		where parent_id = #{parentId} and student_id =#{studentId}
+		) select '1' else select '0'
+	</select>
+	
+	<insert id="insertRelationship">
+		insert into parent_student 
+		(parent_id, student_id)
+		values (#{parentId}, #{studentId})
+	</insert>
+	
+	<select id="getChildrenIdsList" resultType="List">
+		select student_id from parent_student where parent_id = #{parentId}
+	</select>
+	
+	<delete id="removeChild">
+		delete from parent_student where parent_id = #{parentId} and student_id = #{studentId}
+	</delete>
+</mapper>

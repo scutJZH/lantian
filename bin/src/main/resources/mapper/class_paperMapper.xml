@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.scut.dao.IClass_paperDao">
+	
+	<select id="getClassPaperByCId" resultType="hashmap" parameterType="String">
+		select paper_id as paperId,assign_time as assignTime,dead_line as deadLine from class_paper where class_id = #{classId}
+	</select>
+<!-- 获取作业列表 -->
+	<select id="selectList" resultMap="getHomeworkListHashMap">
+select paper_id,assign_time,submit_number,paper_name,student_number from class_paper natural join paper,class
+ where class_paper.class_id=class.class_id and class_paper.paper_id=paper.paper_id
+  and class_paper.assign_teacher_id=#{teacherId}
+  and class_paper.class_id=#{classId};
+	</select>
+<resultMap id="getHomeworkListHashMap" type="java.util.HashMap">
+<id property="paperId" column="paper_id"/>
+<result property="assignTime" column="assign_time"/>
+<result property="submitNumber" column="submit_number"/>
+<result property="paperName" column="paper_name"/>
+<result property="studentNumber" column="student_number"/>
+</resultMap>
+<!-- 2.deleteList -->
+<delete id="deleteList" parameterType = "java.util.List">
+	delete from class_paper where paper_id in(
+	<foreach collection="paperIdList" index="index" item="item" separator=",">
+	#{item}
+	</foreach>)
+</delete>
+<!-- 7.获取作业批改列表 -->
+<select id="getCorrectionList" resultMap="getCorrectionListHashMap">
+	select paper_name, paper_id,assign_time,submit_number from class_paper natural join paper
+	where assign_teacher_id=#{teacherId} and class_id=#{classId}
+</select>
+<resultMap id="getCorrectionListHashMap" type="java.util.HashMap">
+<id property="paperId" column="paper_id"></id>
+<result property="assignTime" column="assign_time"/>
+<result property="submitNumber" column="submit_number"/>
+<result property="paperName" column="paper_name"/>
+</resultMap>
+
+<!-- assignHomework -->
+<insert id="assignHomework">
+insert into class_paper (paper_id,class_id,assign_teacher_id,dead_line,submit_number,assign_time,paper_type,exam_time)
+values (#{paperId},#{classId},#{assignTeacherId},#{deadLine},#{submitNumber},#{assignTime},#{paperType},#{examTime});
+
+</insert>
+</mapper>

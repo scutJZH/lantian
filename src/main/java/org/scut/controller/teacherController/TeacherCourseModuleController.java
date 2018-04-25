@@ -27,7 +27,7 @@ public class TeacherCourseModuleController {
 	@Resource
 	private IClassDao classDao;
 	@Resource
-	private IQuestionDao questionDao;
+	private IQuestionDao questionDao; 
 	@Resource //杩欎釜鍔熻兘杩樻病娴�
 	private IPptDao pptDao;
 	@Resource

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.scut.dao.IQuestionDao" >
+  <resultMap id="BaseResultMap" type="org.scut.model.Question" >
+    <id column="question_id" property="questionId" jdbcType="VARCHAR" />
+    <result column="title_id" property="titleId" jdbcType="VARCHAR" />
+    <result column="subject_id" property="subjectId" jdbcType="VARCHAR" />
+    <result column="option_a" property="optionA" jdbcType="VARCHAR" />
+    <result column="option_b" property="optionB" jdbcType="VARCHAR" />
+    <result column="option_c" property="optionC" jdbcType="VARCHAR" />
+    <result column="option_d" property="optionD" jdbcType="VARCHAR" />
+    <result column="answer" property="answer" jdbcType="VARCHAR" />
+    <result column="grade" property="grade" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    question_id, title_id, subject_id, option_a, option_b, option_c, option_d, answer, 
+    grade
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from question
+    where question_id = #{questionId,jdbcType=VARCHAR}
+  </select>
+   
+  <select id="getQuestion" resultType="hashmap" parameterType="String">
+		select question_id as questionId,title_id as titleId, subject_id as subjectId, option_a as optionA,option_b as optionB,option_c as optionC,option_d as optionD,answer,grade from question where question_id = #{questionId}
+  </select>
+	
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from question
+    where question_id = #{questionId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="org.scut.model.Question" >
+    insert into question (question_id, title_id, subject_id, 
+      option_a, option_b, option_c, 
+      option_d, answer, grade
+      )
+    values (#{questionId,jdbcType=VARCHAR}, #{titleId,jdbcType=VARCHAR}, #{subjectId,jdbcType=VARCHAR}, 
+      #{optionA,jdbcType=VARCHAR}, #{optionB,jdbcType=VARCHAR}, #{optionC,jdbcType=VARCHAR}, 
+      #{optionD,jdbcType=VARCHAR}, #{answer,jdbcType=VARCHAR}, #{grade,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.scut.model.Question" >
+    insert into question
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="questionId != null" >
+        question_id,
+      </if>
+      <if test="titleId != null" >
+        title_id,
+      </if>
+      <if test="subjectId != null" >
+        subject_id,
+      </if>
+      <if test="optionA != null" >
+        option_a,
+      </if>
+      <if test="optionB != null" >
+        option_b,
+      </if>
+      <if test="optionC != null" >
+        option_c,
+      </if>
+      <if test="optionD != null" >
+        option_d,
+      </if>
+      <if test="answer != null" >
+        answer,
+      </if>
+      <if test="grade != null" >
+        grade,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="questionId != null" >
+        #{questionId,jdbcType=VARCHAR},
+      </if>
+      <if test="titleId != null" >
+        #{titleId,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectId != null" >
+        #{subjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="optionA != null" >
+        #{optionA,jdbcType=VARCHAR},
+      </if>
+      <if test="optionB != null" >
+        #{optionB,jdbcType=VARCHAR},
+      </if>
+      <if test="optionC != null" >
+        #{optionC,jdbcType=VARCHAR},
+      </if>
+      <if test="optionD != null" >
+        #{optionD,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null" >
+        #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        #{grade,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.scut.model.Question" >
+    update question
+    <set >
+      <if test="titleId != null" >
+        title_id = #{titleId,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectId != null" >
+        subject_id = #{subjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="optionA != null" >
+        option_a = #{optionA,jdbcType=VARCHAR},
+      </if>
+      <if test="optionB != null" >
+        option_b = #{optionB,jdbcType=VARCHAR},
+      </if>
+      <if test="optionC != null" >
+        option_c = #{optionC,jdbcType=VARCHAR},
+      </if>
+      <if test="optionD != null" >
+        option_d = #{optionD,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null" >
+        answer = #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        grade = #{grade,jdbcType=INTEGER},
+      </if>
+    </set>
+    where question_id = #{questionId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.scut.model.Question" >
+    update question
+    set title_id = #{titleId,jdbcType=VARCHAR},
+      subject_id = #{subjectId,jdbcType=VARCHAR},
+      option_a = #{optionA,jdbcType=VARCHAR},
+      option_b = #{optionB,jdbcType=VARCHAR},
+      option_c = #{optionC,jdbcType=VARCHAR},
+      option_d = #{optionD,jdbcType=VARCHAR},
+      answer = #{answer,jdbcType=VARCHAR},
+      grade = #{grade,jdbcType=INTEGER}
+    where question_id = #{questionId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getQuestionList" resultMap="getQuestionListHashMap">
+	select question_id,title_content from question natural join title
+	 where subject_id=#{subjectId} and grade=#{grade} 
+  </select>
+<resultMap id="getQuestionListHashMap" type="HashMap">
+	<id property="questionId" column="question_id"></id>
+	<result property="titleContent" column="title_content"/>
+</resultMap>
+
+<!-- 14getSubjectiveListOrObjective -->
+<select id="getSubjectiveList" resultMap="getSubjectiveListMap">
+select question_id,title_content from question natural join title
+	 where subject_id=#{subjectId} and grade=#{grade} and option_a is null
+</select>
+<resultMap id="getSubjectiveListMap" type="java.util.HashMap">
+	<id property="questionId" column="question_id"></id>
+	<result property="titleContent" column="title_content"/>
+</resultMap>
+<select id="getObjectiveList" resultMap="getObjectiveListMap">
+select question_id,title_content from question natural join title
+	 where subject_id=#{subjectId} and grade=#{grade} and option_a is not null
+</select>
+<resultMap id="getObjectiveListMap" type="java.util.HashMap">
+	<id property="questionId" column="question_id"></id>
+	<result property="titleContent" column="title_content"/>
+</resultMap>
+
+<!-- 18.checkTitle -->
+<select id="checkTitle" resultMap="checkTitleMap">
+select title_content,option_a,option_b,option_c,
+option_d,answer,pic_path,opa_pic_path,opb_pic_path,opc_pic_path,opd_pic_path from question join title on question.title_id=title.title_id 
+and question.question_id=#{questionId}
+</select>
+<resultMap id="checkTitleMap" type="Map">
+<id property="titleContent" column="title_content"></id>
+<result property="optionA" column="option_a"/>
+<result property="optionB" column="option_b"/>
+<result property="optionC" column="option_c"/>
+<result property="optionD" column="opption_D"/>
+<result property="answer" column="answer"/>
+<result property="picPath" column="pic_path"/>
+</resultMap>
+
+<!-- createSubjective -->
+<insert id="createSubjective">
+insert into question(question_id,title_id,subject_id,grade,answer)values(#{questionId,javaType=String,jdbcType=VARCHAR},#{titleId,javaType=String,jdbcType=VARCHAR},#{subjectId,javaType=String,jdbcType=VARCHAR},#{grade,jdbcType=INTEGER},#{answer,javaType=String,jdbcType=VARCHAR})
+</insert>
+<!-- createObjective -->
+<insert id="createObjective">
+insert into question(question_id,title_id,subject_id,grade,option_a,option_b,option_c,option_d,
+			answer,opa_pic_path,opb_pic_path,opc_pic_path,opd_pic_path)values(#{questionId,javaType=String,jdbcType=VARCHAR},#{titleId,javaType=String,jdbcType=VARCHAR},#{subjectId,javaType=String,jdbcType=VARCHAR},#{grade,jdbcType=INTEGER},#{optionA,javaType=String,jdbcType=VARCHAR},#{optionB,javaType=String,jdbcType=VARCHAR},#{optionC,javaType=String,jdbcType=VARCHAR},#{optionD,javaType=String,jdbcType=VARCHAR},
+			#{answer,javaType=String,jdbcType=VARCHAR},#{opaPicPath,javaType=String,jdbcType=VARCHAR},#{opbPicPath,javaType=String,jdbcType=VARCHAR},#{opcPicPath,javaType=String,jdbcType=VARCHAR},#{opdPicPath,javaType=String,jdbcType=VARCHAR})
+</insert>
+</mapper>
