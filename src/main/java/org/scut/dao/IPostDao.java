@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.scut.model.Post;
 
 public interface IPostDao {
+	
     int deleteByPrimaryKey(String postId);
 
     int insert(Post record);
@@ -23,5 +24,4 @@ public interface IPostDao {
 	List<Post>getpostfuzzy(@Param("keyWord")String keyWord);
 	int getpostfuzzycount(@Param("sort")String sort);
 	List<Post>getallpost();
-
 }

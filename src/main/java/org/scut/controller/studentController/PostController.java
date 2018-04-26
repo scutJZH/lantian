@@ -177,7 +177,7 @@ public Map<String, Object>  answerAnswer(HttpServletRequest request, HttpServlet
 		return Json.getJson(1,post);
 	
 	}
-	@RequestMapping("/student/post")
+	@RequestMapping("/student/gettotal")
 	@ResponseBody
 	public Map<String, Object> gettotal(HttpServletRequest request, HttpServletResponse response) throws  IOException{
 		
