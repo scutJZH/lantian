@@ -24,7 +24,7 @@
   </select>
    
   <select id="getQuestion" resultType="hashmap" parameterType="String">
-		select question_id as questionId,title_id as titleId, subject_id as subjectId, option_a as optionA,option_b as optionB,option_c as optionC,option_d as optionD,answer,grade from question where question_id = #{questionId}
+		select question_id as questionId,title_id as titleId, subject_id as subjectId, option_a as optionA,option_b as optionB,option_c as optionC,option_d as optionD,answer,grade,  opa_pic_path as opaPicPath, opb_pic_path as opbPicPath,opc_pic_path as opcPicPath,opd_pic_path as opdPicPath from question where question_id = #{questionId}
   </select>
 	
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >

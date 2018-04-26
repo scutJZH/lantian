@@ -42,13 +42,13 @@ public class RegisterServiceImpl implements IRegisterService {
 					status = "-1";
 				}else{
 					/*
-					 * Éú³ÉÐÂµÄÑéÖ¤Âë£¬¸üÐÂ½øÊý¾Ý¿â
+					 * ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½Ö¤ï¿½ë£¬ï¿½ï¿½ï¿½Â½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½
 					 */
 				}
 			} else {
 				user = new User();
 				String id = UUID.randomUUID().toString();
-				String verifyCode = "000000";//µ÷ÓÃÉú³ÉÑéÖ¤ÂëµÄ¶ÌÐÅ½Ó¿Ú
+				String verifyCode = "000000";//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½Ä¶ï¿½ï¿½Å½Ó¿ï¿½
 				user.setId(id);
 				user.setPhone(telnumber);
 				user.setState("0");

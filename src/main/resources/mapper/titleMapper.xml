@@ -17,7 +17,7 @@
   </select>
     
   <select id="getTitle" resultType="hashmap" parameterType="String">
-		select title_id as titleId,title_content as titleContent from title where title_id = #{titleId}
+		select title_id as titleId,title_content as titleContent,pic_path as picPath from title where title_id = #{titleId}
   </select>
     
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >

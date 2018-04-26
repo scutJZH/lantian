@@ -76,18 +76,26 @@ public class StudentInfoController {
 		request.setCharacterEncoding("UTF-8"); 
 
 			
-		    Iterator<String> fileNames = request.getFileNames();
-			List<MultipartFile> files = new ArrayList<MultipartFile>();
+		    Iterator<String> fileNames = request.getFileNames();		
+			Map<String, MultipartFile> files = new HashMap<>();			
 			for(;fileNames.hasNext();) {
-				files.add(request.getFile(fileNames.next()));
+				
+				String temp = fileNames.next();
+				
+//				System.out.print(temp);
+//				System.out.println();
+//				
+				files.put(temp,request.getFile(temp));
 			}
 			String paperId = request.getParameter("paperId");
 			String studentId = request.getParameter("studentId");
-			String solutionList = request.getParameter("solutionList");
+			String solutionList = request.getParameter("solutionList");						
+			
 			Gson gson = new Gson();
 			List<Map<String, Object>>sList = gson.fromJson(solutionList, List.class);
+			String reqLocation = (request.getSession().getServletContext().getRealPath("/")+"img\\");
 			
-			Map<String, Object> responseBody = this.studentService.uploadSolutions(studentId,paperId,sList,files,request);
+			Map<String, Object> responseBody = this.studentService.uploadSolutions(studentId,paperId,sList,files,reqLocation);
 			
 			ParamsTransport.returnParams(response, responseBody);
 	}

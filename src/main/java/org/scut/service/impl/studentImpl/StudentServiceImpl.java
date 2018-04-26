@@ -243,43 +243,45 @@ public class StudentServiceImpl implements IStudentService{
 
 		@Override
 		public Map<String, Object> uploadSolutions(String studentId, String paperId, List<Map<String, Object>> sList,
-				List<MultipartFile> files,MultipartHttpServletRequest request) {
+				Map<String, MultipartFile> files,String reqLoacation) {
 			Map<String, Object> responseBody = new HashMap<String, Object>();
              
-			for (Map<String, Object> map : sList) {
-				String questionId = (String) map.get("questionId");
-				String solutionContent = (String) map.get("solutionContent");
-			    solutionDao.insertSolution(studentId,paperId,questionId,solutionContent);
-			}
-			
-			
-				
-			try {				
-				for (MultipartFile file : files) {
+			try {
+					for (Map<String, Object> map : sList) {
+						String questionId = (String) map.get("questionId");
+						String solutionContent = (String) map.get("solutionContent");
+						String imgKey = (String) map.get("img");
+						String picPath = null;
+						
+						if(!imgKey.isEmpty())
+						{
+							MultipartFile file = files.get(imgKey);
 
-						System.out.println(request.getSession().getServletContext().getRealPath("/")+"img\\"+file.getOriginalFilename());
-						System.out.println();
-						File img = new File(request.getSession().getServletContext().getRealPath("/")+"img\\"+file.getOriginalFilename());						
-						FileOutputStream fos = new FileOutputStream(img);
-						BufferedOutputStream bos = new BufferedOutputStream(fos);
-						bos.write(file.getBytes());
-						bos.close();
-						fos.close();
+	                        picPath = UUID.randomUUID().toString()+".jpg";
+							
+							System.out.print(picPath);
+							System.out.println();
+                       
+							File img = new File(reqLoacation+file.getOriginalFilename());
+							
+							System.out.print(reqLoacation+file.getOriginalFilename());
+							System.out.println();
+							
+
+							FileOutputStream fos = new FileOutputStream(img);
+							BufferedOutputStream bos = new BufferedOutputStream(fos);
+							bos.write(file.getBytes());
+							bos.close();
+							fos.close();
 						
-						String fileName = file.getOriginalFilename();
-						int length = fileName.indexOf(".");						
-						String [] paramList = fileName.substring(0, length).split("\\+");
-					
-						String pic_path = request.getSession().getServletContext().getRealPath("/")+"img\\"+file.getOriginalFilename();
-						
-						if(paramList.length<3) {responseBody.put("status", "-3");return responseBody;}
-						else {
-							solutionDao.updateSolution(paramList[0],paramList[1],paramList[2],pic_path);
-						
-					}
-				}
-			}			
-			catch (Exception e) {System.out.println(e);responseBody.put("status","-1");return responseBody;}
+							if(img.renameTo(new File(reqLoacation+picPath))) {System.out.println(img.getName());}else{responseBody.put("status","-2");return responseBody;};
+							
+							
+							}
+					    solutionDao.insertSolution(studentId,paperId,questionId,solutionContent,picPath);
+						}					
+
+					}catch (Exception e) {System.out.println(e);responseBody.put("status","-1");return responseBody;}
 			responseBody.put("status", "1");
 			return responseBody;
 		}
