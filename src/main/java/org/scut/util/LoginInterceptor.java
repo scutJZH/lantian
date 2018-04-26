@@ -19,7 +19,6 @@ public class LoginInterceptor implements HandlerInterceptor {
 	public synchronized boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		
-		/**
 		String id = null;
 		String token = null;
 		Cookie[] cookies = request.getCookies();
@@ -34,7 +33,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 //				System.out.println(cookies[i].getName());
 			}
 		}else{
-			System.out.println("cookieÎªï¿½ï¿½");
+			System.out.println("cookieÎª¿Õ");
 		}
 		if (id != null && !id.equals("")&&token!=null&&!token.equals("")) {
 			if (GlobalVar.tokenMap.containsKey(id)&&token.equals(GlobalVar.tokenMap.get(id))) {
@@ -51,7 +50,6 @@ public class LoginInterceptor implements HandlerInterceptor {
 		out.write(gson.toJson(result));
 		out.flush();
 		out.close();
-		**/
 		return false;
 
 	}

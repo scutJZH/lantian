@@ -47,13 +47,15 @@
 	</update>
 	
 	<select id="getchildInfoByTel" parameterType="String" resultType="hashmap">
-		select (student_id, nickname, class_id, class_name, pic_path)
-		from student left join class on student.phone = #{telnumber} and student.class_id = class.class_id
+		select student_id, nickname, class_id, class_name, student.pic_path
+		from student left join class on student.class_id = class.class_id
+		where student.phone = #{telnumber}
 	</select>
 	
 	<select id="getchildInfoById" parameterType="String" resultType="hashmap">
-		select (phone, nickname, student.class_id, class_name, pic_path)
-		from student left join class on student.student_id = #{studentId} and student.class_id = class.class_id
+		select phone, nickname, student.class_id, class_name, student.pic_path
+		from student left join class on student.class_id = class.class_id
+		where student.student_id = #{studentId}
 	</select>
 	<select id="getStudentById" resultMap="studentMap" parameterType="String">
 		select * from student where student_id = #{studentId}

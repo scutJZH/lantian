@@ -96,6 +96,7 @@ public class ChildrenServiceImpl implements IChildrenService {
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			status = "-2";
 		}
 

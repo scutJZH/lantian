@@ -15,7 +15,7 @@
 		values (#{parentId}, #{studentId})
 	</insert>
 	
-	<select id="getChildrenIdsList" resultType="List">
+	<select id="getChildrenIdsList" resultType="String">
 		select student_id from parent_student where parent_id = #{parentId}
 	</select>
 	
