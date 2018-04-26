@@ -63,13 +63,13 @@ public class ClassManageModuleServiceImpl implements IClassManageModuleService{
 			HashMap<String,Object> r1=studentDao.checkStudentExist(studentId);
 			if(String.valueOf(r1.get("studentId"))==null)status="-3";//-3means student doesn't exist
 			else {
-				if (String.valueOf(r1.get("classId"))!=null) {
+				if (String.valueOf(r1.get("classId"))!="null") {
 					status="-4";//-4means student already in other class
 				}
 				else {
 					try {
 						this.studentDao.addStudent(studentId,classId);
-						int recentStudentNumber=classDao.getStudentNumber(classId)+1;
+						int recentStudentNumber=Integer.parseInt(String.valueOf((classDao.getStudentNumber(classId).get("studentNumber"))))+1;
 						this.classDao.addStudent(classId,recentStudentNumber);//add student_number
 					}catch(Exception e) {
 						e.printStackTrace();

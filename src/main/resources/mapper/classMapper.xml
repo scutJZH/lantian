@@ -106,9 +106,12 @@
   </update>
   
  <!--getStudentNumber-->
- <select id="getStudentNumber">
+ <select id="getStudentNumber" resultMap="getStudentNumberHashMap">
  	select student_number from class where class_id=#{classId}
  </select>
+ <resultMap type="HashMap" id="getStudentNumberHashMap">
+ <id property="studentNumber" column="student_number"/>
+ </resultMap>
  
  <!-- addStudent for student_number -->
  <update id="addStudent">
