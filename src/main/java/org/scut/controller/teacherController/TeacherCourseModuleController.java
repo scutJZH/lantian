@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 //@RequestMapping(value="/teacher", method=RequestMethod.POST)
 @Controller
@@ -78,16 +77,17 @@ public class TeacherCourseModuleController {
 		HashMap<String,Object> result=teacherCourseModuleService.getQuestionList(subjectId);
 		return result;
 	}
-	//4assign homework,all actions were done in controller,completed!!! wait for test
+	//4assign homework,all actions were done in controller,completed!!! test well!
 	@RequestMapping(value="/assignHomework", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> assignHomework(@RequestBody Map<String,Object> request){
 		String status="1";
 		HashMap<String,Object> result=new HashMap<String,Object>();
-		/**table paper**/
+		/**table paper test well**/
 		String paperId=UUID.randomUUID().toString();
 		String paperName=String.valueOf(request.get("paperName"));
-		int grade=Integer.parseInt(String.valueOf(request.get("grade")));
+		//for test,use the value=7
+		int grade=7;//Integer.parseInt(String.valueOf(request.get("grade")));
 		String subjectId=String.valueOf(request.get("subjectId"));
 		String createTeacherId=String.valueOf(request.get("teacherId"));
 		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
@@ -127,7 +127,7 @@ public class TeacherCourseModuleController {
 			status="-2";
 			result.put("result", status);
 		}
-		/**table question_paper**/
+		/**table question_paper test well**/
 		//paperId
 		//questionArr:include questionIdArr,pointArr
 		//action
@@ -143,7 +143,7 @@ public class TeacherCourseModuleController {
 				result.put("result", status);
 			}
 		}
-		/**table student**/
+		/**table student test well**/
 		ArrayList<HashMap<String,Object>> studentIdArr=new ArrayList<HashMap<String,Object>>();
 		try {
 			studentIdArr=this.studentDao.getStudentIdByClassId(classId);
@@ -152,7 +152,7 @@ public class TeacherCourseModuleController {
 			status="-2";
 			result.put("result", status);
 		}
-		/**table student_paper**/
+		/**table student_paper test well**/
 		for(HashMap<String,Object> i:studentIdArr) {
 			String studentId=String.valueOf(i.get("studentId"));
 			try{
@@ -218,13 +218,14 @@ public class TeacherCourseModuleController {
 		HashMap<String,Object> result=teacherCourseModuleService.getCorrectQuestionList(teacherId,paperId,studentId);
 		return result;
 	}
-	//13submitCorrection
+	//13submitCorrection test well
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/submitCorrection", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String,Object> submitCorrection(@RequestBody Map<String,Object> request){
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
+		@SuppressWarnings("unused")
 		String teacherId=String.valueOf(request.get("teacherId"));
 		String studentId=String.valueOf(request.get("studentId"));
 		String paperId=String.valueOf(request.get("paperId"));
@@ -249,17 +250,17 @@ public class TeacherCourseModuleController {
 		result.put("status", status);
 		return result;
 	}
-	//14
+	//14test well
 	@RequestMapping(value="/getSubjectiveOrObjectiveList", method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> getSubjectiveOrObjectiveList(@RequestBody Map<String,Object> request){
+	public HashMap<String,Object> getSubjectiveOrObjectiveList(@RequestBody Map<String,Object> request){
 		String teacherId=String.valueOf(request.get("teacherId"));
 		String questionType=String.valueOf(request.get("questionType"));
-		String subjectId=String.valueOf(request.get("subjectId"));
-		int grade=Integer.parseInt(String.valueOf(request.get("grade")));
-		Map<String,Object> result=this.teacherCourseModuleService.getSubjectiveOrObjectiveList(teacherId,questionType,subjectId,grade);
+		String subjectId="1";
+		int grade=7;
+		HashMap<String,Object> result=teacherCourseModuleService.getSubjectiveOrObjectiveList(teacherId,questionType,subjectId,grade);
 		return result;
-		}
+	}
 	//15.删除一道题目
 	/**@RequestMapping(value="/deleteQuestion", method=RequestMethod.POST)
 	@ResponseBody
@@ -273,8 +274,9 @@ public class TeacherCourseModuleController {
 	@RequestMapping(value="/createObjective", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> createObjective(MultipartHttpServletRequest request) {
-		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
-		String createTime=date.format(new Date());
+		//SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+		//String createTime=date.format(new Date());
+		@SuppressWarnings("unused")
 		String teacherId=String.valueOf(request.getParameter("teacherId"));
 		String subjectId=String.valueOf(request.getParameter("subjectId"));
 		int grade=Integer.parseInt(request.getParameter("grade"));
@@ -285,32 +287,37 @@ public class TeacherCourseModuleController {
 		//the answer is one of ABCD
 		String answer=String.valueOf(request.getParameter("answer"));
 		String titleContent=String.valueOf(request.getParameter("titleContent"));
-		MultipartFile picA=null;
-		MultipartFile picB = null;
-		MultipartFile picC = null;
-		MultipartFile picD = null;
-		MultipartFile picPathPicture=null;
-		if(request.getFile("picA") != null) {
-			picA=request.getFile("picA");
+		String picA=null;
+		String picB = null;
+		String picC = null;
+		String picD = null;
+		String picPathPicture=null;
+		String picId1=UUID.randomUUID().toString();
+		String picId2=UUID.randomUUID().toString();
+		String picId3=UUID.randomUUID().toString();
+		String picId4=UUID.randomUUID().toString();
+		String picId5=UUID.randomUUID().toString();
+		if(request.getParameter("picA") != null) {
+			picA=String.valueOf(request.getFile("picA"));
 		}
-		if(request.getFile("picB") != null) {
-			picB=request.getFile("picB");
+		if(request.getParameter("picB") != null) {
+			picB=String.valueOf(request.getFile("picB"));
 		}
-		if(request.getFile("picC") != null) {
-			picC=request.getFile("picC");
+		if(request.getParameter("picC") != null) {
+			picC=String.valueOf(request.getFile("picC"));
 		}
-		if(request.getFile("picD") != null) {
-			picD=request.getFile("picD");
+		if(request.getParameter("picD") != null) {
+			picD=String.valueOf(request.getFile("picD"));
 		}
 		//title'picture
-		if(request.getFile("picPathPicture") != null) {
-			picPathPicture=request.getFile("picPathPicture");
+		if(request.getParameter("picPathPicture") != null) {
+			picPathPicture=String.valueOf(request.getFile("picPathPicture"));
 		}
-		String opaPicPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+createTime+picA.getOriginalFilename();
-		String opbPicPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+createTime+picB.getOriginalFilename();
-		String opcPicPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+createTime+picC.getOriginalFilename();
-		String opdPicPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+createTime+picD.getOriginalFilename();
-		String picPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+createTime+picPathPicture.getOriginalFilename();
+		String opaPicPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+picId1+".jpg";
+		String opbPicPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+picId2+".jpg";
+		String opcPicPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+picId3+".jpg";
+		String opdPicPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+picId4+".jpg";
+		String picPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+picId5+".jpg";
 		return this.teacherCourseModuleService.createObjective(subjectId,grade,optionA,optionB,optionC,optionD,
 				answer,picA,picB,picC,picD,picPathPicture,opaPicPath,opbPicPath,opcPicPath,opdPicPath,picPath,titleContent);
 	}
@@ -318,21 +325,24 @@ public class TeacherCourseModuleController {
 	@RequestMapping(value="/createSubjective", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> createSubjective(MultipartHttpServletRequest request) {
-		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
-		String createTime=date.format(new Date());
+		//SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+		//String createTime=date.format(new Date());
 		String teacherId=String.valueOf(request.getParameter("teacherId"));
 		String subjectId=String.valueOf(request.getParameter("subjectId"));
 		int grade=Integer.parseInt(request.getParameter("grade"));
-		MultipartFile picSubjective=null;
-		MultipartFile picAnswer=null;
-		if(request.getFile("picD") != null) {
-			picSubjective=request.getFile("pic");
+		String picSubjective=null;
+		String picAnswer=null;
+		String picId1=UUID.randomUUID().toString();
+		String picId2=UUID.randomUUID().toString();
+		if(request.getParameter("picD") != null) {
+			picSubjective=String.valueOf(request.getParameter("pic"));
 		}
-		if(request.getFile("answer") != null) {
-			picAnswer=request.getFile("answer");
+		if(request.getParameter("answer") != null) {
+			picAnswer=String.valueOf(request.getParameter("answer"));
 			}
-		String picPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+createTime+picSubjective.getOriginalFilename();
-		String answer=request.getSession().getServletContext().getRealPath("/")+"img\\"+createTime+picAnswer.getOriginalFilename();
+		
+		String picPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+picId1+".jpg";
+		String answer=request.getSession().getServletContext().getRealPath("/")+"img\\"+picId2+".jpg";
 		return this.teacherCourseModuleService.createSubjective(teacherId,picSubjective,
 																picPath,picAnswer,
 																answer,subjectId,grade);

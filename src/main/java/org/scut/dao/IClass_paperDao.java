@@ -24,6 +24,6 @@ public interface IClass_paperDao {
 	public int deleteList(@Param("paperIdList")List<String> paperId);
 	public List<HashMap<String,Object>> getCorrectionList(@Param("teacherId")String teacherId,@Param("classId")String classId);
 	public List<HashMap<String,Object>> get(@Param("teacherId")String teacherId,@Param("classId")String classId);
-	public int assignHomework(String paperId,String classId,String assignTeacherId,String deadLine,int submitNumber,String assignTime,String paperType,int examTime);
+	public int assignHomework(@Param("paperId")String paperId,@Param("classId")String classId,@Param("assignTeacherId")String assignTeacherId,@Param("deadLine")String deadLine,@Param("submitNumber")int submitNumber,@Param("assignTime")String assignTime,@Param("paperType")String paperType,@Param("examTime")int examTime);
 
 }

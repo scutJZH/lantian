@@ -1,10 +1,7 @@
 package org.scut.service.teacherService;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-
-import org.springframework.web.multipart.MultipartFile;
 
 public interface ITeacherCourseModuleService {
 	public HashMap<String,Object> selectList(String teacherId,String classId);
@@ -20,9 +17,9 @@ public interface ITeacherCourseModuleService {
 	public HashMap<String,Object> getCorrectQuestionList(String teacherId,String paperId,String studentId);
 	public HashMap<String,Object> getSubjectiveOrObjectiveList(String teacherId,String questionType,String subjectId,int grade);
 	public HashMap<String,Object> createObjective(String subjectId,int grade,String optionA,String optionB,String optionC,String optionD,
-			String answer,MultipartFile picA,MultipartFile picB,MultipartFile picC,MultipartFile picD,MultipartFile picPathPicture,String opaPicPath,String opbPicPath,String opcPicPath,String opdPicPath,String picPath,String titleContent);
-	public HashMap<String,Object> createSubjective(String teacherId,MultipartFile picSubjective,
+			String answer,String picA,String picB,String picC,String picD,String picPathPicture,String opaPicPath,String opbPicPath,String opcPicPath,String opdPicPath,String picPath,String titleContent);
+	public HashMap<String,Object> createSubjective(String teacherId,String picSubjective,
 			String picPath,
-			MultipartFile picAnswer,String answer,String subjectId,int grade);
+			String picAnswer,String answer,String subjectId,int grade);
 	public HashMap<String,Object> checkTitle(String question);
 }

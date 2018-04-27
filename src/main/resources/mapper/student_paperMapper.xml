@@ -33,7 +33,7 @@
 	
 	<!-- assignmentHomework -->
 <insert id="assignmentHomework">
-insert into student_paper (paper_id,student_id,submit,score,paper_type)
+insert into student_paper (paper_id,student_id,submit,score,type)
 values (#{paperId},#{studentId},#{submit},#{score},#{paperType})
 </insert>
 </mapper>

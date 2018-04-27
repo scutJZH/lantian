@@ -21,6 +21,6 @@ public interface IStudent_paperDao {
 
 	public List<LinkedHashMap<String,Object>> getRankDetails(@Param("paperId")String paperId);
 	public List<HashMap<String,Object>> getCorrectStudentList(@Param("teacherId")String teacherId,@Param("paperId")String paperId);
-	public int assignmentHomework(String paperId,String studentId,String submit,int score,String paperType);
+	public int assignmentHomework(@Param("paperId")String paperId,@Param("studentId")String studentId,@Param("submit")String submit,@Param("score")int score,@Param("paperType")String paperType);
 
 }

@@ -160,7 +160,7 @@
 select question_id,title_content from question natural join title
 	 where subject_id=#{subjectId} and grade=#{grade} and option_a is null
 </select>
-<resultMap id="getSubjectiveListMap" type="java.util.HashMap">
+<resultMap id="getSubjectiveListMap" type="HashMap">
 	<id property="questionId" column="question_id"></id>
 	<result property="titleContent" column="title_content"/>
 </resultMap>
@@ -168,7 +168,7 @@ select question_id,title_content from question natural join title
 select question_id,title_content from question natural join title
 	 where subject_id=#{subjectId} and grade=#{grade} and option_a is not null
 </select>
-<resultMap id="getObjectiveListMap" type="java.util.HashMap">
+<resultMap id="getObjectiveListMap" type="HashMap">
 	<id property="questionId" column="question_id"></id>
 	<result property="titleContent" column="title_content"/>
 </resultMap>

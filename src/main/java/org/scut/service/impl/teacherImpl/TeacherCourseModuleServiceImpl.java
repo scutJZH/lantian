@@ -17,6 +17,13 @@ import org.scut.service.teacherService.ITeacherCourseModuleService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileOutputStream;  
+import java.io.IOException;  
+import java.io.InputStream;  
+import java.io.OutputStream;  
+import sun.misc.BASE64Decoder;  
+import sun.misc.BASE64Encoder;  
+@SuppressWarnings({ "restriction", "unused" })
 @Service(value="teacherCourseModuleService")
 public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleService{
 	@Resource
@@ -127,7 +134,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
 			List<HashMap<String,Object>> r1= this.class_paperDao.getCorrectionList(teacherId,classId);
-			int r2=this.classDao.getStudentNumber(classId);
+			int r2=Integer.parseInt(String.valueOf(this.classDao.getStudentNumber(classId)));
 			/**for unsubmittedNumber**/
 			for(int i=0;i<r1.size();i++) {
 				int unsubmittedNumber=(r2-(Integer)(r1.get(i).get("submitNumber")));
@@ -234,8 +241,12 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try {
-			if(questionType=="1") result.put("result",this.questionDao.getSubjectiveList(subjectId,grade));
-			if(questionType=="2") result.put("result",this.questionDao.getSubjectiveList(subjectId,grade));
+			List<HashMap<String,Object>> r1=this.questionDao.getSubjectiveList(subjectId,grade);
+			List<HashMap<String,Object>> r2=this.questionDao.getObjectiveList(subjectId,grade);
+			int str2=2;
+			//should use String.equals(),not==
+			if(Integer.parseInt(questionType) != str2) result.put("result",r1);
+			else result.put("result2",r2);
 		}catch(Exception e) {
 			e.printStackTrace();
 			status = "-2";
@@ -249,26 +260,59 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		return this.questionDao
 	}
 	**/
+	  //base64字符串转化成图片  
+    public int GenerateImage(String imgStr,String picPath)  
+    {   //对字节数组字符串进行Base64解码并生成图片  
+        if (imgStr == null) //图像数据为空  
+            return -4;  //means no pic
+        BASE64Decoder decoder = new BASE64Decoder();  
+        try   
+        {  
+            //Base64解码  
+            byte[] b = decoder.decodeBuffer(imgStr);  
+            for(int i=0;i<b.length;++i)  
+            {  
+                if(b[i]<0)  
+                {//调整异常数据  
+                    b[i]+=256;  
+                }  
+            }  
+            File newFileQuestion=new File(picPath);
+            FileOutputStream fos = new FileOutputStream(newFileQuestion);
+            BufferedOutputStream bos=new BufferedOutputStream(fos);
+            bos.write(b); 
+            fos.flush();
+            bos.flush();  
+            fos.close();
+            bos.close();  
+            return 1;  
+        }   
+        catch (Exception e)   
+        {  
+            return -5;  //means trnsform fail
+        }  
+    }
 	//17createSubjective completed
 	@Override
-	public HashMap<String,Object> createSubjective(String teacherId,MultipartFile picSubjective,
+	public HashMap<String,Object> createSubjective(String teacherId,String picSubjective,
 			String picPath,
-			MultipartFile picAnswer,String answer,String subjectId,int grade) {
+			String picAnswer,String answer,String subjectId,int grade) {
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		List<MultipartFile> file=new ArrayList<MultipartFile>();
-		file.add(picSubjective);
-		file.add(picAnswer);
+		ArrayList<HashMap<String, Object>> base64file=new ArrayList<HashMap<String, Object>>();
+		HashMap<String, Object> hashmap1=new HashMap<String, Object>();
+		HashMap<String, Object> hashmap2=new HashMap<String, Object>();
+		hashmap1.put("imgStr", picSubjective);
+		hashmap1.put("picPath", picPath);
+		hashmap2.put("imgStr", picAnswer);
+		hashmap2.put("picPath", answer);
+		base64file.add(hashmap1);
+		base64file.add(hashmap2);
 		try{
 			String questionId=UUID.randomUUID().toString();
 			String titleId=UUID.randomUUID().toString();
-			for(MultipartFile subfile:file) {
-			File newFileQuestion=new File(picPath);
-			FileOutputStream fos=new FileOutputStream(newFileQuestion);
-			BufferedOutputStream bos=new BufferedOutputStream(fos);
-			bos.write(subfile.getBytes());
-			fos.close();
-			bos.close();
+			for(HashMap<String, Object> subfile:base64file) {
+				status=Integer.toString(GenerateImage(subfile.get("imgStr").toString(),subfile.get("picPath").toString()));
 			}
 			this.questionDao.createSubjective(questionId,titleId,subjectId,grade,answer);
 			this.titleDao.createSubjective(titleId,picPath);
@@ -284,29 +328,38 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	}
 	//16.create objective completed!
 	public HashMap<String,Object> createObjective(String subjectId,int grade,String optionA,String optionB,String optionC,String optionD,
-			String answer,MultipartFile picA,MultipartFile picB,MultipartFile picC,MultipartFile picD,MultipartFile picPathPicture
+			String answer,String picA,String picB,String picC,String picD,String picPathPicture
 			,String opaPicPath,String opbPicPath,String opcPicPath,String opdPicPath,String picPath,String titleContent){
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		List<MultipartFile> file=new ArrayList<MultipartFile>();
-		file.add(picA);
-		file.add(picB);
-		file.add(picC);
-		file.add(picD);
-		file.add(picPathPicture);
+		ArrayList<HashMap<String, Object>> base64file=new ArrayList<HashMap<String, Object>>();
+		HashMap<String, Object> hashmap1=new HashMap<String, Object>();
+		HashMap<String, Object> hashmap2=new HashMap<String, Object>();
+		HashMap<String, Object> hashmap3=new HashMap<String, Object>();
+		HashMap<String, Object> hashmap4=new HashMap<String, Object>();
+		HashMap<String, Object> hashmap5=new HashMap<String, Object>();
+		hashmap1.put("imgStr", picA);
+		hashmap1.put("picPath", opaPicPath);
+		hashmap2.put("imgStr", picB);
+		hashmap2.put("picPath", opbPicPath);
+		hashmap3.put("imgStr", picC);
+		hashmap3.put("picPath", opcPicPath);
+		hashmap4.put("imgStr", picD);
+		hashmap4.put("picPath", opdPicPath);
+		hashmap5.put("imgStr", picPathPicture);
+		hashmap5.put("picPath", picPath);
+		base64file.add(hashmap1);
+		base64file.add(hashmap2);
+		base64file.add(hashmap3);
+		base64file.add(hashmap4);
+		base64file.add(hashmap5);
 		try{
 			String questionId=UUID.randomUUID().toString();
 			String titleId=UUID.randomUUID().toString();
-			this.questionDao.createObjective(questionId,titleId,subjectId,grade,optionA,optionB,optionC,optionD,
-			answer,opaPicPath,opbPicPath,opcPicPath,opdPicPath);
-			for(MultipartFile subfile:file) {
-			File newFileQuestion=new File(picPath);
-			FileOutputStream fos=new FileOutputStream(newFileQuestion);
-			BufferedOutputStream bos=new BufferedOutputStream(fos);
-			bos.write(subfile.getBytes());
-			fos.close();
-			bos.close();
+			for(HashMap<String, Object> subfile:base64file) {
+				status=Integer.toString(GenerateImage(subfile.get("imgStr").toString(),subfile.get("picPath").toString()));
 			}
+			this.questionDao.createObjective(questionId, titleId, subjectId, grade, optionA, optionB, optionC, optionD, answer, opaPicPath, opbPicPath, opcPicPath, opdPicPath);
 			this.titleDao.createObjective(titleId,titleContent,picPath);
 			result.put("result",status);
 		}

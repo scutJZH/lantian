@@ -20,5 +20,5 @@ public interface IPaperDao {
     int updateByPrimaryKeySelective(Paper record);
 
     int updateByPrimaryKey(Paper record);
-    int assignHomework(String paperId,String paperName,int grade,String subjectId,String createTeacherId,String createTime,int maxScore);
+    int assignHomework(@Param("paperId")String paperId,@Param("paperName")String paperName,@Param("grade")int grade,@Param("subjectId")String subjectId,@Param("createTeacherId")String createTeacherId,@Param("createTime")String createTime,@Param("maxScore")int maxScore);
 }
