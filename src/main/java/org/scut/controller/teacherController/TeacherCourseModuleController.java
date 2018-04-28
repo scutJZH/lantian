@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 //@RequestMapping(value="/teacher", method=RequestMethod.POST)
 @Controller
+@RequestMapping("/teacher")
 public class TeacherCourseModuleController {
 	@Resource
 	private ITeacherCourseModuleService teacherCourseModuleService;
@@ -28,7 +29,7 @@ public class TeacherCourseModuleController {
 	private IClassDao classDao;
 	@Resource
 	private IQuestionDao questionDao; 
-	@Resource //杩欎釜鍔熻兘杩樻病娴�
+	@Resource //鏉╂瑤閲滈崝鐔诲厴鏉╂ɑ鐥呭ù锟�
 	private IPptDao pptDao;
 	@Resource
 	private IStudent_paperDao student_paperDao;
@@ -226,7 +227,7 @@ public class TeacherCourseModuleController {
 		String teacherId=String.valueOf(request.get("teacherId"));
 		String studentId=String.valueOf(request.get("studentId"));
 		String paperId=String.valueOf(request.get("paperId"));
-		//the method below is ok，test completed
+		//the method below is ok锛宼est completed
 		ArrayList<Map<String,Object>> questionArr=(ArrayList<Map<String,Object>>)request.get("questionArr");
 		for(int i=0;i<questionArr.size();i++) {
 			 int point=Integer.parseInt(String.valueOf(questionArr.get(0).get("point")));
@@ -258,7 +259,7 @@ public class TeacherCourseModuleController {
 		Map<String,Object> result=this.teacherCourseModuleService.getSubjectiveOrObjectiveList(teacherId,questionType,subjectId,grade);
 		return result;
 		}
-	//15.删除一道题目
+	//15.鍒犻櫎涓�閬撻鐩�
 	/**@RequestMapping(value="/deleteQuestion", method=RequestMethod.POST)
 	@ResponseBody
 	public int deleteQuestion(@RequestBody Map<String,Object> request) {

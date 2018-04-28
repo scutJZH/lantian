@@ -3,6 +3,7 @@ encoding//src/main/java=UTF-8
 encoding//src/main/java/org/scut/controller/publicController/LogController.java=GBK
 encoding//src/main/java/org/scut/controller/publicController/RegisterController.java=UTF-8
 encoding//src/main/java/org/scut/controller/studentController/PostController.java=UTF-8
+encoding//src/main/java/org/scut/controller/teacherController/TeacherCourseModuleController.java=UTF-8
 encoding//src/main/java/org/scut/model/Parent.java=GBK
 encoding//src/main/java/org/scut/service/impl/teacherImpl/TeacherCourseModuleServiceImpl.java=UTF-8
 encoding//src/main/resources=UTF-8

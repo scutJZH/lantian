@@ -13,9 +13,14 @@ import javax.annotation.Resource;
 import org.scut.dao.IParentDao;
 import org.scut.model.Parent;
 import org.scut.service.parentService.IParentInfoService;
+import org.scut.util.Base64Analysis;
 import org.scut.util.GlobalVar;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.sun.mail.util.BASE64DecoderStream;
+
+import org.apache.commons.io.FileUtils;
 
 @Service("parentInfoService")
 public class ParentInfoServiceImpl implements IParentInfoService{
@@ -56,7 +61,7 @@ public class ParentInfoServiceImpl implements IParentInfoService{
 	}
 
 	@Override
-	public Map<String, Object> modifyParentInfo(String parentId, List<MultipartFile> filesList, String nickname,
+	public Map<String, Object> modifyParentInfo(String parentId, String imgBase64, String nickname,
 			String birthdayStr, String sex, String filePath) {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -68,19 +73,10 @@ public class ParentInfoServiceImpl implements IParentInfoService{
 			Parent parent = parentDao.getParentById(parentId);
 			if(parent != null){
 				String picPath = parent.getPicPath();
-				if(filesList!=null && filesList.size() > 0){
-					for(MultipartFile file:filesList){
-						String imgOriginalName = file.getOriginalFilename();
-						String extensionName = imgOriginalName.substring(imgOriginalName.lastIndexOf("."));
-						picPath = UUID.randomUUID().toString()+extensionName;
-						File newfile = new File(filePath+picPath);
-						FileOutputStream fos = new FileOutputStream(newfile);
-						BufferedOutputStream bos = new BufferedOutputStream(fos);
-						bos.write(file.getBytes());
-						fos.close();
-						bos.close();
-						parent.setPicPath(picPath);
-					}
+				if(imgBase64!=null){
+					picPath = Base64Analysis.analysisPic(UUID.randomUUID().toString(), filePath, imgBase64);
+					parent.setPicPath(picPath);
+					System.out.println(picPath);
 				}
 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 				Date birthday = formatter.parse(birthdayStr);

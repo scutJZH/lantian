@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
+@RequestMapping("/teacher")
 public class ClassManageModuleController {
 	@Resource
 	private IClassManageModuleService classManageModuleService;

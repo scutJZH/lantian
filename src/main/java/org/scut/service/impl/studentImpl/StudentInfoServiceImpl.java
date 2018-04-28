@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service("studentInfoService")
-public class StudentInfoService implements IStudentInfoService{
+public class StudentInfoServiceImpl implements IStudentInfoService{
 	
 	@Resource
 	private IStudentDao studentDao;

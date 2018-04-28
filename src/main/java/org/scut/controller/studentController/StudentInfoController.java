@@ -2,7 +2,6 @@ package org.scut.controller.studentController;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -25,6 +24,7 @@ import com.google.gson.Gson;
 public class StudentInfoController {
 	@Resource
 	private IStudentService studentService;
+	@Resource
 	private IStudentInfoService studentInfoService;
 
 	@RequestMapping("/mine")

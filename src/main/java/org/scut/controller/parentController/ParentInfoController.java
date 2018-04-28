@@ -39,7 +39,7 @@ public class ParentInfoController {
 	@RequestMapping("/mine/modify")
 	@ResponseBody
 	public Map<String, Object> modifyInfo(MultipartHttpServletRequest request, HttpServletResponse response) throws IOException{
-		
+		/*
 		Map<String, Object> result = null;
 		
 		String parentId = request.getParameter("parentId");
@@ -59,6 +59,16 @@ public class ParentInfoController {
 		}
 		
 		return result;
+		*/
+		Map<String, Object> m = ParamsTransport.getParams(request);
+		 String parentId = (String)m.get("parentId");
+		 String imgBase64 = (String)m.get("img");
+		 String nickname = (String)m.get("nickname");
+		 String birthdayStr = (String)m.get("birthday");
+		 String sex = (String)m.get("sex");
+		 String filePath = request.getSession().getServletContext().getRealPath("/")+"img\\";
+		 Map<String, Object> result = parentInfoService.modifyParentInfo(parentId, imgBase64, nickname, birthdayStr, sex, filePath);
+		 return result;
 	}
 
 }
