@@ -1,8 +1,10 @@
 package org.scut.controller.teacherController;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.scut.dao.*;
 import org.scut.service.teacherService.ITeacherCourseModuleService;
@@ -117,7 +119,10 @@ public class TeacherCourseModuleController {
 		int submitNumber=0;
 		String assignTime=createTime;
 		String paperType=String.valueOf(request.get("paperType"));
-		int examTime=Integer.parseInt(String.valueOf(request.get("examTime")));
+		int examTime=0;
+		if(request.get("examTime")!=null) {
+		examTime=Integer.parseInt(String.valueOf(request.get("examTime")));
+		}
 		//none rank
 		//action
 		try {
@@ -273,7 +278,7 @@ public class TeacherCourseModuleController {
 	//16createObjective
 	@RequestMapping(value="/createObjective", method=RequestMethod.POST)
 	@ResponseBody
-	public HashMap<String,Object> createObjective(MultipartHttpServletRequest request) {
+	public HashMap<String,Object> createObjective(HttpServletRequest request) {
 		//SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
 		//String createTime=date.format(new Date());
 		@SuppressWarnings("unused")
@@ -298,20 +303,20 @@ public class TeacherCourseModuleController {
 		String picId4=UUID.randomUUID().toString();
 		String picId5=UUID.randomUUID().toString();
 		if(request.getParameter("picA") != null) {
-			picA=String.valueOf(request.getFile("picA"));
+			picA=String.valueOf(request.getParameter("picA"));
 		}
 		if(request.getParameter("picB") != null) {
-			picB=String.valueOf(request.getFile("picB"));
+			picB=String.valueOf(request.getParameter("picB"));
 		}
 		if(request.getParameter("picC") != null) {
-			picC=String.valueOf(request.getFile("picC"));
+			picC=String.valueOf(request.getParameter("picC"));
 		}
 		if(request.getParameter("picD") != null) {
-			picD=String.valueOf(request.getFile("picD"));
+			picD=String.valueOf(request.getParameter("picD"));
 		}
 		//title'picture
 		if(request.getParameter("picPathPicture") != null) {
-			picPathPicture=String.valueOf(request.getFile("picPathPicture"));
+			picPathPicture=String.valueOf(request.getParameter("picPathPicture"));
 		}
 		String opaPicPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+picId1+".jpg";
 		String opbPicPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+picId2+".jpg";
@@ -324,23 +329,18 @@ public class TeacherCourseModuleController {
 	//17create subjective completed
 	@RequestMapping(value="/createSubjective", method=RequestMethod.POST)
 	@ResponseBody
-	public HashMap<String,Object> createSubjective(MultipartHttpServletRequest request) {
+	public HashMap<String,Object> createSubjective(HttpServletRequest request) throws UnsupportedEncodingException {
 		//SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
 		//String createTime=date.format(new Date());
+		request.setCharacterEncoding("UTF-8");
 		String teacherId=String.valueOf(request.getParameter("teacherId"));
 		String subjectId=String.valueOf(request.getParameter("subjectId"));
-		int grade=Integer.parseInt(request.getParameter("grade"));
-		String picSubjective=null;
-		String picAnswer=null;
+		int grade=7;//=Integer.parseInt(request.getParameter("grade"));
 		String picId1=UUID.randomUUID().toString();
 		String picId2=UUID.randomUUID().toString();
-		if(request.getParameter("picD") != null) {
-			picSubjective=String.valueOf(request.getParameter("pic"));
-		}
-		if(request.getParameter("answer") != null) {
-			picAnswer=String.valueOf(request.getParameter("answer"));
-			}
-		
+		//twice!!!error!!!not next time!!!
+			String picSubjective=String.valueOf(request.getParameter("pic"));
+			String picAnswer=String.valueOf(request.getParameter("answer"));
 		String picPath=request.getSession().getServletContext().getRealPath("/")+"img\\"+picId1+".jpg";
 		String answer=request.getSession().getServletContext().getRealPath("/")+"img\\"+picId2+".jpg";
 		return this.teacherCourseModuleService.createSubjective(teacherId,picSubjective,

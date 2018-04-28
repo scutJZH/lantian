@@ -92,6 +92,6 @@
   </insert>
   <!-- createSubjective -->
   <insert id="createSubjective">
-  insert into title (title_id,pic_path)values(#{titleId},#{picPath})
+  insert into title (title_id,title_content,pic_path)values(#{titleId},"null",#{picPath})
   </insert>
 </mapper>

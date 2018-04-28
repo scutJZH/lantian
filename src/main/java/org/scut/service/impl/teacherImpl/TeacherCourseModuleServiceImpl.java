@@ -23,7 +23,7 @@ import java.io.InputStream;
 import java.io.OutputStream;  
 import sun.misc.BASE64Decoder;  
 import sun.misc.BASE64Encoder;  
-@SuppressWarnings({ "restriction", "unused" })
+
 @Service(value="teacherCourseModuleService")
 public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleService{
 	@Resource
@@ -246,7 +246,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 			int str2=2;
 			//should use String.equals(),not==
 			if(Integer.parseInt(questionType) != str2) result.put("result",r1);
-			else result.put("result2",r2);
+			else result.put("result",r2);
 		}catch(Exception e) {
 			e.printStackTrace();
 			status = "-2";
@@ -263,8 +263,6 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	  //base64字符串转化成图片  
     public int GenerateImage(String imgStr,String picPath)  
     {   //对字节数组字符串进行Base64解码并生成图片  
-        if (imgStr == null) //图像数据为空  
-            return -4;  //means no pic
         BASE64Decoder decoder = new BASE64Decoder();  
         try   
         {  
@@ -277,11 +275,9 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
                     b[i]+=256;  
                 }  
             }  
-            File newFileQuestion=new File(picPath);
-            FileOutputStream fos = new FileOutputStream(newFileQuestion);
+            OutputStream fos = new FileOutputStream(picPath);
             BufferedOutputStream bos=new BufferedOutputStream(fos);
             bos.write(b); 
-            fos.flush();
             bos.flush();  
             fos.close();
             bos.close();  
@@ -308,14 +304,16 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		hashmap2.put("picPath", answer);
 		base64file.add(hashmap1);
 		base64file.add(hashmap2);
+		result.put("picPath",picPath);
+		result.put("picPath2",picAnswer);
 		try{
 			String questionId=UUID.randomUUID().toString();
 			String titleId=UUID.randomUUID().toString();
 			for(HashMap<String, Object> subfile:base64file) {
-				status=Integer.toString(GenerateImage(subfile.get("imgStr").toString(),subfile.get("picPath").toString()));
+				GenerateImage(String.valueOf(subfile.get("imgStr")),String.valueOf(subfile.get("picPath")));
 			}
-			this.questionDao.createSubjective(questionId,titleId,subjectId,grade,answer);
 			this.titleDao.createSubjective(titleId,picPath);
+			this.questionDao.createSubjective(questionId,titleId,subjectId,grade,answer);
 			result.put("result",status);
 		}
 		catch(Exception e) {

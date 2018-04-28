@@ -34,5 +34,5 @@ public interface IQuestionDao {
     public int createObjective(String questionId,String titleId,String subjectId,int grade,String optionA,String optionB,String optionC,String optionD,
 			String answer,String opaPicPath,String opbPicPath,String opcPicPath,String opdPicPath);
     public Map<String,Object> checkTitle(String question);
-    public int createSubjective(String questionId,String titleId,String subjectId,int grade,String answer);
+    public int createSubjective(@Param("questionId")String questionId,@Param("titleId")String titleId,@Param("subjectId")String subjectId,@Param("grade")int grade,@Param("answer")String answer);
 }
