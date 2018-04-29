@@ -260,21 +260,27 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		return this.questionDao
 	}
 	**/
-	  //base64字符串转化成图片  
+	  //base64 String to photo
     public int GenerateImage(String imgStr,String picPath)  
     {   //对字节数组字符串进行Base64解码并生成图片  
         BASE64Decoder decoder = new BASE64Decoder();  
-        try   
-        {  
+        try
+        {  byte[] b=null;
+        	if(imgStr.charAt(12)=='j') {
             //Base64解码  
-            byte[] b = decoder.decodeBuffer(imgStr);  
+            b = decoder.decodeBuffer(imgStr.substring(23));  //把字符串中的"data:image/jpeg;base64,"去掉
+        	}
+        	else if(imgStr.charAt(12)=='p'||imgStr.charAt(12)=='g'||imgStr.charAt(12)=='b'||imgStr.charAt(12)=='i') {
+                //Base64解码  
+                b = decoder.decodeBuffer(imgStr.substring(22));  //把字符串中的"data:image/jpeg;base64,"去掉
+            	}
             for(int i=0;i<b.length;++i)  
             {  
                 if(b[i]<0)  
                 {//调整异常数据  
                     b[i]+=256;  
-                }  
-            }  
+                }
+            }
             OutputStream fos = new FileOutputStream(picPath);
             BufferedOutputStream bos=new BufferedOutputStream(fos);
             bos.write(b); 
@@ -357,8 +363,8 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 			for(HashMap<String, Object> subfile:base64file) {
 				status=Integer.toString(GenerateImage(subfile.get("imgStr").toString(),subfile.get("picPath").toString()));
 			}
-			this.questionDao.createObjective(questionId, titleId, subjectId, grade, optionA, optionB, optionC, optionD, answer, opaPicPath, opbPicPath, opcPicPath, opdPicPath);
 			this.titleDao.createObjective(titleId,titleContent,picPath);
+			this.questionDao.createObjective(questionId, titleId, subjectId, grade, optionA, optionB, optionC, optionD, answer, opaPicPath, opbPicPath, opcPicPath, opdPicPath);
 			result.put("result",status);
 		}
 		catch(Exception e) {

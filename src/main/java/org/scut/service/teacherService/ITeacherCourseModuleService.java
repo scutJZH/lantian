@@ -22,4 +22,5 @@ public interface ITeacherCourseModuleService {
 			String picPath,
 			String picAnswer,String answer,String subjectId,int grade);
 	public HashMap<String,Object> checkTitle(String question);
+	public int GenerateImage(String imgStr,String picPath); 
 }

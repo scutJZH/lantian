@@ -85,10 +85,9 @@
   </resultMap>
   
   <!--createObjective -->
-  <insert id="createObject">
-  	insert into title(title_id,title_content,picPath)
-  	values
-  	(#{titleId,javaType=String,jdbcType=VARCHAR},#{titleContent,javaType=String,jdbcType=VARCHAR}#{picPath,javaType=String,jdbcType=VARCHAR})
+  <insert id="createObjective">
+  	insert into title(title_id,title_content,pic_path)
+  	values(#{titleId,jdbcType=VARCHAR},#{titleContent,jdbcType=VARCHAR},#{picPath,jdbcType=VARCHAR})
   </insert>
   <!-- createSubjective -->
   <insert id="createSubjective">

@@ -25,6 +25,6 @@ join question on solution.question_id=question.question_id where student_id=#{st
   
  <!-- submitCorrection -->
  <update id="submitCorrection">
- update solution set point=#{point},isright=#{isright} where student_id=#{studentId} and paper_id=#{paperId} and question_id=#{questionId}
+ update solution set point=#{point},isright=#{isright},content=#{content,jdbcType=VARCHAR} where student_id=#{studentId} and paper_id=#{paperId} and question_id=#{questionId}
  </update>
 </mapper>
