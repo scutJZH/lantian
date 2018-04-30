@@ -22,9 +22,6 @@ public interface IQuestionDao {
 
     int updateByPrimaryKey(Question record);
     
-
-    Map<String, Object> getQuestion(@Param("questionId")String questionId);
-
     public List<HashMap<String,Object>> getQuestionList(String subjectId,int grade);
 
     

@@ -51,6 +51,8 @@ public class LogServiceImpl implements ILogService {
 					userInfo.put("nickname", user.getNickname());
 					userInfo.put("picPath", GlobalVar.picPath+user.getPicPath());
 					userInfo.put("token", token);
+					System.out.println(userInfo);
+					System.out.println();
 				} else {
 					status = "0";
 				}

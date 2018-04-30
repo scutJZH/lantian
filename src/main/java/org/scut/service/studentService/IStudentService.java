@@ -13,12 +13,12 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 public interface IStudentService {
 	Map<String, Object> getPaperList(String studentId, @Param("submit")String submit);
 
-	Map<String, Object> getPaperQuestions(String paperId);
-
 	Map<String, Object> getSchedules(String studentId);
 
 	Map<String, Object> addSchedule(Map<String, Object> m) throws IOException;
 
 	Map<String, Object> uploadSolutions(String studentId, String paperId, List<Map<String, Object>> sList, Map<String, MultipartFile> files,String reqLocation);
+
+	Map<String, Object> getPaperQuestions(String paperId);
 	
 }
