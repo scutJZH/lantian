@@ -1,12 +1,8 @@
 package org.scut.service.impl.studentImpl;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Resource;
@@ -16,9 +12,8 @@ import org.scut.service.studentService.IStudentInfoService;
 import org.scut.util.Base64Analysis;
 import org.scut.util.GlobalVar;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-@Service("studentInfoService")
+@Service
 public class StudentInfoServiceImpl implements IStudentInfoService{
 	
 	@Resource
