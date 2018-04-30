@@ -38,7 +38,7 @@ public class ParentInfoController {
 	
 	@RequestMapping("/mine/modify")
 	@ResponseBody
-	public Map<String, Object> modifyInfo(MultipartHttpServletRequest request, HttpServletResponse response) throws IOException{
+	public Map<String, Object> modifyInfo(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		/*
 		Map<String, Object> result = null;
 		

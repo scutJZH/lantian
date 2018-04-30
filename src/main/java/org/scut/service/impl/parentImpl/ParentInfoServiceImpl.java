@@ -68,7 +68,7 @@ public class ParentInfoServiceImpl implements IParentInfoService{
 				if(imgBase64!=null){
 					picPath = Base64Analysis.analysisPic(UUID.randomUUID().toString(), filePath, imgBase64);
 					parent.setPicPath(picPath);
-					System.out.println(picPath);
+//					System.out.println(picPath);
 				}
 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 				Date birthday = formatter.parse(birthdayStr);

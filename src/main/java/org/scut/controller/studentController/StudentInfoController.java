@@ -102,9 +102,9 @@ public class StudentInfoController {
 	
 	@RequestMapping("/mine/modify")
 	@ResponseBody
-	public Map<String, Object> modifyInfo(MultipartHttpServletRequest request, HttpServletResponse response) throws IOException{
+	public Map<String, Object> modifyInfo(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		
-		Map<String, Object> result = null;
+	/*	Map<String, Object> result = null;
 		
 		String studentId = request.getParameter("studentId");
 		List<MultipartFile> filesList = request.getFiles("img");
@@ -124,6 +124,17 @@ public class StudentInfoController {
 		}
 		
 		return result;
+		*/
+		Map<String, Object> m = ParamsTransport.getParams(request);
+		 String studentId = (String)m.get("studentId");
+		 String imgBase64 = (String)m.get("img");
+		 String nickname = (String)m.get("nickname");
+		 String birthdayStr = (String)m.get("birthday");
+		 String sex = (String)m.get("sex");
+		 String schoolName = (String)m.get("schoolName");
+		 String filePath = request.getSession().getServletContext().getRealPath("/")+"img\\";
+		 Map<String, Object> result = studentInfoService.modifyStudentInfo(studentId, imgBase64, nickname, birthdayStr, sex, schoolName, filePath);
+		 return result;
 	}
 
 		

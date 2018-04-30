@@ -13,12 +13,13 @@ import javax.annotation.Resource;
 import org.scut.dao.ITeacherDao;
 import org.scut.model.Teacher;
 import org.scut.service.teacherService.ITeacherInfoService;
+import org.scut.util.Base64Analysis;
 import org.scut.util.GlobalVar;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service("teacherInfoService")
-public class TeacherInfoService implements ITeacherInfoService{
+public class TeacherInfoServiceImpl implements ITeacherInfoService{
 	
 	@Resource
 	private ITeacherDao teacherDao;
@@ -59,7 +60,7 @@ public class TeacherInfoService implements ITeacherInfoService{
 	}
 
 	@Override
-	public Map<String, Object> modifyTeacherInfo(String teacherId, List<MultipartFile> filesList, String nickname,
+	public Map<String, Object> modifyTeacherInfo(String teacherId, String imgBase64, String nickname,
 			String birthdayStr, String sex, String name, String schoolName, String filePath) {
 
 
@@ -71,19 +72,9 @@ public class TeacherInfoService implements ITeacherInfoService{
 			Teacher teacher = teacherDao.getTeacherById(teacherId);
 			if(teacher != null){
 				String picPath = teacher.getPicPath();
-				if(filesList !=null && filesList.size() > 0){
-					for(MultipartFile file:filesList){
-						String imgOriginalName = file.getOriginalFilename();
-						String extensionName = imgOriginalName.substring(imgOriginalName.lastIndexOf("."));
-						picPath = UUID.randomUUID().toString()+extensionName;
-						File newfile = new File(filePath+picPath);
-						FileOutputStream fos = new FileOutputStream(newfile);
-						BufferedOutputStream bos = new BufferedOutputStream(fos);
-						bos.write(file.getBytes());
-						fos.close();
-						bos.close();
-						teacher.setPicPath(picPath);
-					}
+				if(imgBase64 !=null){
+					picPath = Base64Analysis.analysisPic(UUID.randomUUID().toString(), filePath, imgBase64);
+					teacher.setPicPath(picPath);
 				}
 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 				Date birthday = formatter.parse(birthdayStr);

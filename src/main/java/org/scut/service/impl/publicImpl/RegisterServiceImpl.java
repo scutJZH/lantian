@@ -42,13 +42,13 @@ public class RegisterServiceImpl implements IRegisterService {
 					status = "-1";
 				}else{
 					/*
-					 * �����µ���֤�룬���½����ݿ�
+					 * 锟斤拷锟斤拷锟铰碉拷锟斤拷证锟诫，锟斤拷锟铰斤拷锟斤拷锟捷匡拷
 					 */
 				}
 			} else {
 				user = new User();
 				String id = UUID.randomUUID().toString();
-				String verifyCode = "000000";//����������֤��Ķ��Žӿ�
+				String verifyCode = "000000";//锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷证锟斤拷亩锟斤拷沤涌锟�
 				user.setId(id);
 				user.setPhone(telnumber);
 				user.setState("0");
@@ -104,7 +104,7 @@ public class RegisterServiceImpl implements IRegisterService {
 					status = "-3";
 				}
 			}else{
-				status = "-2";
+				status = "-3";
 			}
 		}catch(Exception e){
 			e.printStackTrace();

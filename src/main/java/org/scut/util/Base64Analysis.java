@@ -37,7 +37,7 @@ public class Base64Analysis {
           //因为BASE64Decoder的jar问题，此处使用spring框架提供的工具包
             byte[] bs = Base64Utils.decodeFromString(data);
                 //使用apache提供的工具类操作流
-            	File imgFile = new File(tempFileName,filename);
+            	File imgFile = new File(filePath,tempFileName);
                 FileUtils.writeByteArrayToFile(imgFile, bs);  
         }
 		return tempFileName;

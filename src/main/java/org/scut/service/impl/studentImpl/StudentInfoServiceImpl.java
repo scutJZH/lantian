@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 import org.scut.dao.IStudentDao;
 import org.scut.model.Student;
 import org.scut.service.studentService.IStudentInfoService;
+import org.scut.util.Base64Analysis;
 import org.scut.util.GlobalVar;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,7 +60,7 @@ public class StudentInfoServiceImpl implements IStudentInfoService{
 
 
 	@Override
-	public Map<String, Object> modifyStudentInfo(String studentId, List<MultipartFile> filesList, String nickname,
+	public Map<String, Object> modifyStudentInfo(String studentId, String imgBase64, String nickname,
 			String birthdayStr, String sex, String schoolName, String filePath) {
 
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -70,19 +71,10 @@ public class StudentInfoServiceImpl implements IStudentInfoService{
 			Student student = studentDao.getStudentById(studentId);
 			if(student != null){
 				String picPath = student.getPicPath();
-				if(filesList !=null && filesList.size() > 0){
-					for(MultipartFile file:filesList){
-						String imgOriginalName = file.getOriginalFilename();
-						String extensionName = imgOriginalName.substring(imgOriginalName.lastIndexOf("."));
-						picPath = UUID.randomUUID().toString()+extensionName;
-						File newfile = new File(filePath+picPath);
-						FileOutputStream fos = new FileOutputStream(newfile);
-						BufferedOutputStream bos = new BufferedOutputStream(fos);
-						bos.write(file.getBytes());
-						fos.close();
-						bos.close();
-						student.setPicPath(picPath);
-					}
+				if(imgBase64 !=null){
+					picPath = Base64Analysis.analysisPic(UUID.randomUUID().toString(), filePath, imgBase64);
+					student.setPicPath(picPath);
+//					System.out.println(picPath);
 				}
 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 				Date birthday = formatter.parse(birthdayStr);
