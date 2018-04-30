@@ -118,6 +118,8 @@ public class StudentServiceImpl implements IStudentService{
 			
 			Map<String, Object> responseBody = new HashMap<String, Object>();
 			
+			Map<String,Object> result = new HashMap<>();
+			
 			try {
 			List<Map<String, Object>>questionIdList = question_paperDao.getQuestionIds(paperId);
 						
@@ -151,14 +153,17 @@ public class StudentServiceImpl implements IStudentService{
 			}
 			
 
-			responseBody.put("titleList",titleList);
+			result.put("titleList",titleList);
 			
 
 			if (optionsList.isEmpty()) {
 				responseBody.put("status", "-1");
 			}else {
 				responseBody.put("status", "1");
-				responseBody.put("result", optionsList);
+				
+
+				result.put("optionsList", optionsList);
+				responseBody.put("result", result);
 				}
 			
 			return responseBody;
