@@ -36,6 +36,8 @@ import org.scut.model.Question;
 import org.scut.model.Student;
 import org.scut.model.Title;
 import org.scut.service.studentService.IStudentService;
+import org.scut.util.Base64Analysis;
+import org.scut.util.GlobalVar;
 import org.springframework.scheduling.config.ScheduledTasksBeanDefinitionParser;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -242,46 +244,45 @@ public class StudentServiceImpl implements IStudentService{
 		}
 
 		@Override
-		public Map<String, Object> uploadSolutions(String studentId, String paperId, List<Map<String, Object>> sList,
-				Map<String, MultipartFile> files,String reqLoacation) {
+		public Map<String, Object> uploadSolutions(String studentId, String paperId, List<Map<String, Object>> solutionList,String reqLoacation) {
 			Map<String, Object> responseBody = new HashMap<String, Object>();
              
 			try {
-					for (Map<String, Object> map : sList) {
+					for (Map<String, Object> map : solutionList) {
 						String questionId = (String) map.get("questionId");
 						String solutionContent = (String) map.get("solutionContent");
-						String imgKey = (String) map.get("img");
+						String img = (String) map.get("img");
+						
+						System.out.println(map);
+						System.out.println();
+						
 						String picPath = null;
 						
-						if(!imgKey.isEmpty())
+						System.out.println(img!=null && img.length()!=0);
+						System.out.println();
+						
+						if( img!=null && img.length()!=0 )
 						{
-							MultipartFile file = files.get(imgKey);
-
-	                        picPath = UUID.randomUUID().toString()+".jpg";
+	                        picPath = UUID.randomUUID().toString();
 							
 							System.out.print(picPath);
 							System.out.println();
-                       
-							File img = new File(reqLoacation+file.getOriginalFilename());
+                       							
+							System.out.print(reqLoacation);
+							System.out.println();
+
+							String result  = Base64Analysis.analysisPic(picPath, reqLoacation+GlobalVar.solutionPicPath, img);
 							
-							System.out.print(reqLoacation+file.getOriginalFilename());
+							System.out.print(result);
 							System.out.println();
 							
-
-							FileOutputStream fos = new FileOutputStream(img);
-							BufferedOutputStream bos = new BufferedOutputStream(fos);
-							bos.write(file.getBytes());
-							bos.close();
-							fos.close();
-						
-							if(img.renameTo(new File(reqLoacation+picPath))) {System.out.println(img.getName());}else{responseBody.put("status","-2");return responseBody;};
-							
-							
 							}
-					    solutionDao.insertSolution(studentId,paperId,questionId,solutionContent,picPath);
-						}					
+						
+						solutionDao.insertSolution(studentId,paperId,questionId,solutionContent,picPath);
+						}
+					student_paperDao.updateSubmit(studentId,paperId);
 
-					}catch (Exception e) {System.out.println(e);responseBody.put("status","-1");return responseBody;}
+					}catch (Exception e) {System.out.println(e.getMessage());responseBody.put("status","-1");return responseBody;}
 			responseBody.put("status", "1");
 			return responseBody;
 		}

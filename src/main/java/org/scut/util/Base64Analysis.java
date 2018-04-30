@@ -10,7 +10,7 @@ public class Base64Analysis {
 		String tempFileName = "";
 		
 		if(base64Str == null){
-            throw new Exception("ÉÏ´«Ê§°Ü£¬ÉÏ´«Í¼Æ¬Êı¾İÎª¿Õ");
+            throw new Exception("ä¸Šä¼ å¤±è´¥ï¼Œä¸Šä¼ å›¾ç‰‡æ•°æ®ä¸ºç©º");
         } else{
         	String dataPrix;
         	String data;
@@ -19,25 +19,29 @@ public class Base64Analysis {
                 dataPrix = d[0];
                 data = d[1];
             }else{
-                throw new Exception("ÉÏ´«Ê§°Ü£¬Êı¾İ²»ºÏ·¨");
+                throw new Exception("ä¸Šä¼ å¤±è´¥ï¼Œæ•°æ®ä¸åˆæ³•");
             }String suffix = "";
-            if("data:image/jpeg;".equalsIgnoreCase(dataPrix)){//data:image/jpeg;base64,base64±àÂëµÄjpegÍ¼Æ¬Êı¾İ
+            if("data:image/jpeg;".equalsIgnoreCase(dataPrix)){//data:image/jpeg;base64,base64ç¼–ç çš„jpegå›¾ç‰‡æ•°æ®
                 suffix = ".jpg";
-            } else if("data:image/x-icon;".equalsIgnoreCase(dataPrix)){//data:image/x-icon;base64,base64±àÂëµÄiconÍ¼Æ¬Êı¾İ
+            } else if("data:image/x-icon;".equalsIgnoreCase(dataPrix)){//data:image/x-icon;base64,base64ç¼–ç çš„iconå›¾ç‰‡æ•°æ®
                 suffix = ".ico";
-            } else if("data:image/gif;".equalsIgnoreCase(dataPrix)){//data:image/gif;base64,base64±àÂëµÄgifÍ¼Æ¬Êı¾İ
+            } else if("data:image/gif;".equalsIgnoreCase(dataPrix)){//data:image/gif;base64,base64ç¼–ç çš„gifå›¾ç‰‡æ•°æ®
                 suffix = ".gif";
-            } else if("data:image/png;".equalsIgnoreCase(dataPrix)){//data:image/png;base64,base64±àÂëµÄpngÍ¼Æ¬Êı¾İ
+            } else if("data:image/png;".equalsIgnoreCase(dataPrix)){//data:image/png;base64,base64ç¼–ç çš„pngå›¾ç‰‡æ•°æ®
                 suffix = ".png";
             }else{
-                throw new Exception("ÉÏ´«Í¼Æ¬¸ñÊ½²»ºÏ·¨");
+                throw new Exception("ä¸Šä¼ å›¾ç‰‡æ ¼å¼ä¸åˆæ³•");
             }
             tempFileName =filename + suffix;
           
-          //ÒòÎªBASE64DecoderµÄjarÎÊÌâ£¬´Ë´¦Ê¹ÓÃspring¿ò¼ÜÌá¹©µÄ¹¤¾ß°ü
+          //å› ä¸ºBASE64Decoderçš„jaré—®é¢˜ï¼Œæ­¤å¤„ä½¿ç”¨springæ¡†æ¶æä¾›çš„å·¥å…·åŒ…
             byte[] bs = Base64Utils.decodeFromString(data);
-                //Ê¹ÓÃapacheÌá¹©µÄ¹¤¾ßÀà²Ù×÷Á÷
-            	File imgFile = new File(tempFileName,filename);
+                //ä½¿ç”¨apacheæä¾›çš„å·¥å…·ç±»æ“ä½œæµ
+            	File imgFile = new File(filePath,tempFileName);
+            	
+            	System.out.println(filePath + tempFileName);
+            	System.out.println();
+            	
                 FileUtils.writeByteArrayToFile(imgFile, bs);  
         }
 		return tempFileName;

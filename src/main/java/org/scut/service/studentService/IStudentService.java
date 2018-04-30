@@ -19,6 +19,6 @@ public interface IStudentService {
 
 	Map<String, Object> addSchedule(Map<String, Object> m) throws IOException;
 
-	Map<String, Object> uploadSolutions(String studentId, String paperId, List<Map<String, Object>> sList, Map<String, MultipartFile> files,String reqLocation);
+	Map<String, Object> uploadSolutions(String studentId, String paperId, List<Map<String, Object>> solutionList, String reqLocation);
 	
 }
