@@ -21,4 +21,8 @@ public interface IStudent_paperDao {
 	public List<HashMap<String,Object>> getCorrectStudentList(@Param("teacherId")String teacherId,@Param("paperId")String paperId);
 	public int assignmentHomework(String paperId,String studentId,String submit,int score,String paperType);
 
+
+
+	void updateSubmit(@Param("studentId")String studentId, @Param("paperId")String paperId);
+
 }

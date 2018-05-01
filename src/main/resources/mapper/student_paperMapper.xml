@@ -31,6 +31,11 @@
 	<result property="score" column="score"/>
 	</resultMap>
 	
+	<update id="updateSubmit">
+		update student_paper set submit=1
+		where student_id=#{studentId} AND paper_id=#{paperId}
+    </update>
+	
 	<!-- assignmentHomework -->
 <insert id="assignmentHomework">
 insert into student_paper (paper_id,student_id,submit,score,paper_type)
