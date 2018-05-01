@@ -72,27 +72,20 @@ public class StudentInfoController {
 	
 	@RequestMapping("/uploadSolutions")
 	@ResponseBody
-	public Map<String, Object> getPaperDetails(MultipartHttpServletRequest request, HttpServletResponse response) throws IOException{
-		request.setCharacterEncoding("UTF-8"); 
 
+	public  Map<String, Object> getPaperDetails(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		    
+		    request.setCharacterEncoding("UTF-8");
+		    
+		    Map<String, Object> m  = ParamsTransport.getParams(request);
+						
+			String paperId = (String) m.get("paperId");
+			String studentId = (String) m.get("studentId");
+			List<Map<String, Object>> solutionList =  (List<Map<String, Object>>) m.get("solutionList");
 			
-		    Iterator<String> fileNames = request.getFileNames();		
-			Map<String, MultipartFile> files = new HashMap<>();			
-			for(;fileNames.hasNext();) {
-				
-				String temp = fileNames.next();
-							
-				files.put(temp,request.getFile(temp));
-			}
-			String paperId = request.getParameter("paperId");
-			String studentId = request.getParameter("studentId");
-			String solutionList = request.getParameter("solutionList");						
+			String reqLocation = (request.getSession().getServletContext().getRealPath("/"));
 			
-			Gson gson = new Gson();
-			List<Map<String, Object>>sList = gson.fromJson(solutionList, List.class);
-			String reqLocation = (request.getSession().getServletContext().getRealPath("/")+"img\\");
-			
-			Map<String, Object> responseBody = this.studentService.uploadSolutions(studentId,paperId,sList,files,reqLocation);
+			Map<String, Object> responseBody = this.studentService.uploadSolutions(studentId,paperId,solutionList,reqLocation);
 			
 			return responseBody;
 	}

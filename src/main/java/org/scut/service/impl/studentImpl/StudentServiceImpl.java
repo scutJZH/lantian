@@ -1,28 +1,18 @@
 package org.scut.service.impl.studentImpl;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.temporal.WeekFields;
+
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
-import javax.ejb.Schedule;
-import javax.swing.Spring;
 
-import org.apache.coyote.Request;
-import org.apache.ibatis.annotations.Param;
 import org.scut.dao.IClass_paperDao;
 import org.scut.dao.IPaperDao;
 import org.scut.dao.IQuestionDao;
@@ -33,14 +23,14 @@ import org.scut.dao.IStudentDao;
 import org.scut.dao.IStudent_paperDao;
 import org.scut.dao.ITitleDao;
 import org.scut.model.Question;
-import org.scut.model.Student;
+
 import org.scut.model.Title;
 import org.scut.service.studentService.IStudentService;
+import org.scut.util.Base64Analysis;
 import org.scut.util.GlobalVar;
-import org.springframework.scheduling.config.ScheduledTasksBeanDefinitionParser;
+
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 
 @Service("studentService")
 public class StudentServiceImpl implements IStudentService{
@@ -79,13 +69,16 @@ public class StudentServiceImpl implements IStudentService{
 			List<Map<String, Object>>cpList = class_paperDao.getClassPaperByCId(classId);
 		
 								
-			for(Map<String,Object> x:cpList) {
+			for(Map<String,Object> y:result) {
 				
-				for(Map<String,Object> y:result) {
+				y.put("assignTime" ,null);
+				y.put("deadLine" , null);
+				
+				for(Map<String,Object> x:cpList) {
 					if(x.get("paperId").equals(y.get("paperId"))) {
 						y.put("assignTime" , x.get("assighTime") );
 						y.put("deadLine" , x.get("deadLine") );
-						}				
+						}
 				}
 				
 			}
@@ -143,10 +136,7 @@ public class StudentServiceImpl implements IStudentService{
 				if(title.getPicPath()==null||title.getPicPath().length()==0) {titleMap.put("picPath", title.getPicPath());}else {titleMap.put("picPath", GlobalVar.titlePicPath+title.getPicPath());}
 				
 				titleMap.put("titleContent", title.getTitleContent());
-				
-				System.out.println(titleMap);
-				System.out.println();
-				
+								
 				if(titleList.contains(titleMap)!=true){
 					titleList.add(titleMap);
 					}
@@ -259,46 +249,31 @@ public class StudentServiceImpl implements IStudentService{
 		}
 
 		@Override
-		public Map<String, Object> uploadSolutions(String studentId, String paperId, List<Map<String, Object>> sList,
-				Map<String, MultipartFile> files,String reqLoacation) {
+		public Map<String, Object> uploadSolutions(String studentId, String paperId, List<Map<String, Object>> solutionList,String reqLoacation) {
 			Map<String, Object> responseBody = new HashMap<String, Object>();
              
 			try {
-					for (Map<String, Object> map : sList) {
+					for (Map<String, Object> map : solutionList) {
 						String questionId = (String) map.get("questionId");
 						String solutionContent = (String) map.get("solutionContent");
-						String imgKey = (String) map.get("img");
-						String picPath = null;
+						String img = (String) map.get("img");
+						String isRight = (String) map.get("isRight");
 						
-						if(!imgKey.isEmpty())
+						String picPath = null;						
+						
+						if( img!=null && img.length()!=0 )
 						{
-							MultipartFile file = files.get(imgKey);
+	                        picPath = UUID.randomUUID().toString();
 
-	                        picPath = UUID.randomUUID().toString()+".jpg";
-							
-							System.out.print(picPath);
-							System.out.println();
-                       
-							File img = new File(reqLoacation+file.getOriginalFilename());
-							
-							System.out.print(reqLoacation+file.getOriginalFilename());
-							System.out.println();
-							
-
-							FileOutputStream fos = new FileOutputStream(img);
-							BufferedOutputStream bos = new BufferedOutputStream(fos);
-							bos.write(file.getBytes());
-							bos.close();
-							fos.close();
-						
-							if(img.renameTo(new File(reqLoacation+picPath))) {System.out.println(img.getName());}else{responseBody.put("status","-2");return responseBody;};
-							
-							
+							Base64Analysis.analysisPic(picPath, reqLoacation+GlobalVar.solutionPicPath, img);
+					
 							}
-					    solutionDao.insertSolution(studentId,paperId,questionId,solutionContent,picPath);
-						}					
+						
+						solutionDao.insertSolution(studentId,paperId,questionId,solutionContent,picPath,isRight);
+						}
+					student_paperDao.updateSubmit(studentId,paperId);
 
-					}catch (Exception e) {System.out.println(e);responseBody.put("status","-1");return responseBody;}
+					}catch (Exception e) {System.out.println(e.getMessage());responseBody.put("status","-1");return responseBody;}
 			responseBody.put("status", "1");
 			return responseBody;
 		}
