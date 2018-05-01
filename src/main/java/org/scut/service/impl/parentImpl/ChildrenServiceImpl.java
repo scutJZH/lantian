@@ -38,13 +38,14 @@ public class ChildrenServiceImpl implements IChildrenService {
 		try {
 			child = studentDao.getchildInfoByTel(telnumber);
 			if (child != null && child.get("state").equals("1")) {
-				String childId = (String) child.get("student_id");
-				String relationship = parentStudentDao.isExist(parentId, childId);
-				if (relationship.equals("1")) {
+				String childId = (String) child.get("studentId");
+				boolean relationship = parentStudentDao.isExist(parentId, childId);
+				if (relationship) {
 					status = "2";
 				} else {
 					parentStudentDao.insertRelationship(parentId, childId);
 					child.remove("state");
+					child.put("picPath", GlobalVar.picPath+child.get("picPath"));
 					childInfo.putAll(child);
 				}
 			} else {
