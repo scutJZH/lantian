@@ -81,6 +81,7 @@ public class StudentInfoController {
 			String paperId = (String) m.get("paperId");
 			String studentId = (String) m.get("studentId");
 			List<Map<String, Object>> solutionList =  (List<Map<String, Object>>) m.get("solutionList");
+			String isRight = (String) m.get("isRight");
 								
 			System.out.print(paperId);
 			System.out.println();

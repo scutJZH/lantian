@@ -252,6 +252,7 @@ public class StudentServiceImpl implements IStudentService{
 						String questionId = (String) map.get("questionId");
 						String solutionContent = (String) map.get("solutionContent");
 						String img = (String) map.get("img");
+						String isRight = (String) map.get("isRight");
 						
 						System.out.println(map);
 						System.out.println();
@@ -278,7 +279,7 @@ public class StudentServiceImpl implements IStudentService{
 							
 							}
 						
-						solutionDao.insertSolution(studentId,paperId,questionId,solutionContent,picPath);
+						solutionDao.insertSolution(studentId,paperId,questionId,solutionContent,picPath,isRight);
 						}
 					student_paperDao.updateSubmit(studentId,paperId);
 
