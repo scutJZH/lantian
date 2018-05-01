@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 //@RequestMapping(value="/teacher", method=RequestMethod.POST)
 @Controller
-@RequestMapping("/teacher")
+//@RequestMapping("/teacher")
 public class TeacherCourseModuleController {
 	@Resource
 	private ITeacherCourseModuleService teacherCourseModuleService;
