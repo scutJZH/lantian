@@ -88,7 +88,7 @@ public Map<String, Object>  answerpost(HttpServletRequest request, HttpServletRe
 		
 		Map<String, Object> map =ParamsTransport.getParams(request);
 		String postId=(String)map.get("postId");
-		String answerContent=(String)map.get("answerContent");
+		String answerContent=(String)map.get("postContent");
 		String studentId=(String)map.get("userId");
 
 		Answer answer=new Answer();
@@ -113,7 +113,7 @@ public Map<String, Object>  answerAnswer(HttpServletRequest request, HttpServlet
 		
 		Map<String, Object> map =ParamsTransport.getParams(request);
 		String postId=(String)map.get("postId");
-		String studentId=(String)map.get("studentId");
+		String studentId=(String)map.get("userId");
 	
 		String answerContent=(String)map.get("answerContent");
 		
