@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/student")
+//@RequestMapping("/student")
 public class StudentInfoController {
 	@Resource
 	private IStudentService studentService;
 	@Resource
 	private IStudentInfoService studentInfoService;
 
-	@RequestMapping("/mine")
+	@RequestMapping("/student/mine")
 	@ResponseBody
 	public Map<String, Object> getStudentInfo(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		Map<String, Object> m = ParamsTransport.getParams(request);
@@ -84,7 +84,7 @@ public class StudentInfoController {
 			return responseBody;
 	}
 	
-	@RequestMapping("/mine/modify")
+	@RequestMapping("/student/mine/modify")
 	@ResponseBody
 	public Map<String, Object> modifyInfo(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		

@@ -28,7 +28,7 @@ public class AnswerController {
 	private IPostService postService;
 	
 	
-	@RequestMapping(value="/student/answer/like")
+	@RequestMapping(value="/answer/like")
 	@ResponseBody
 	public Map<String, Object>  like(HttpServletRequest request, HttpServletResponse response) throws  IOException{
 		
@@ -46,7 +46,7 @@ public class AnswerController {
 		
 	}
 	
-	@RequestMapping("/student/answer/cancel")
+	@RequestMapping("/answer/cancel")
 	@ResponseBody
 	public Map<String, Object> cancel(HttpServletRequest request, HttpServletResponse response) throws  IOException{
 		

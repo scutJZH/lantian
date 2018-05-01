@@ -124,7 +124,7 @@
   </select>
   <select id="findanswerbypostid" resultMap="BaseResultMap">
   SELECT
-  <include refid="Base_Column_List" />S
+  <include refid="Base_Column_List" />
   from answer where post_id =#{postId,jdbcType=VARCHAR}
   </select>
   

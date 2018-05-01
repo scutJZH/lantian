@@ -38,7 +38,7 @@ public class PostController {
 	@Resource
 	private ILikeService ILikeService;
 	
-	@RequestMapping("/student/post/publish")
+	@RequestMapping("/post/publish")
 	@ResponseBody
 
 	public Map<String, Object>  addpost(HttpServletRequest request, HttpServletResponse response) throws  IOException{
@@ -66,7 +66,7 @@ public class PostController {
 	
 	}
 	
-	@RequestMapping(value="/student/post/search")
+	@RequestMapping(value="/post/search")
 	@ResponseBody
 public Map<String, Object>  search(HttpServletRequest request, HttpServletResponse response) throws  IOException{
 		
@@ -82,13 +82,13 @@ public Map<String, Object>  search(HttpServletRequest request, HttpServletRespon
 		return Json.getJson(1,posts);
 		
 	}
-	@RequestMapping(value="/student/post/answerPost")
+	@RequestMapping(value="/post/answerPost")
 	@ResponseBody
 public Map<String, Object>  answerpost(HttpServletRequest request, HttpServletResponse response) throws  IOException{
 		
 		Map<String, Object> map =ParamsTransport.getParams(request);
 		String postId=(String)map.get("postId");
-		String answerContent=(String)map.get("postContent");
+		String answerContent=(String)map.get("answerContent");
 		String studentId=(String)map.get("userId");
 
 		Answer answer=new Answer();
@@ -107,16 +107,16 @@ public Map<String, Object>  answerpost(HttpServletRequest request, HttpServletRe
 			return Json.getJson(-1,"");
 		}
 	}
-	@RequestMapping(value="/student/post/atanswer")
+	@RequestMapping(value="/post/atanswer")
 	@ResponseBody
 public Map<String, Object>  answerAnswer(HttpServletRequest request, HttpServletResponse response) throws  IOException{
 		
 		Map<String, Object> map =ParamsTransport.getParams(request);
 		String postId=(String)map.get("postId");
 		String studentId=(String)map.get("studentId");
-		String atStudentId=(String)map.get("atStudentId");
-		String answerContent=(String)map.get("answerContent");
 	
+		String answerContent=(String)map.get("answerContent");
+		
 		Answer answer=new Answer();
 		answer.setPostId(postId);
 		answer.setAnswerId(UUID.randomUUID().toString());
@@ -124,7 +124,7 @@ public Map<String, Object>  answerAnswer(HttpServletRequest request, HttpServlet
 		answer.setAnswerTime(new Date());
 		answer.setStudentId(studentId);
 		answer.setLikes(0);
-		answer.setAtStudentId(atStudentId);
+		
 		int result = answerService.addanswer(answer);
 		if(result>0) {
 			return Json.getJson();
@@ -133,7 +133,7 @@ public Map<String, Object>  answerAnswer(HttpServletRequest request, HttpServlet
 			return Json.getJson(-1,"");
 		}
 	}
-	@RequestMapping(value="/student/post/getanswer")
+	@RequestMapping(value="/post/getanswer")
 	@ResponseBody
   public Map<String, Object>  getAnswerbean(HttpServletRequest request, HttpServletResponse response) throws  IOException{
 		
@@ -164,7 +164,7 @@ public Map<String, Object>  answerAnswer(HttpServletRequest request, HttpServlet
 		}
 		
 	}
-	@RequestMapping("/student/post")
+	@RequestMapping("/getpost")
 	@ResponseBody
 	public Map<String, Object> getpost(HttpServletRequest request, HttpServletResponse response) throws  IOException{
 		
@@ -177,7 +177,7 @@ public Map<String, Object>  answerAnswer(HttpServletRequest request, HttpServlet
 		return Json.getJson(1,post);
 	
 	}
-	@RequestMapping("/student/gettotal")
+	@RequestMapping("/post")
 	@ResponseBody
 	public Map<String, Object> gettotal(HttpServletRequest request, HttpServletResponse response) throws  IOException{
 		
