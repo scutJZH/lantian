@@ -13,7 +13,7 @@ import org.scut.util.Base64Analysis;
 import org.scut.util.GlobalVar;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("studentInfoService")
 public class StudentInfoServiceImpl implements IStudentInfoService{
 	
 	@Resource

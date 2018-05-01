@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IParent_studentDao {
 
-	public String isExist(@Param("parentId")String parentId, @Param("studentId")String studentId);
+	public boolean isExist(@Param("parentId")String parentId, @Param("studentId")String studentId);
 	
 	public void insertRelationship(@Param("parentId")String parentId, @Param("studentId")String studentId);
 	

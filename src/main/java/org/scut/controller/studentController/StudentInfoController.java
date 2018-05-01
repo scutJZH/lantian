@@ -2,8 +2,6 @@ package org.scut.controller.studentController;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -14,10 +12,6 @@ import org.scut.util.ParamsTransport;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-
-import com.google.gson.Gson;
 
 @Controller
 //@RequestMapping("/student")
