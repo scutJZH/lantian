@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.scut.dao.ITitleDao" >
-  <resultMap id="BaseResultMap" type="org.scut.model.Title" >
-    <id column="title_id" property="titleId" jdbcType="VARCHAR" />
-    <result column="title_content" property="titleContent" jdbcType="VARCHAR" />
-    <result column="pic_path" property="picPath" jdbcType="VARCHAR" />
+  <resultMap id="BaseResultMap" type="Title" >
+    <id column="title_id" property="titleId"/>
+    <result column="title_content" property="titleContent"/>
+    <result column="pic_path" property="picPath"/>
   </resultMap>
-  <sql id="Base_Column_List" >
-    title_id, title_content, pic_path
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="Title" >
     select 
-    <include refid="Base_Column_List" />
+    title_id, title_content, pic_path
     from title
-    where title_id = #{titleId,jdbcType=VARCHAR}
+    where title_id = #{titleId}
   </select>
-    
-  <select id="getTitle" resultType="hashmap" parameterType="String">
-		select title_id as titleId,title_content as titleContent,pic_path as picPath from title where title_id = #{titleId}
-  </select>
-    
+       
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from title
     where title_id = #{titleId,jdbcType=VARCHAR}

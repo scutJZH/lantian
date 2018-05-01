@@ -36,6 +36,7 @@ import org.scut.model.Question;
 import org.scut.model.Student;
 import org.scut.model.Title;
 import org.scut.service.studentService.IStudentService;
+import org.scut.util.GlobalVar;
 import org.springframework.scheduling.config.ScheduledTasksBeanDefinitionParser;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -117,41 +118,57 @@ public class StudentServiceImpl implements IStudentService{
 			
 			Map<String, Object> responseBody = new HashMap<String, Object>();
 			
+			Map<String,Object> result = new HashMap<>();
+			
 			try {
 			List<Map<String, Object>>questionIdList = question_paperDao.getQuestionIds(paperId);
 						
-			List<Map<String, Object>>optionsList = new ArrayList<>();
+			List<Question>optionsList = new ArrayList<>();
 										
 			for(Map<String,Object> x:questionIdList) {
 				
-				Map<String, Object> eachQuestion = questionDao.getQuestion((String) x.get("questionId"));
+				Question eachQuestion = questionDao.selectByPrimaryKey((String) x.get("questionId"));
 				optionsList.add(eachQuestion);
 
 				}
 			
 			List<Map<String, Object>>titleList = new ArrayList<>();
 			
-			for(Map<String,Object> x:optionsList) {
+			for(Question x:optionsList) {
 				
-				Map<String, Object> title = titleDao.getTitle((String) x.get("titleId"));
-				if(titleList.contains(title)!=true){
-					titleList.add(title);
+				Title title = titleDao.selectByPrimaryKey(x.getTitleId());
+				Map<String,Object> titleMap = new HashMap<>();
+				titleMap.put("titleId", title.getTitleId());
+				
+				if(title.getPicPath()==null||title.getPicPath().length()==0) {titleMap.put("picPath", title.getPicPath());}else {titleMap.put("picPath", GlobalVar.titlePicPath+title.getPicPath());}
+				
+				titleMap.put("titleContent", title.getTitleContent());
+				
+				System.out.println(titleMap);
+				System.out.println();
+				
+				if(titleList.contains(titleMap)!=true){
+					titleList.add(titleMap);
 					}
 			}
 			
 
-			responseBody.put("titleList",titleList);
+			result.put("titleList",titleList);
 			
 
 			if (optionsList.isEmpty()) {
 				responseBody.put("status", "-1");
 			}else {
 				responseBody.put("status", "1");
-				responseBody.put("result", optionsList);
+				
+
+				result.put("optionsList", optionsList);
+				responseBody.put("result", result);
 				}
 			
 			return responseBody;
 		}catch (Exception e) {
+			System.out.println(e);
 			responseBody.put("status", "-1");
 			return responseBody;
 		}

@@ -57,7 +57,7 @@ public class StudentInfoController {
 	
 	@RequestMapping("/getPaperQuestions")
 	@ResponseBody
-	public void getPaperQuestions(HttpServletRequest request, HttpServletResponse response) throws IOException{
+	public Map<String, Object> getPaperQuestions(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		
 		
 		Map<String, Object> m  = ParamsTransport.getParams(request);
@@ -66,13 +66,13 @@ public class StudentInfoController {
 		
 		Map<String, Object> responseBody = this.studentService.getPaperQuestions(paperId);
 		
-		ParamsTransport.returnParams(response, responseBody);
+		return responseBody;
 		
 	}
 	
 	@RequestMapping("/uploadSolutions")
 	@ResponseBody
-	public void getPaperDetails(MultipartHttpServletRequest request, HttpServletResponse response) throws IOException{
+	public Map<String, Object> getPaperDetails(MultipartHttpServletRequest request, HttpServletResponse response) throws IOException{
 		request.setCharacterEncoding("UTF-8"); 
 
 			
@@ -81,10 +81,7 @@ public class StudentInfoController {
 			for(;fileNames.hasNext();) {
 				
 				String temp = fileNames.next();
-				
-//				System.out.print(temp);
-//				System.out.println();
-//				
+							
 				files.put(temp,request.getFile(temp));
 			}
 			String paperId = request.getParameter("paperId");
@@ -97,7 +94,7 @@ public class StudentInfoController {
 			
 			Map<String, Object> responseBody = this.studentService.uploadSolutions(studentId,paperId,sList,files,reqLocation);
 			
-			ParamsTransport.returnParams(response, responseBody);
+			return responseBody;
 	}
 	
 	@RequestMapping("/mine/modify")
