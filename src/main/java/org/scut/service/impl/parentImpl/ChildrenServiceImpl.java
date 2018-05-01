@@ -1,16 +1,12 @@
 package org.scut.service.impl.parentImpl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-
 import javax.annotation.Resource;
-
-import org.scut.dao.IParentDao;
 import org.scut.dao.IParent_studentDao;
 import org.scut.dao.IStudentDao;
-import org.scut.model.Student;
 import org.scut.service.parentService.IChildrenService;
 import org.scut.util.GlobalVar;
 import org.springframework.stereotype.Service;
@@ -85,7 +81,7 @@ public class ChildrenServiceImpl implements IChildrenService {
 		Map<String, Object> result = new HashMap<String, Object>();
 
 		String status = "1";
-		Map<String, Object> childrenInfo = new HashMap<String, Object>();
+		List<Map<String, Object>> childrenInfo = new ArrayList<Map<String, Object>>();
 
 		try {
 			List<String> childrenIdsList = parentStudentDao.getChildrenIdsList(parentId);
@@ -93,7 +89,8 @@ public class ChildrenServiceImpl implements IChildrenService {
 				for (String childId : childrenIdsList) {
 					Map<String, Object> childInfo = studentDao.getchildInfoById(childId);
 					childInfo.remove("state");
-					childrenInfo.putAll(childInfo);
+					childInfo.put("picPath", GlobalVar.picPath+childInfo.get("picPath"));
+					childrenInfo.add(childInfo);
 				}
 			}
 		} catch (Exception e) {
@@ -106,5 +103,4 @@ public class ChildrenServiceImpl implements IChildrenService {
 
 		return result;
 	}
-
 }
