@@ -117,9 +117,9 @@
 	</resultMap>
 	
 	<!-- addStudent --><!-- this tab associate other tab,maybe problem -->
-	<insert id="addStudent">
-	insert into student(class_id) values(#{classId}) where student_id=#{studentId}
-	</insert>
+	<update id="addStudent">
+	update student set class_id=#{classId} where student_id=#{studentId}
+	</update>
 	<!-- getStudentIdByClassId -->
 	<select id="getStudentIdByClassId" resultMap="getStudentIdByClassIdHashMap">
 	select student_id from student where class_id=#{classId}

@@ -27,6 +27,7 @@ public class ClassManageModuleController {
 		HashMap<String,Object> result=this.classManageModuleService.getClassListTwo(teacherId);
 		return result;
 	}
+
 //	@RequestMapping(value="/addStudent")
 //	@ResponseBody
 //	public HashMap<String,Object> addStudent(@RequestBody Map<String,Object> request){
@@ -54,5 +55,27 @@ public class ClassManageModuleController {
 //		HashMap<String,Object> result= this.classManageModuleService.addClass(schoolName,teacherId,grade,classId,className);
 //		return result;
 //	}	
+
+	@RequestMapping(value="/addStudent")
+	@ResponseBody
+	public HashMap<String,Object> addStudent(@RequestBody Map<String,Object> request){
+		String teacherId=String.valueOf(request.get("teacherId"));
+		String studentId=String.valueOf(request.get("studentId"));
+		String classId=String.valueOf(request.get("classId"));
+		return this.classManageModuleService.addStudent(teacherId,studentId,classId);
+	}
+	/**
+	@RequestMapping(value="/addClass")
+	@ResponseBody
+	public HashMap<String,Object> addClass(@RequestBody Map<String,Object> request){
+		String schoolName=String.valueOf(request.get("schoolName"));
+		String teacherId=String.valueOf(request.get("teacherId"));
+		int grade=Integer.parseInt(String.valueOf(((request.get("grade")))));
+		String classId=String.valueOf(request.get("classId"));
+		String className=String.valueOf(request.get("className"));
+		HashMap<String,Object> result= this.classManageModuleService.addClass(schoolName,teacherId,grade,classId,className);
+		return result;
+	}	**/
+
 }
  

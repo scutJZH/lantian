@@ -40,5 +40,5 @@ public interface IStudentDao {
 	
 	public int addStudent(@Param("studentId")String studentId,@Param("classId")String classId);
 	
-	public ArrayList<HashMap<String,Object>> getStudentIdByClassId(String classId);
+	public ArrayList<HashMap<String,Object>> getStudentIdByClassId(@Param("classId")String classId);
 }

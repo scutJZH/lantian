@@ -21,7 +21,7 @@ public interface IClassDao {
 
     int updateByPrimaryKey(Class record);
     
-    public int getStudentNumber(@Param("classId")String classId);
+    public HashMap<String,Object> getStudentNumber(@Param("classId")String classId);
     
     public int addStudent(@Param("classId")String classId,@Param("recentStudentNumber")int recentStudentNumber);
     public int addClass(@Param("schoolName")String schoolName,@Param("teacherId")String teacherId,

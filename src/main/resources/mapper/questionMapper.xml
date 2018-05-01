@@ -142,12 +142,13 @@
   </update>
   
   <select id="getQuestionList" resultMap="getQuestionListHashMap">
-	select question_id,title_content from question natural join title
-	 where subject_id=#{subjectId} and grade=#{grade} 
+	select question_id,title_content,option_a from question natural join title
+	 where subject_id=#{subjectId} 
   </select>
 <resultMap id="getQuestionListHashMap" type="HashMap">
 	<id property="questionId" column="question_id"></id>
 	<result property="titleContent" column="title_content"/>
+	<result property="optionA" column="option_a"/>
 </resultMap>
 
 <!-- 14getSubjectiveListOrObjective -->
@@ -155,7 +156,7 @@
 select question_id,title_content from question natural join title
 	 where subject_id=#{subjectId} and grade=#{grade} and option_a is null
 </select>
-<resultMap id="getSubjectiveListMap" type="java.util.HashMap">
+<resultMap id="getSubjectiveListMap" type="HashMap">
 	<id property="questionId" column="question_id"></id>
 	<result property="titleContent" column="title_content"/>
 </resultMap>
@@ -163,7 +164,7 @@ select question_id,title_content from question natural join title
 select question_id,title_content from question natural join title
 	 where subject_id=#{subjectId} and grade=#{grade} and option_a is not null
 </select>
-<resultMap id="getObjectiveListMap" type="java.util.HashMap">
+<resultMap id="getObjectiveListMap" type="HashMap">
 	<id property="questionId" column="question_id"></id>
 	<result property="titleContent" column="title_content"/>
 </resultMap>
@@ -174,14 +175,18 @@ select title_content,option_a,option_b,option_c,
 option_d,answer,pic_path,opa_pic_path,opb_pic_path,opc_pic_path,opd_pic_path from question join title on question.title_id=title.title_id 
 and question.question_id=#{questionId}
 </select>
-<resultMap id="checkTitleMap" type="Map">
+<resultMap id="checkTitleMap" type="HashMap">
 <id property="titleContent" column="title_content"></id>
 <result property="optionA" column="option_a"/>
 <result property="optionB" column="option_b"/>
 <result property="optionC" column="option_c"/>
-<result property="optionD" column="opption_D"/>
+<result property="optionD" column="option_d"/>
 <result property="answer" column="answer"/>
 <result property="picPath" column="pic_path"/>
+<result property="opaPicPath" column="opa_pic_path"/>
+<result property="opbPicPath" column="opb_pic_path"/>
+<result property="opcPicPath" column="opc_pic_path"/>
+<result property="opdPicPath" column="opd_pic_path"/>
 </resultMap>
 
 <!-- createSubjective -->
