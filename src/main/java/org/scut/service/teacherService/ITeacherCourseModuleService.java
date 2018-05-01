@@ -17,10 +17,12 @@ public interface ITeacherCourseModuleService {
 	public HashMap<String,Object> getCorrectQuestionList(String teacherId,String paperId,String studentId);
 	public HashMap<String,Object> getSubjectiveOrObjectiveList(String teacherId,String questionType,String subjectId,int grade);
 	public HashMap<String,Object> createObjective(String subjectId,int grade,String optionA,String optionB,String optionC,String optionD,
-			String answer,String picA,String picB,String picC,String picD,String picPathPicture,String opaPicPath,String opbPicPath,String opcPicPath,String opdPicPath,String picPath,String titleContent);
+			String answer,String picA,String picB,String picC,String picD,String picPathPicture,String opaPicPath,String opbPicPath,String opcPicPath
+			,String opdPicPath,String picPath,String titleContent,
+			String picId1,String picId2,String picId3,String picId4,String picId5);
 	public HashMap<String,Object> createSubjective(String teacherId,String picSubjective,
 			String picPath,
-			String picAnswer,String answer,String subjectId,int grade);
+			String picAnswer,String answer,String subjectId,int grade,String picId1,String picId2);
 	public HashMap<String,Object> checkTitle(String question);
 	public int GenerateImage(String imgStr,String picPath); 
 }

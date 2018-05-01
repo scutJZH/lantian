@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 
 import org.scut.dao.*;
 import org.scut.service.teacherService.ITeacherCourseModuleService;
+import org.scut.util.GlobalVar;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -134,10 +135,10 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
 			List<HashMap<String,Object>> r1= this.class_paperDao.getCorrectionList(teacherId,classId);
-			int r2=Integer.parseInt(String.valueOf(this.classDao.getStudentNumber(classId)));
+			HashMap<String,Object> r2=this.classDao.getStudentNumber(classId);
 			/**for unsubmittedNumber**/
 			for(int i=0;i<r1.size();i++) {
-				int unsubmittedNumber=(r2-(Integer)(r1.get(i).get("submitNumber")));
+				int unsubmittedNumber=(Integer.parseInt(String.valueOf(r2.get("studentNumber")))-(Integer)(r1.get(i).get("submitNumber")));
 				r1.get(i).put("unsubmittedNumber", Integer.toString(unsubmittedNumber));
 			}
 			result.put("result",r1);
@@ -266,14 +267,22 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
         BASE64Decoder decoder = new BASE64Decoder();  
         try
         {  byte[] b=null;
-        	if(imgStr.charAt(12)=='j') {
+        	if(imgStr.indexOf('j')==12) {
             //Base64解码  
             b = decoder.decodeBuffer(imgStr.substring(23));  //把字符串中的"data:image/jpeg;base64,"去掉
-        	}
-        	else if(imgStr.charAt(12)=='p'||imgStr.charAt(12)=='g'||imgStr.charAt(12)=='b'||imgStr.charAt(12)=='i') {
+        	//}d
+        	//else if(imgStr.charAt(12)=='p'||imgStr.charAt(12)=='g'||imgStr.charAt(12)=='b'||imgStr.charAt(12)=='i') {
+                //Base64解码  
+              //  b = decoder.decodeBuffer(imgStr.substring(22));  //把字符串中的"data:image/jpeg;base64,"去掉
+            	}
+        	else if(imgStr.indexOf('p')==12||imgStr.indexOf('b')==12||imgStr.indexOf('g')==12) {
                 //Base64解码  
                 b = decoder.decodeBuffer(imgStr.substring(22));  //把字符串中的"data:image/jpeg;base64,"去掉
-            	}
+            	//}
+            	//else if(imgStr.charAt(12)=='p'||imgStr.charAt(12)=='g'||imgStr.charAt(12)=='b'||imgStr.charAt(12)=='i') {
+                    //Base64解码  
+                  //  b = decoder.decodeBuffer(imgStr.substring(22));  //把字符串中的"data:image/jpeg;base64,"去掉
+                	}
             for(int i=0;i<b.length;++i)  
             {  
                 if(b[i]<0)  
@@ -298,7 +307,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	@Override
 	public HashMap<String,Object> createSubjective(String teacherId,String picSubjective,
 			String picPath,
-			String picAnswer,String answer,String subjectId,int grade) {
+			String picAnswer,String answer,String subjectId,int grade,String picId1,String picId2) {
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		ArrayList<HashMap<String, Object>> base64file=new ArrayList<HashMap<String, Object>>();
@@ -318,8 +327,8 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 			for(HashMap<String, Object> subfile:base64file) {
 				GenerateImage(String.valueOf(subfile.get("imgStr")),String.valueOf(subfile.get("picPath")));
 			}
-			this.titleDao.createSubjective(titleId,picPath);
-			this.questionDao.createSubjective(questionId,titleId,subjectId,grade,answer);
+			this.titleDao.createSubjective(titleId,GlobalVar.picPath+picId1+".jpg");
+			this.questionDao.createSubjective(questionId,titleId,subjectId,grade,GlobalVar.picPath+picId2+".jpg");
 			result.put("result",status);
 		}
 		catch(Exception e) {
@@ -333,7 +342,8 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	//16.create objective completed!
 	public HashMap<String,Object> createObjective(String subjectId,int grade,String optionA,String optionB,String optionC,String optionD,
 			String answer,String picA,String picB,String picC,String picD,String picPathPicture
-			,String opaPicPath,String opbPicPath,String opcPicPath,String opdPicPath,String picPath,String titleContent){
+			,String opaPicPath,String opbPicPath,String opcPicPath,String opdPicPath,String picPath,String titleContent,
+			String picId1,String picId2,String picId3,String picId4,String picId5){
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		ArrayList<HashMap<String, Object>> base64file=new ArrayList<HashMap<String, Object>>();
@@ -361,10 +371,10 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 			String questionId=UUID.randomUUID().toString();
 			String titleId=UUID.randomUUID().toString();
 			for(HashMap<String, Object> subfile:base64file) {
-				status=Integer.toString(GenerateImage(subfile.get("imgStr").toString(),subfile.get("picPath").toString()));
+				Integer.toString(GenerateImage(subfile.get("imgStr").toString(),subfile.get("picPath").toString()));
 			}
-			this.titleDao.createObjective(titleId,titleContent,picPath);
-			this.questionDao.createObjective(questionId, titleId, subjectId, grade, optionA, optionB, optionC, optionD, answer, opaPicPath, opbPicPath, opcPicPath, opdPicPath);
+			this.titleDao.createObjective(titleId,titleContent,GlobalVar.picPath+picId5+".jpg");
+			this.questionDao.createObjective(questionId, titleId, subjectId, grade, optionA, optionB, optionC, optionD, answer, GlobalVar.picPath+picId1+".jpg", GlobalVar.picPath+picId2+".jpg", GlobalVar.picPath+picId3+".jpg", GlobalVar.picPath+picId4+".jpg");
 			result.put("result",status);
 		}
 		catch(Exception e) {
@@ -384,6 +394,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 			Map<String,Object> r1=this.questionDao.checkTitle(questionId);
 			if(((String)r1.get("optionA"))==null) r1.put("questionType", 1);
 			else if(((String)r1.get("optionA")).length()>0) r1.put("questionType", 2);
+			r1.put("answer", r1.get("answer").toString().toUpperCase());
 			result.put("result",r1);
 		}
 		catch(Exception e) {

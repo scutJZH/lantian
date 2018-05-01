@@ -33,6 +33,6 @@ public interface IQuestionDao {
     public List<HashMap<String,Object>> getObjectiveList(@Param("subjectId")String subjectId,@Param("grade")int grade);
     public int createObjective(@Param("questionId")String questionId,@Param("titleId")String titleId,@Param("subjectId")String subjectId,@Param("grade")int grade,@Param("optionA")String optionA,@Param("optionB")String optionB,@Param("optionC")String optionC,@Param("optionD")String optionD,
     		@Param("answer")String answer,@Param("opaPicPath")String opaPicPath,@Param("opbPicPath")String opbPicPath,@Param("opcPicPath")String opcPicPath,@Param("opdPicPath")String opdPicPath);
-    public Map<String,Object> checkTitle(String question);
+    public Map<String,Object> checkTitle(@Param("questionId")String questionId);
     public int createSubjective(@Param("questionId")String questionId,@Param("titleId")String titleId,@Param("subjectId")String subjectId,@Param("grade")int grade,@Param("answer")String answer);
 }

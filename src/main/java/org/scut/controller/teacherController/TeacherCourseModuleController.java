@@ -333,7 +333,8 @@ public class TeacherCourseModuleController {
 		String opdPicPath=request2.getSession().getServletContext().getRealPath("/")+"img\\"+picId4+".jpg";
 		String picPath=request2.getSession().getServletContext().getRealPath("/")+"img\\"+picId5+".jpg";
 		return this.teacherCourseModuleService.createObjective(subjectId,grade,optionA,optionB,optionC,optionD,
-				answer,picA,picB,picC,picD,picPathPicture,opaPicPath,opbPicPath,opcPicPath,opdPicPath,picPath,titleContent);
+				answer,picA,picB,picC,picD,picPathPicture,opaPicPath,opbPicPath,opcPicPath,opdPicPath,picPath,titleContent
+				,picId1,picId2,picId3,picId4,picId5);
 	}
 	//17create subjective completed test well
 	@RequestMapping(value="/createSubjective", method=RequestMethod.POST)
@@ -357,7 +358,7 @@ public class TeacherCourseModuleController {
 		String answer=request2.getSession().getServletContext().getRealPath("/")+"img\\"+picId2+".jpg";
 		return this.teacherCourseModuleService.createSubjective(teacherId,picSubjective,
 																picPath,picAnswer,
-																answer,subjectId,grade);
+																answer,subjectId,grade,picId1,picId2);
 	}
 	//18.checkTitle test well.         
 	@RequestMapping(value="/checkTitle", method=RequestMethod.POST)
@@ -366,4 +367,8 @@ public class TeacherCourseModuleController {
 		String questionId=String.valueOf(request.get("questionId"));
 		return this.teacherCourseModuleService.checkTitle(questionId);
 	}
+	
+	//public HashMap<String,Object> autoCorrect(@RequestBody HashMap<String,Object> request){
+		
+	//}
 }
