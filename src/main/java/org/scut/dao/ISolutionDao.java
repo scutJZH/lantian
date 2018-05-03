@@ -1,5 +1,6 @@
 package org.scut.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,4 +16,8 @@ public interface ISolutionDao {
 
 	public void updateSolution(@Param("studentId")String studentId,@Param("paperId") String paperId,@Param("questionId") String questionId,@Param("solutionContent") String solutionContent);
 	public int submitCorrection(@Param("studentId")String studentId,@Param("paperId")String paperId,@Param("questionId")String questionId,@Param("point")int point,@Param("isright")String isright,@Param("content")String content);
+	public ArrayList<HashMap<String,Object>> autoCorrectSelect();
+	public int autoCorrectRight(@Param("studentId")String studentId,@Param("questionId")String questionId);
+	public int autoCorrectFalse(@Param("studentId")String studentId,@Param("questionId")String questionId);
+	
 }

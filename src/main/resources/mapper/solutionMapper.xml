@@ -27,4 +27,24 @@ join question on solution.question_id=question.question_id where student_id=#{st
  <update id="submitCorrection">
  update solution set point=#{point},isright=#{isright},content=#{content,jdbcType=VARCHAR} where student_id=#{studentId} and paper_id=#{paperId} and question_id=#{questionId}
  </update>
+ <!--autoCorrectSelect  -->
+ <select id="autoCorrectSelect" resultMap="autoCorrectSelectHashMap">
+ select solution.student_id,solution.paper_id,solution.question_id,solution.content from solution 
+ join question on solution.question_id=question.question_id and question.option_a is not null
+ </select>
+ <resultMap id="autoCorrectSelectHashMap" type="HashMap">
+ <id property="studentId" column="student_id"/>
+ <result property="paperId" column="paper_id"/>
+ <result property="questionId" column="question_id"/>
+ <result property="content" column="content"/>
+ </resultMap>
+ <!-- autoCorrectRight -->
+ <update id="autoCorrectRight"> 
+ update solution set point=5,isright="1" where student_id=#{studentId} and question_id=#{questionId}
+ </update>
+ 
+ <!-- autoCorrectFalse -->
+ <update id="autoCorrectFalse">
+ update solution set point=0,isright="0" where student_id=#{studentId} and question_id=#{questionId}
+ </update>
 </mapper>

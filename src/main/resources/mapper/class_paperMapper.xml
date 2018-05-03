@@ -28,7 +28,7 @@ select paper_id,assign_time,submit_number,paper_name,student_number from class_p
 </delete>
 <!-- 7.获取作业批改列表 -->
 <select id="getCorrectionList" resultMap="getCorrectionListHashMap">
-	select paper_name, paper_id,from_unixtime(assign_time,'%y-%m-%d %h:%i:%s'),submit_number from class_paper natural join paper
+	select paper_name, paper_id,assign_time,submit_number from class_paper natural join paper
 	where assign_teacher_id=#{teacherId} and class_id=#{classId}
 </select>
 <resultMap id="getCorrectionListHashMap" type="java.util.HashMap">
@@ -44,4 +44,13 @@ insert into class_paper (paper_id,class_id,assign_teacher_id,dead_line,submit_nu
 values (#{paperId},#{classId},#{assignTeacherId},from_unixtime(#{deadLine},'%y-%m-%d %h:%i:%s'),#{submitNumber},#{assignTime,jdbcType=DATE},#{paperType},#{examTime});
 
 </insert>
+
+<!-- getCorrectionList2 -->
+<select id="getCorrectionList2" resultMap="getCorrectionList2HashMap">
+	select submit_number from class_paper natural join paper
+	where assign_teacher_id=#{teacherId} and paper_id=#{paperId}
+	</select>
+	<resultMap type="HashMap" id="getCorrectionList2HashMap">
+	<id property="submitNumber" column="submit_number"/>
+	</resultMap>
 </mapper>

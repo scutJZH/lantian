@@ -67,6 +67,21 @@ public class TeacherCourseModuleController {
 	@RequestMapping(value="/getClassList", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> getClassList(@RequestBody Map<String,Object> request) {
+		//autoCorrect
+		ArrayList<HashMap<String,Object>> r1=this.solutionDao.autoCorrectSelect();
+		int choiceScore=0;
+		for(int i=0;i<r1.size();i++) {
+		if(r1.get(i).get("content").toString()==this.questionDao.autoCorrectSelect(r1.get(i).get("questionId").toString()).toString()) {
+		this.solutionDao.autoCorrectRight(r1.get(i).get("studentId").toString(),r1.get(i).get("questionId").toString());
+		choiceScore+=5;
+		this.student_paperDao.autoCorrect(r1.get(i).get("studentId").toString(),r1.get(i).get("paperId").toString(),choiceScore);
+		}
+		else {
+			this.solutionDao.autoCorrectFalse(r1.get(i).get("studentId").toString(),r1.get(i).get("questionId").toString());
+			this.student_paperDao.autoCorrect(r1.get(i).get("studentId").toString(),r1.get(i).get("paperId").toString(),choiceScore);
+		}
+		}
+		
 		String teacherId=String.valueOf(request.get("teacherId"));
 		
 		HashMap<String,Object> result=teacherCourseModuleService.getClassList(teacherId);
@@ -347,8 +362,13 @@ public class TeacherCourseModuleController {
 		int grade=7;//=Integer.parseInt(request.get("grade"));
 		String picId1=UUID.randomUUID().toString();
 		String picId2=UUID.randomUUID().toString();
-		String picSubjective=String.valueOf(request.get("pic"));
-		String picAnswer=String.valueOf(request.get("answer"));
+		String picSubjective=null;
+		String picAnswer=null;
+		if(String.valueOf(request.get("pic")) != null) {
+			picSubjective=String.valueOf(request.get("pic"));
+		}if(String.valueOf(request.get("answer")) != null) {
+			picAnswer=String.valueOf(request.get("answer"));
+		}
 		System.out.println(String.valueOf(request.get("pic")));
 		System.out.println(String.valueOf(request.get("answer")));
 		System.out.println(String.valueOf(request.get("subjectId")));
@@ -367,8 +387,11 @@ public class TeacherCourseModuleController {
 		String questionId=String.valueOf(request.get("questionId"));
 		return this.teacherCourseModuleService.checkTitle(questionId);
 	}
-	
-	//public HashMap<String,Object> autoCorrect(@RequestBody HashMap<String,Object> request){
+	//19.autoCorrect will not be call
+	/**@RequestMapping(value="/autoCorrect", method=RequestMethod.POST)
+	@ResponseBody
+	public void autoCorrect(@RequestBody HashMap<String,Object> request){
 		
-	//}
+		
+	}**/
 }
