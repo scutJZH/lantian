@@ -100,5 +100,11 @@ public void cookieRead(HttpServletRequest request, HttpServletResponse response)
 		
 		
 	}
+	
+	@RequestMapping("/pathtest")
+	public void pathTest(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		System.out.println(request.getSession().getServletContext().getRealPath("/"));
+		System.out.println(this.getClass().getClassLoader().getResource("/").getPath());
+	}
 
 }
