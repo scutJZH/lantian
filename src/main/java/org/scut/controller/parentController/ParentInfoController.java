@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.scut.service.parentService.IParentInfoService;
+import org.scut.util.GlobalVar;
 import org.scut.util.ParamsTransport;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,7 +67,7 @@ public class ParentInfoController {
 		 String nickname = (String)m.get("nickname");
 		 String birthdayStr = (String)m.get("birthday");
 		 String sex = (String)m.get("sex");
-		 String filePath = request.getSession().getServletContext().getRealPath("/")+"img\\";
+		 String filePath =this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.picPath;
 		 Map<String, Object> result = parentInfoService.modifyParentInfo(parentId, imgBase64, nickname, birthdayStr, sex, filePath);
 		 return result;
 	}
