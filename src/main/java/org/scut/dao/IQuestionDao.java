@@ -33,4 +33,5 @@ public interface IQuestionDao {
     		@Param("answer")String answer,@Param("opaPicPath")String opaPicPath,@Param("opbPicPath")String opbPicPath,@Param("opcPicPath")String opcPicPath,@Param("opdPicPath")String opdPicPath);
     public Map<String,Object> checkTitle(@Param("questionId")String questionId);
     public int createSubjective(@Param("questionId")String questionId,@Param("titleId")String titleId,@Param("subjectId")String subjectId,@Param("grade")int grade,@Param("answer")String answer);
+    public HashMap<String,Object> autoCorrectSelect(@Param("questionId")String questionId);
 }

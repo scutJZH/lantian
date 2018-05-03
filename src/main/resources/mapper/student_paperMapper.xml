@@ -38,7 +38,11 @@
 	
 	<!-- assignmentHomework -->
 <insert id="assignmentHomework">
-insert into student_paper (paper_id,student_id,submit,score,type)
-values (#{paperId},#{studentId},#{submit},#{score},#{paperType})
+insert into student_paper (paper_id,student_id,submit,score,type,choice_score)
+values (#{paperId},#{studentId},#{submit},#{score},#{paperType},0)
 </insert>
+<!-- autoCorrect -->
+<update id="autoCorrect">
+update student_paper set choice_score=#{choiceScore} where student_id=#{studentId} and paper_id=#{paperId}
+</update>
 </mapper>

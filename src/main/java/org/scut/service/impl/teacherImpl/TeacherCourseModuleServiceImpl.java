@@ -197,6 +197,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		try{
 			List<HashMap<String,Object>> r1= this.student_paperDao.getCorrectStudentList(teacherId,paperId);
 			/**閫氳繃鍒ゆ柇鎬诲垎鏄惁涓�0鏉ュ垽鏂槸鍚﹀凡鎵规敼**/
+			if((Integer)(this.class_paperDao.getCorrectionList2(teacherId, paperId).get("submitNumber"))!=0) {
 			boolean a=true;
 			boolean b=false;
 			for(int i=0;i<r1.size();i++) {
@@ -208,6 +209,8 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 					}
 			}
 			result.put("result",r1);
+			}
+			else result.put("result",new ArrayList<HashMap<String,Object>>());
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -267,22 +270,26 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
         BASE64Decoder decoder = new BASE64Decoder();  
         try
         {  byte[] b=null;
-        	if(imgStr.indexOf('j')==12) {
+        	if(String.valueOf(imgStr.charAt(12))!="j") {
             //Base64解码  
             b = decoder.decodeBuffer(imgStr.substring(23));  //把字符串中的"data:image/jpeg;base64,"去掉
-        	//}d
+        	}
+        	if(String.valueOf(imgStr.charAt(12))!="p"|String.valueOf(imgStr.charAt(12))!="b"|String.valueOf(imgStr.charAt(12))!="g") {
+                //Base64解码  
+                b = decoder.decodeBuffer(imgStr.substring(23));  //把字符串中的"data:image/jpeg;base64,"去掉
+            	}
         	//else if(imgStr.charAt(12)=='p'||imgStr.charAt(12)=='g'||imgStr.charAt(12)=='b'||imgStr.charAt(12)=='i') {
                 //Base64解码  
               //  b = decoder.decodeBuffer(imgStr.substring(22));  //把字符串中的"data:image/jpeg;base64,"去掉
-            	}
-        	else if(imgStr.indexOf('p')==12||imgStr.indexOf('b')==12||imgStr.indexOf('g')==12) {
+            	//}
+        	//else if(imgStr.indexOf('p')==12||imgStr.indexOf('b')==12||imgStr.indexOf('g')==12) {
                 //Base64解码  
-                b = decoder.decodeBuffer(imgStr.substring(22));  //把字符串中的"data:image/jpeg;base64,"去掉
+             //   b = decoder.decodeBuffer(imgStr.substring(22));  //把字符串中的"data:image/jpeg;base64,"去掉
             	//}
             	//else if(imgStr.charAt(12)=='p'||imgStr.charAt(12)=='g'||imgStr.charAt(12)=='b'||imgStr.charAt(12)=='i') {
                     //Base64解码  
                   //  b = decoder.decodeBuffer(imgStr.substring(22));  //把字符串中的"data:image/jpeg;base64,"去掉
-                	}
+                //	}
             for(int i=0;i<b.length;++i)  
             {  
                 if(b[i]<0)  
@@ -352,29 +359,47 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		HashMap<String, Object> hashmap3=new HashMap<String, Object>();
 		HashMap<String, Object> hashmap4=new HashMap<String, Object>();
 		HashMap<String, Object> hashmap5=new HashMap<String, Object>();
+		if(picA!=null) {
 		hashmap1.put("imgStr", picA);
 		hashmap1.put("picPath", opaPicPath);
+		base64file.add(hashmap1);
+		}
+		if(picB!=null) {
 		hashmap2.put("imgStr", picB);
 		hashmap2.put("picPath", opbPicPath);
+		base64file.add(hashmap2);
+		}
+		if(picC!=null) {
 		hashmap3.put("imgStr", picC);
 		hashmap3.put("picPath", opcPicPath);
+		base64file.add(hashmap3);
+		}
+		if(picD!=null) {
 		hashmap4.put("imgStr", picD);
 		hashmap4.put("picPath", opdPicPath);
+		base64file.add(hashmap4);
+		}
+		if(picPathPicture!=null) {
 		hashmap5.put("imgStr", picPathPicture);
 		hashmap5.put("picPath", picPath);
-		base64file.add(hashmap1);
-		base64file.add(hashmap2);
-		base64file.add(hashmap3);
-		base64file.add(hashmap4);
 		base64file.add(hashmap5);
+		}
 		try{
 			String questionId=UUID.randomUUID().toString();
 			String titleId=UUID.randomUUID().toString();
+			if(base64file!=null)
 			for(HashMap<String, Object> subfile:base64file) {
-				Integer.toString(GenerateImage(subfile.get("imgStr").toString(),subfile.get("picPath").toString()));
+				GenerateImage(subfile.get("imgStr").toString(),subfile.get("picPath").toString());
 			}
+			if(picPathPicture!=null)
 			this.titleDao.createObjective(titleId,titleContent,GlobalVar.picPath+picId5+".jpg");
+			if(picPathPicture==null)
+			this.titleDao.createObjective(titleId,titleContent,null);
+			if(picA!=null|picB!=null|picC!=null|picD!=null|picPathPicture!=null)
 			this.questionDao.createObjective(questionId, titleId, subjectId, grade, optionA, optionB, optionC, optionD, answer, GlobalVar.picPath+picId1+".jpg", GlobalVar.picPath+picId2+".jpg", GlobalVar.picPath+picId3+".jpg", GlobalVar.picPath+picId4+".jpg");
+			if(picA==null)
+			this.questionDao.createObjective(questionId, titleId, subjectId, grade, optionA, optionB, optionC, optionD, answer, null, null,null, null);
+			
 			result.put("result",status);
 		}
 		catch(Exception e) {
@@ -392,9 +417,10 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
 			Map<String,Object> r1=this.questionDao.checkTitle(questionId);
-			if(((String)r1.get("optionA"))==null) r1.put("questionType", 1);
-			else if(((String)r1.get("optionA")).length()>0) r1.put("questionType", 2);
-			r1.put("answer", r1.get("answer").toString().toUpperCase());
+			if(((String)r1.get("optionA"))==null) {r1.put("questionType", 1);
+			r1.put("answer", r1.get("answer").toString());}
+			else if(((String)r1.get("optionA")).length()>0) {r1.put("questionType", 2);
+			r1.put("answer", r1.get("answer").toString().toUpperCase());}
 			result.put("result",r1);
 		}
 		catch(Exception e) {

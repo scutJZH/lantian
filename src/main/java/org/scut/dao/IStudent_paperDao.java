@@ -25,6 +25,6 @@ public interface IStudent_paperDao {
 	void updateSubmit(@Param("studentId")String studentId, @Param("paperId")String paperId);
 
 	public int assignmentHomework(@Param("paperId")String paperId,@Param("studentId")String studentId,@Param("submit")String submit,@Param("score")int score,@Param("paperType")String paperType);
-
-
+	
+	public int autoCorrect(@Param("studentId")String studentId,@Param("paperId")String paperId,@Param("choiceScore")int choiceScore);
 }

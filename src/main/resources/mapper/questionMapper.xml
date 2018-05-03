@@ -199,4 +199,11 @@ insert into question(question_id,title_id,subject_id,grade,option_a,option_b,opt
 			answer,opa_pic_path,opb_pic_path,opc_pic_path,opd_pic_path)values(#{questionId,javaType=String,jdbcType=VARCHAR},#{titleId,javaType=String,jdbcType=VARCHAR},#{subjectId,javaType=String,jdbcType=VARCHAR},#{grade,jdbcType=INTEGER},#{optionA,javaType=String,jdbcType=VARCHAR},#{optionB,javaType=String,jdbcType=VARCHAR},#{optionC,javaType=String,jdbcType=VARCHAR},#{optionD,javaType=String,jdbcType=VARCHAR},
 			#{answer,javaType=String,jdbcType=VARCHAR},#{opaPicPath,javaType=String,jdbcType=VARCHAR},#{opbPicPath,javaType=String,jdbcType=VARCHAR},#{opcPicPath,javaType=String,jdbcType=VARCHAR},#{opdPicPath,javaType=String,jdbcType=VARCHAR})
 </insert>
+
+<select id="autoCorrectSelect" resultMap="autoCorrectSelectHashMap">
+select answer from question where question_id=#{questionId}
+</select>
+<resultMap type="HashMap" id="autoCorrectSelectHashMap">
+<id property="optionA" column="option_a"/>
+</resultMap>
 </mapper>
