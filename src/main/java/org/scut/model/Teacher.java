@@ -9,7 +9,7 @@ public class Teacher extends User{
 	
 	private String name;
 	private String schoolId;
-	
+	private String schoolName;
 	
 	public String getName() {
 		return name;
@@ -23,7 +23,12 @@ public class Teacher extends User{
 	public void setSchoolId(String schoolId) {
 		this.schoolId = schoolId;
 	}
-	
+	public void setSchoolName(String schoolName){
+		this.schoolName = schoolName;
+	}
+	public String getSchoolName() {
+		return schoolName;
+	}
 	
 	
 
