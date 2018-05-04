@@ -1,6 +1,5 @@
 package org.scut.util;
 
-
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
