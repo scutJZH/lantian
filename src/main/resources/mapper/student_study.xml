@@ -44,5 +44,6 @@ values (#{paperId},#{studentId},#{submit},#{score},#{paperType},0)
 <!-- autoCorrect -->
 <update id="autoCorrect">
 update student_study set choice_score=#{choiceScore} where student_id=#{studentId} and paper_id=#{paperId}
+
 </update>
 </mapper>
