@@ -6,9 +6,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.scut.util.Base64Analysis;
+import org.scut.util.GlobalVar;
+import org.scut.util.ParamsTransport;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -101,10 +107,41 @@ public void cookieRead(HttpServletRequest request, HttpServletResponse response)
 		
 	}
 	
-	@RequestMapping("/pathtest")
-	public void pathTest(HttpServletRequest request, HttpServletResponse response) throws Exception{
-		System.out.println(request.getSession().getServletContext().getRealPath("/"));
-		System.out.println(this.getClass().getClassLoader().getResource("/").getPath());
+	@RequestMapping("/pathtest1")
+	public void pathTest1(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		String path1 = request.getSession().getServletContext().getRealPath("/");
+		String path2 = this.getClass().getClassLoader().getResource("/").getPath();
+		String path3 = this.getClass().getClassLoader().getResource("../../").getPath();
+		String path4 = this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.picPath;
+		System.out.println(path1);
+		System.out.println(path2);
+		System.out.println(path3);
+		System.out.println(path4);
+//		Map<String, Object> m = ParamsTransport.getParams(request);
+//		
+//		String img = (String)m.get("img");
+//		if(img != null){
+//			String imgPath1 = Base64Analysis.analysisPic("1", path1, img)+"\\img";
+////			String imgPath2 = Base64Analysis.analysisPic("1", path2, img);
+//			System.out.println(imgPath1);
+//		}
+	}
+	
+	@RequestMapping("/pathtest2")
+	public void pathTest2(HttpServletRequest request, HttpServletResponse response) throws Exception{
+//		String path1 = request.getSession().getServletContext().getRealPath("/");
+		String path2 = this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.picPath;
+		System.out.println(path2);
+		Map<String, Object> m = ParamsTransport.getParams(request);
+		try{
+		String img = (String)m.get("img");
+		if(img != null){
+//			String imgPath1 = Base64Analysis.analysisPic("1", path1, img);
+			String imgPath2 = Base64Analysis.analysisPic("1", path2, img);
+			System.out.println(imgPath2);
+		}}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 }

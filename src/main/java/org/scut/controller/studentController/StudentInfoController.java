@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.scut.service.studentService.IStudentService;
 import org.scut.service.studentService.IStudentInfoService;
+import org.scut.util.GlobalVar;
 import org.scut.util.ParamsTransport;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,10 +77,8 @@ public class StudentInfoController {
 			String paperId = (String) m.get("paperId");
 			String studentId = (String) m.get("studentId");
 			List<Map<String, Object>> solutionList =  (List<Map<String, Object>>) m.get("solutionList");
-			
-			String reqLocation = (request.getSession().getServletContext().getRealPath("/"));
-			
-			Map<String, Object> responseBody = this.studentService.uploadSolutions(studentId,paperId,solutionList,reqLocation);
+						
+			Map<String, Object> responseBody = this.studentService.uploadSolutions(studentId,paperId,solutionList);
 			
 			return responseBody;
 	}
@@ -116,7 +115,7 @@ public class StudentInfoController {
 		 String birthdayStr = (String)m.get("birthday");
 		 String sex = (String)m.get("sex");
 		 String schoolName = (String)m.get("schoolName");
-		 String filePath = request.getSession().getServletContext().getRealPath("/")+"img\\";
+		 String filePath = this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.picPath;
 		 Map<String, Object> result = studentInfoService.modifyStudentInfo(studentId, imgBase64, nickname, birthdayStr, sex, schoolName, filePath);
 		 return result;
 	}

@@ -1,7 +1,6 @@
 package org.scut.service.impl.teacherImpl;
 
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
