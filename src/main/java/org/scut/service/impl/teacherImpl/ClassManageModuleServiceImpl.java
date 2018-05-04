@@ -1,13 +1,8 @@
 package org.scut.service.impl.teacherImpl;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
 import javax.annotation.Resource;
-
-import org.scut.model.*;
 import org.scut.model.Class;
 import org.scut.dao.*;
 import org.scut.service.teacherService.IClassManageModuleService;
@@ -20,17 +15,17 @@ public class ClassManageModuleServiceImpl implements IClassManageModuleService{
 	@Resource
 	private IStudentDao studentDao;
 	@Resource
-	private IClass_paperDao class_paperDao;
+	private IStudyDao studyDao;
 	@Resource
 	private ITeacher_classDao teacher_classDao;
 	@Resource
 	private IClassDao classDao;
 	@Resource
 	private IQuestionDao questionDao;
-	@Resource //杩欎釜鍔熻兘杩樻病娴�
+	@Resource //鏉╂瑤閲滈崝鐔诲厴鏉╂ɑ鐥呭ù锟�
 	private IPptDao pptDao;
 	@Resource
-	private IStudent_paperDao student_paperDao;
+	private IStudent_studyDao student_studyDao;
 	@Resource
 	private ISolutionDao solutionDao; 
 	@Resource

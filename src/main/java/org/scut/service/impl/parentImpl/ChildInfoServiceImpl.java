@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.Resource;
-
 import org.scut.dao.IStudentDao;
-import org.scut.dao.IStudent_paperDao;
+import org.scut.dao.IStudent_studyDao;
 import org.scut.service.parentService.IChildInfoService;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +16,7 @@ public class ChildInfoServiceImpl implements IChildInfoService{
 	@Resource
 	private IStudentDao studentDao;
 	@Resource
-	private IStudent_paperDao studentPaperDao;
+	private IStudent_studyDao studentPaperDao;
 
 	@Override
 	public Map<String, Object> getChildHomework(String studentId, String subjectId) {

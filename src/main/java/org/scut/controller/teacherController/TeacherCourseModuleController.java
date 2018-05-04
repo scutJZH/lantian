@@ -23,7 +23,7 @@ public class TeacherCourseModuleController {
 	@Resource
 	private IStudentDao studentDao;
 	@Resource
-	private IClass_paperDao class_paperDao;
+	private IStudyDao studyDao;
 	@Resource
 	private ITeacher_classDao teacher_classDao;
 	@Resource
@@ -33,7 +33,7 @@ public class TeacherCourseModuleController {
 	@Resource //鏉╂瑤閲滈崝鐔诲厴鏉╂ɑ鐥呭ù锟�
 	private IPptDao pptDao;
 	@Resource
-	private IStudent_paperDao student_paperDao;
+	private IStudent_studyDao student_studyDao;
 	@Resource
 	private ISolutionDao solutionDao; 
 	@Resource
@@ -142,7 +142,7 @@ public class TeacherCourseModuleController {
 		//none rank
 		//action
 		try {
-			this.class_paperDao.assignHomework(paperId,classId,assignTeacherId,deadLine,submitNumber,assignTime,paperType,examTime);
+			this.studyDao.assignHomework(paperId,classId,assignTeacherId,deadLine,submitNumber,assignTime,paperType,examTime);
 		}catch(Exception e) {
 			e.printStackTrace();
 			status="-2";
@@ -180,7 +180,7 @@ public class TeacherCourseModuleController {
 				String submit="0";
 				int score=0;
 				//paperType
-				this.student_paperDao.assignmentHomework(paperId,studentId,submit,score,paperType);
+				this.student_studyDao.assignmentHomework(paperId,studentId,submit,score,paperType);
 			}catch(Exception e){
 				e.printStackTrace();
 				status="-2";
