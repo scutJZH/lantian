@@ -77,10 +77,8 @@ public class StudentInfoController {
 			String paperId = (String) m.get("paperId");
 			String studentId = (String) m.get("studentId");
 			List<Map<String, Object>> solutionList =  (List<Map<String, Object>>) m.get("solutionList");
-			
-			String reqLocation = (request.getSession().getServletContext().getRealPath("/"));
-			
-			Map<String, Object> responseBody = this.studentService.uploadSolutions(studentId,paperId,solutionList,reqLocation);
+						
+			Map<String, Object> responseBody = this.studentService.uploadSolutions(studentId,paperId,solutionList);
 			
 			return responseBody;
 	}
