@@ -1,20 +1,30 @@
 package org.scut.controller.studentController;
 
 
+
+
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.scut.model.Answer;
+import org.scut.model.Answerbean;
 import org.scut.model.Post;
 import org.scut.service.studentService.IAnserService;
+import org.scut.service.studentService.ILikeService;
 import org.scut.service.studentService.IPostService;
+import org.scut.util.ParamsTransport;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+
 
 	
 
@@ -25,53 +35,96 @@ public class PostController {
 	private IPostService postService;
 	@Resource
 	private IAnserService answerService;
+	@Resource
+	private ILikeService ILikeService;
 	
-	@RequestMapping(value="/student/post/publish.do")
+	@RequestMapping("/post/publish")
 	@ResponseBody
-	public Object publish(@RequestParam(value="postTitle",required=false)String postTitle,
-						@RequestParam(value="postContent",required=false)String postContent,
-						@RequestParam(value="studentId",required=false)String studentId,
-						@RequestParam(value="postSubject",required=false)String postSubject) {
-//					      if (postTittle==null) {
-//					    	  return Json.getJson(false,"甯栧瓙鏍囬涓虹┖")锛�
-//					    			  
-//					      }锛�
-		                            
-						Post post= new Post();
-						post.setPostId(UUID.randomUUID().toString());
-						post.setPostTitle(postTitle);
-						post.setStudentId(studentId);
-						post.setSubjectId(postSubject);
-						post.setPostContent(postContent);
-						post.setCreateTime(new Date());
-						int result= postService.addpost(post);
-						
-						if (result>0) {
-							return Json.getJson();
-						}
-						else {
-							return Json.getJson(-1,"");
-						}
-						
-				
+
+	public Map<String, Object>  addpost(HttpServletRequest request, HttpServletResponse response) throws  IOException{
+		
+		Map<String, Object> map =ParamsTransport.getParams(request);
+		String postTitle=(String)map.get("postTitle");
+		String postContent=(String)map.get("postContent");
+		String studentId=(String)map.get("studentId");
+		String postSubject=(String)map.get("postSubject");
+		Post post= new Post();
+		post.setPostId(UUID.randomUUID().toString());
+		post.setPostTitle(postTitle);
+		post.setStudentId(studentId);
+		post.setSubjectId(postSubject);
+		post.setPostContent(postContent);
+		post.setCreateTime(new Date());
+		int result= postService.addpost(post);
+		
+		if (result>0) {
+			return Json.getJson();
+		}
+		else {
+			return Json.getJson(-1,"");
+		}
+	
 	}
-//	@RequestMapping(value="/student/post/search.do")
-//	@ResponseBody
-//	public Object search(@RequestParam(value="keyWord",required=false)String keyWord) {
-//		postService.
-//		
-//	}
-	@RequestMapping(value="/student/post/answerPost.do")
+	
+	@RequestMapping(value="/post/search")
 	@ResponseBody
-	public Object answerPost(@RequestParam(value="postId",required=false)String postId,
-							@RequestParam(value="userId",required=false)String studentId,
-							@RequestParam(value="answerContent",required=false)String answerContent){
+public Map<String, Object>  search(HttpServletRequest request, HttpServletResponse response) throws  IOException{
+		
+		Map<String, Object> map =ParamsTransport.getParams(request);
+		String keyWord=(String)map.get("keyWord");
+		if (keyWord==null||keyWord=="") {
+			return Json.getJson(-1, "");
+		}
+		keyWord="%"+keyWord+"%";
+		List<Post> posts= postService.getpostfuzzy(keyWord);
+		
+		
+		return Json.getJson(1,posts);
+		
+	}
+	@RequestMapping(value="/post/answerPost")
+	@ResponseBody
+public Map<String, Object>  answerpost(HttpServletRequest request, HttpServletResponse response) throws  IOException{
+		
+		Map<String, Object> map =ParamsTransport.getParams(request);
+		String postId=(String)map.get("postId");
+		String answerContent=(String)map.get("postContent");
+		String studentId=(String)map.get("userId");
+
 		Answer answer=new Answer();
+		answer.setAnswerId(UUID.randomUUID().toString());
 		answer.setPostId(postId);
 		answer.setAnswerContent(answerContent);
 		answer.setAnswerTime(new Date());
 		answer.setStudentId(studentId);
 		answer.setLikes(0);
+		int result = answerService.addanswer(answer);
+		if(result>0) {
+			
+			return Json.getJson();
+		}
+		else {
+			return Json.getJson(-1,"");
+		}
+	}
+	@RequestMapping(value="/post/atanswer")
+	@ResponseBody
+public Map<String, Object>  answerAnswer(HttpServletRequest request, HttpServletResponse response) throws  IOException{
+		
+		Map<String, Object> map =ParamsTransport.getParams(request);
+		String postId=(String)map.get("postId");
+		String studentId=(String)map.get("userId");
+	
+		String answerContent=(String)map.get("answerContent");
+		
+		Answer answer=new Answer();
+		answer.setPostId(postId);
+		answer.setAnswerId(UUID.randomUUID().toString());
+		answer.setAnswerContent(answerContent);
+		answer.setAnswerTime(new Date());
+		answer.setStudentId(studentId);
+		answer.setLikes(0);
+		
 		int result = answerService.addanswer(answer);
 		if(result>0) {
 			return Json.getJson();
@@ -80,26 +133,62 @@ public class PostController {
 			return Json.getJson(-1,"");
 		}
 	}
-	@RequestMapping(value="/student/post/getanswer.do")
+	@RequestMapping(value="/post/getanswer")
 	@ResponseBody
-	public Object answerlist(@RequestParam(value="postId",required=false)String postId) {
-		List<Answer>answers=answerService.findanswerbypostid(postId);
-		Map<String, Object> map	=new HashMap<String,Object>();
-		map.put("answerlist", answers);
-		return Json.getJson(1,map);
-	}
-	@RequestMapping(value="/student/post/getpost.do")
-	@ResponseBody
-	public Object postdetail(@RequestParam(value="postId",required=false)String postId) {
-		Post post=postService.findpostbyid(postId);
-		Map<String, Object> map =new HashMap<String,Object>();
-		map.put("post", post);
-		return Json.getJson(1,map);
-	
+  public Map<String, Object>  getAnswerbean(HttpServletRequest request, HttpServletResponse response) throws  IOException{
+		
+		Map<String, Object> map =ParamsTransport.getParams(request);
+		String postId=(String)map.get("postId");
+		String userId=(String)map.get("userId");
+
+		
+		Map<String, Object> result= new HashMap<String,Object>();
+		try {
+			List<Answerbean> answerbeans =answerService.findanswerbeanbypostid(postId);
+			for(int i = 0; i < answerbeans.size(); i++) {
+				boolean b = ILikeService.islike( answerbeans.get(i).getAnswerId(),userId);
+				answerbeans.get(i).setIslike(b);
+				
+				
+			}
 			
-		
+			result.put("status", 1);
+			result.put("result", answerbeans);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("----------------"+e.getMessage());
+			result.put("status",-2);
+		} finally {
+			return result;
+		}
 		
 	}
+	@RequestMapping("/getpost")
+	@ResponseBody
+	public Map<String, Object> getpost(HttpServletRequest request, HttpServletResponse response) throws  IOException{
+		
+		Map<String, Object> map =ParamsTransport.getParams(request);
+		String postId=(String)map.get("postId");
+		Post post=postService.findpostbyid(postId);
+		if (post==null) {
+			return Json.getJson(-2,"");
+		}
+		return Json.getJson(1,post);
+	
+	}
+	@RequestMapping("/post")
+	@ResponseBody
+	public Map<String, Object> gettotal(HttpServletRequest request, HttpServletResponse response) throws  IOException{
+		
+		Map<String, Object> map =ParamsTransport.getParams(request);
+		List<Post> posts= postService.gettotal();
+		if (posts!=null) {
+			return Json.getJson(1,posts);
+		}
+		return Json.getJson(-2,"");		
 	
 }
+}
+	
 

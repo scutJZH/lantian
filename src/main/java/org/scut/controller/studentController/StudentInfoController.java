@@ -2,32 +2,27 @@ package org.scut.controller.studentController;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.scut.service.studentService.IStudentService;
 import org.scut.service.studentService.IStudentInfoService;
+import org.scut.util.GlobalVar;
 import org.scut.util.ParamsTransport;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-
-import com.google.gson.Gson;
 
 @Controller
-@RequestMapping("/student")
+//@RequestMapping("/student")
 public class StudentInfoController {
 	@Resource
 	private IStudentService studentService;
+	@Resource
 	private IStudentInfoService studentInfoService;
 
-	@RequestMapping("/mine")
+	@RequestMapping("/student/mine")
 	@ResponseBody
 	public Map<String, Object> getStudentInfo(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		Map<String, Object> m = ParamsTransport.getParams(request);
@@ -57,7 +52,7 @@ public class StudentInfoController {
 	
 	@RequestMapping("/getPaperQuestions")
 	@ResponseBody
-	public void getPaperQuestions(HttpServletRequest request, HttpServletResponse response) throws IOException{
+	public Map<String, Object> getPaperQuestions(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		
 		
 		Map<String, Object> m  = ParamsTransport.getParams(request);
@@ -66,37 +61,33 @@ public class StudentInfoController {
 		
 		Map<String, Object> responseBody = this.studentService.getPaperQuestions(paperId);
 		
-		ParamsTransport.returnParams(response, responseBody);
+		return responseBody;
 		
 	}
 	
 	@RequestMapping("/uploadSolutions")
 	@ResponseBody
-	public void getPaperDetails(MultipartHttpServletRequest request, HttpServletResponse response) throws IOException{
-		request.setCharacterEncoding("UTF-8"); 
 
+	public  Map<String, Object> getPaperDetails(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		    
+		    request.setCharacterEncoding("UTF-8");
+		    
+		    Map<String, Object> m  = ParamsTransport.getParams(request);
+						
+			String paperId = (String) m.get("paperId");
+			String studentId = (String) m.get("studentId");
+			List<Map<String, Object>> solutionList =  (List<Map<String, Object>>) m.get("solutionList");
+						
+			Map<String, Object> responseBody = this.studentService.uploadSolutions(studentId,paperId,solutionList);
 			
-		    Iterator<String> fileNames = request.getFileNames();
-			List<MultipartFile> files = new ArrayList<MultipartFile>();
-			for(;fileNames.hasNext();) {
-				files.add(request.getFile(fileNames.next()));
-			}
-			String paperId = request.getParameter("paperId");
-			String studentId = request.getParameter("studentId");
-			String solutionList = request.getParameter("solutionList");
-			Gson gson = new Gson();
-			List<Map<String, Object>>sList = gson.fromJson(solutionList, List.class);
-			
-			Map<String, Object> responseBody = this.studentService.uploadSolutions(studentId,paperId,sList,files,request);
-			
-			ParamsTransport.returnParams(response, responseBody);
+			return responseBody;
 	}
 	
-	@RequestMapping("/mine/modify")
+	@RequestMapping("/student/mine/modify")
 	@ResponseBody
-	public Map<String, Object> modifyInfo(MultipartHttpServletRequest request, HttpServletResponse response) throws IOException{
+	public Map<String, Object> modifyInfo(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		
-		Map<String, Object> result = null;
+	/*	Map<String, Object> result = null;
 		
 		String studentId = request.getParameter("studentId");
 		List<MultipartFile> filesList = request.getFiles("img");
@@ -116,6 +107,17 @@ public class StudentInfoController {
 		}
 		
 		return result;
+		*/
+		Map<String, Object> m = ParamsTransport.getParams(request);
+		 String studentId = (String)m.get("studentId");
+		 String imgBase64 = (String)m.get("img");
+		 String nickname = (String)m.get("nickname");
+		 String birthdayStr = (String)m.get("birthday");
+		 String sex = (String)m.get("sex");
+		 String schoolName = (String)m.get("schoolName");
+		 String filePath = this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.picPath;
+		 Map<String, Object> result = studentInfoService.modifyStudentInfo(studentId, imgBase64, nickname, birthdayStr, sex, schoolName, filePath);
+		 return result;
 	}
 
 		

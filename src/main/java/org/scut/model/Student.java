@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 public class Student extends User{
     
 	private String classId;
-	private String schoolName;
+	private String schoolId;
 	
     public String getClassId() {
 		return classId;
@@ -14,11 +14,11 @@ public class Student extends User{
 	public void setClassId(String classId) {
 		this.classId = classId;
 	}
-	public String getSchoolName() {
-		return schoolName;
+	public String getSchoolId() {
+		return schoolId;
 	}
-	public void setSchoolName(String schoolName) {
-		this.schoolName = schoolName;
+	public void setSchoolName(String schoolId) {
+		this.schoolId = schoolId;
 	}
 	
 	

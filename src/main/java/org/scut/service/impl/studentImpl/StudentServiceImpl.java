@@ -1,55 +1,42 @@
 package org.scut.service.impl.studentImpl;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import javax.annotation.Resource;
-import javax.ejb.Schedule;
-import javax.swing.Spring;
-
-import org.apache.coyote.Request;
-import org.apache.ibatis.annotations.Param;
-import org.scut.dao.IClass_paperDao;
 import org.scut.dao.IPaperDao;
 import org.scut.dao.IQuestionDao;
 import org.scut.dao.IQuestion_paperDao;
 import org.scut.dao.IScheduleDao;
 import org.scut.dao.ISolutionDao;
 import org.scut.dao.IStudentDao;
-import org.scut.dao.IStudent_paperDao;
+import org.scut.dao.IStudent_studyDao;
+import org.scut.dao.IStudyDao;
 import org.scut.dao.ITitleDao;
 import org.scut.model.Question;
-import org.scut.model.Student;
+
 import org.scut.model.Title;
 import org.scut.service.studentService.IStudentService;
-import org.springframework.scheduling.config.ScheduledTasksBeanDefinitionParser;
+import org.scut.util.Base64Analysis;
+import org.scut.util.GlobalVar;
+
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 
 @Service("studentService")
 public class StudentServiceImpl implements IStudentService{
 		
 		@Resource
-		private IStudent_paperDao student_paperDao;
+		private IStudent_studyDao student_studyDao;
 		@Resource
 		private IStudentDao studentDao;
 		@Resource
-		private IClass_paperDao class_paperDao;
+		private IStudyDao studyDao;
 		@Resource
 		private IPaperDao paperDao;
 		@Resource
@@ -71,20 +58,23 @@ public class StudentServiceImpl implements IStudentService{
 			Map<String, Object> responseBody = new HashMap<String, Object>();
 			
 		try {	
-			List<Map<String, Object>>result = student_paperDao.getStudentPaperBySId(studentId,submit);
+			List<Map<String, Object>>result = student_studyDao.getStudentPaperBySId(studentId,submit);
 					
 			String classId = (String) studentDao.getClassIDBySId(studentId).get("classId");
 			
-			List<Map<String, Object>>cpList = class_paperDao.getClassPaperByCId(classId);
+			List<Map<String, Object>>cpList = studyDao.getClassPaperByCId(classId);
 		
 								
-			for(Map<String,Object> x:cpList) {
+			for(Map<String,Object> y:result) {
 				
-				for(Map<String,Object> y:result) {
+				y.put("assignTime" ,null);
+				y.put("deadLine" , null);
+				
+				for(Map<String,Object> x:cpList) {
 					if(x.get("paperId").equals(y.get("paperId"))) {
 						y.put("assignTime" , x.get("assighTime") );
 						y.put("deadLine" , x.get("deadLine") );
-						}				
+						}
 				}
 				
 			}
@@ -117,41 +107,54 @@ public class StudentServiceImpl implements IStudentService{
 			
 			Map<String, Object> responseBody = new HashMap<String, Object>();
 			
+			Map<String,Object> result = new HashMap<>();
+			
 			try {
 			List<Map<String, Object>>questionIdList = question_paperDao.getQuestionIds(paperId);
 						
-			List<Map<String, Object>>optionsList = new ArrayList<>();
+			List<Question>optionsList = new ArrayList<>();
 										
 			for(Map<String,Object> x:questionIdList) {
 				
-				Map<String, Object> eachQuestion = questionDao.getQuestion((String) x.get("questionId"));
+				Question eachQuestion = questionDao.selectByPrimaryKey((String) x.get("questionId"));
 				optionsList.add(eachQuestion);
 
 				}
 			
 			List<Map<String, Object>>titleList = new ArrayList<>();
 			
-			for(Map<String,Object> x:optionsList) {
+			for(Question x:optionsList) {
 				
-				Map<String, Object> title = titleDao.getTitle((String) x.get("titleId"));
-				if(titleList.contains(title)!=true){
-					titleList.add(title);
+				Title title = titleDao.selectByPrimaryKey(x.getTitleId());
+				Map<String,Object> titleMap = new HashMap<>();
+				titleMap.put("titleId", title.getTitleId());
+				
+				if(title.getPicPath()==null||title.getPicPath().length()==0) {titleMap.put("picPath", title.getPicPath());}else {titleMap.put("picPath", GlobalVar.titlePicPath+title.getPicPath());}
+				
+				titleMap.put("titleContent", title.getTitleContent());
+								
+				if(titleList.contains(titleMap)!=true){
+					titleList.add(titleMap);
 					}
 			}
 			
 
-			responseBody.put("titleList",titleList);
+			result.put("titleList",titleList);
 			
 
 			if (optionsList.isEmpty()) {
 				responseBody.put("status", "-1");
 			}else {
 				responseBody.put("status", "1");
-				responseBody.put("result", optionsList);
+				
+
+				result.put("optionsList", optionsList);
+				responseBody.put("result", result);
 				}
 			
 			return responseBody;
 		}catch (Exception e) {
+			System.out.println(e);
 			responseBody.put("status", "-1");
 			return responseBody;
 		}
@@ -242,44 +245,32 @@ public class StudentServiceImpl implements IStudentService{
 		}
 
 		@Override
-		public Map<String, Object> uploadSolutions(String studentId, String paperId, List<Map<String, Object>> sList,
-				List<MultipartFile> files,MultipartHttpServletRequest request) {
+		public Map<String, Object> uploadSolutions(String studentId, String paperId, List<Map<String, Object>> solutionList) {
 			Map<String, Object> responseBody = new HashMap<String, Object>();
              
-			for (Map<String, Object> map : sList) {
-				String questionId = (String) map.get("questionId");
-				String solutionContent = (String) map.get("solutionContent");
-			    solutionDao.insertSolution(studentId,paperId,questionId,solutionContent);
-			}
-			
-			
-				
-			try {				
-				for (MultipartFile file : files) {
+			try {
+				    String picLocation = this.getClass().getClassLoader().getResource("../../").getPath();
+					for (Map<String, Object> map : solutionList) {
+						String questionId = (String) map.get("questionId");
+						String solutionContent = (String) map.get("solutionContent");
+						String img = (String) map.get("img");
+						String isRight = (String) map.get("isRight");
+						
+						String picPath = null;						
+						
+						if( img!=null && img.length()!=0 )
+						{
+	                        picPath = UUID.randomUUID().toString();
 
-						System.out.println(request.getSession().getServletContext().getRealPath("/")+"img\\"+file.getOriginalFilename());
-						System.out.println();
-						File img = new File(request.getSession().getServletContext().getRealPath("/")+"img\\"+file.getOriginalFilename());						
-						FileOutputStream fos = new FileOutputStream(img);
-						BufferedOutputStream bos = new BufferedOutputStream(fos);
-						bos.write(file.getBytes());
-						bos.close();
-						fos.close();
+							Base64Analysis.analysisPic(picPath, picLocation+GlobalVar.solutionPicPath, img);
+							
+							}
 						
-						String fileName = file.getOriginalFilename();
-						int length = fileName.indexOf(".");						
-						String [] paramList = fileName.substring(0, length).split("\\+");
-					
-						String pic_path = request.getSession().getServletContext().getRealPath("/")+"img\\"+file.getOriginalFilename();
-						
-						if(paramList.length<3) {responseBody.put("status", "-3");return responseBody;}
-						else {
-							solutionDao.updateSolution(paramList[0],paramList[1],paramList[2],pic_path);
-						
-					}
-				}
-			}			
-			catch (Exception e) {System.out.println(e);responseBody.put("status","-1");return responseBody;}
+						solutionDao.insertSolution(studentId,paperId,questionId,solutionContent,picPath,isRight);
+						}
+					student_studyDao.updateSubmit(studentId,paperId);
+
+					}catch (Exception e) {System.out.println(e.getMessage());responseBody.put("status","-1");return responseBody;}
 			responseBody.put("status", "1");
 			return responseBody;
 		}

@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.scut.service.parentService.IParentInfoService;
+import org.scut.util.GlobalVar;
 import org.scut.util.ParamsTransport;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,8 +39,8 @@ public class ParentInfoController {
 	
 	@RequestMapping("/mine/modify")
 	@ResponseBody
-	public Map<String, Object> modifyInfo(MultipartHttpServletRequest request, HttpServletResponse response) throws IOException{
-		
+	public Map<String, Object> modifyInfo(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		/*
 		Map<String, Object> result = null;
 		
 		String parentId = request.getParameter("parentId");
@@ -59,6 +60,16 @@ public class ParentInfoController {
 		}
 		
 		return result;
+		*/
+		Map<String, Object> m = ParamsTransport.getParams(request);
+		 String parentId = (String)m.get("parentId");
+		 String imgBase64 = (String)m.get("img");
+		 String nickname = (String)m.get("nickname");
+		 String birthdayStr = (String)m.get("birthday");
+		 String sex = (String)m.get("sex");
+		 String filePath =this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.picPath;
+		 Map<String, Object> result = parentInfoService.modifyParentInfo(parentId, imgBase64, nickname, birthdayStr, sex, filePath);
+		 return result;
 	}
 
 }

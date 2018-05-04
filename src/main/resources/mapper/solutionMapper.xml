@@ -13,8 +13,8 @@ join question on solution.question_id=question.question_id where student_id=#{st
 </resultMap>
 
   <insert id="insertSolution">
-		insert into solution (student_id , paper_id , question_id , content) 
-		values (#{studentId},#{paperId},#{questionId},#{solutionContent})
+		insert into solution (student_id , paper_id , question_id , content,pic_path,isright) 
+		values (#{studentId},#{paperId},#{questionId},#{solutionContent},#{picPath},#{isRight})
   </insert>
   
   <update id="updateSolution">

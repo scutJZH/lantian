@@ -22,8 +22,6 @@ public interface ITitleDao {
 
     int updateByPrimaryKey(Title record);
 
-	Map<String, Object> getTitle(@Param("titleId")String string);
-
     public HashMap<String,Object> getTitleContent(@Param("questionId")String questionId);
 
     public int createObjective(@Param("titleId")String titleId,@Param("titleContent")String titleContent,@Param("picPath")String picPath);

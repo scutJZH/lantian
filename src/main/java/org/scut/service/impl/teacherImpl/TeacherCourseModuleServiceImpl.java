@@ -1,7 +1,6 @@
 package org.scut.service.impl.teacherImpl;
 
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +27,7 @@ import sun.misc.BASE64Encoder;
 @Service(value="teacherCourseModuleService")
 public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleService{
 	@Resource
-	private IClass_paperDao class_paperDao;
+	private IStudyDao studyDao;
 	@Resource
 	private ITeacher_classDao teacher_classDao;
 	@Resource
@@ -38,7 +37,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	@Resource //杩欎釜鍔熻兘杩樻病娴�
 	private IPptDao pptDao;
 	@Resource
-	private IStudent_paperDao student_paperDao;
+	private IStudent_studyDao student_studyDao;
 	@Resource
 	private ISolutionDao solutionDao; 
 	@Resource
@@ -48,7 +47,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			List<HashMap<String,Object>> r1=this.class_paperDao.selectList(teacherId, classId);
+			List<HashMap<String,Object>> r1=this.studyDao.selectList(teacherId, classId);
 			result.put("result",r1);
 		}
 		catch(Exception e) {
@@ -63,7 +62,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			this.class_paperDao.deleteList(paperId);
+			this.studyDao.deleteList(paperId);
 			result.put("result",status);
 		}
 		catch(Exception e) {
@@ -134,7 +133,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			List<HashMap<String,Object>> r1= this.class_paperDao.getCorrectionList(teacherId,classId);
+			List<HashMap<String,Object>> r1= this.studyDao.getCorrectionList(teacherId,classId);
 			HashMap<String,Object> r2=this.classDao.getStudentNumber(classId);
 			/**for unsubmittedNumber**/
 			for(int i=0;i<r1.size();i++) {
@@ -155,7 +154,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			List<HashMap<String,Object>> r1=this.class_paperDao.getCorrectionList(teacherId, classId);
+			List<HashMap<String,Object>> r1=this.studyDao.getCorrectionList(teacherId, classId);
 			result.put("result",r1);
 		}
 		catch(Exception e) {
@@ -170,7 +169,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
         String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			List<LinkedHashMap<String,Object>> a= this.student_paperDao.getRankDetails(paperId);
+			List<LinkedHashMap<String,Object>> a= this.student_studyDao.getRankDetails(paperId);
 			/**鎻掑叆鎺掑簭浣垮緱璇ョ粨鏋滄槸鎸夊垎鏁颁粠灏忓埌澶ф帓鐨�**/
 			
 	        /**鎻掑叆鎺掑簭浣垮緱璇ョ粨鏋滄槸鎸夊垎鏁颁粠灏忓埌澶ф帓鐨�**/
@@ -195,9 +194,9 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			List<HashMap<String,Object>> r1= this.student_paperDao.getCorrectStudentList(teacherId,paperId);
+			List<HashMap<String,Object>> r1= this.student_studyDao.getCorrectStudentList(teacherId,paperId);
 			/**閫氳繃鍒ゆ柇鎬诲垎鏄惁涓�0鏉ュ垽鏂槸鍚﹀凡鎵规敼**/
-			if((Integer)(this.class_paperDao.getCorrectionList2(teacherId, paperId).get("submitNumber"))!=0) {
+			if((Integer)(this.studyDao.getCorrectionList2(teacherId, paperId).get("submitNumber"))!=0) {
 			boolean a=true;
 			boolean b=false;
 			for(int i=0;i<r1.size();i++) {
@@ -334,8 +333,8 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 			for(HashMap<String, Object> subfile:base64file) {
 				GenerateImage(String.valueOf(subfile.get("imgStr")),String.valueOf(subfile.get("picPath")));
 			}
-			this.titleDao.createSubjective(titleId,GlobalVar.picPath+picId1+".jpg");
-			this.questionDao.createSubjective(questionId,titleId,subjectId,grade,GlobalVar.picPath+picId2+".jpg");
+			this.titleDao.createSubjective(titleId,GlobalVar.questionPicPath+picId1+".jpg");
+			this.questionDao.createSubjective(questionId,titleId,subjectId,grade,GlobalVar.questionPicPath+picId2+".jpg");
 			result.put("result",status);
 		}
 		catch(Exception e) {
@@ -392,11 +391,11 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 				GenerateImage(subfile.get("imgStr").toString(),subfile.get("picPath").toString());
 			}
 			if(picPathPicture!=null)
-			this.titleDao.createObjective(titleId,titleContent,GlobalVar.picPath+picId5+".jpg");
+			this.titleDao.createObjective(titleId,titleContent,GlobalVar.questionPicPath+picId5+".jpg");
 			if(picPathPicture==null)
 			this.titleDao.createObjective(titleId,titleContent,null);
 			if(picA!=null|picB!=null|picC!=null|picD!=null|picPathPicture!=null)
-			this.questionDao.createObjective(questionId, titleId, subjectId, grade, optionA, optionB, optionC, optionD, answer, GlobalVar.picPath+picId1+".jpg", GlobalVar.picPath+picId2+".jpg", GlobalVar.picPath+picId3+".jpg", GlobalVar.picPath+picId4+".jpg");
+			this.questionDao.createObjective(questionId, titleId, subjectId, grade, optionA, optionB, optionC, optionD, answer, GlobalVar.questionPicPath+picId1+".jpg", GlobalVar.questionPicPath+picId2+".jpg", GlobalVar.questionPicPath+picId3+".jpg", GlobalVar.questionPicPath+picId4+".jpg");
 			if(picA==null)
 			this.questionDao.createObjective(questionId, titleId, subjectId, grade, optionA, optionB, optionC, optionD, answer, null, null,null, null);
 			

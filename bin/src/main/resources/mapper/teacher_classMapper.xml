@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.scut.dao.ITeacher_classDao" >
+<!-- getClassList -->
+<select id="getClassList" resultMap="getClassListHashMap">
+	select class_name,class_id,grade from class where class_id in
+	(select class_id from teacher_class where teacher_id=#{teacherId})
+</select>
+<resultMap id="getClassListHashMap" type="HashMap">
+	<id property="classId" column="class_id"></id>
+	<result property="className" column="class_name"/>
+	<result property="grade" column="grade"/>
+</resultMap>
+
+<!-- addStudent -->
+<insert id="addStudent">
+insert into teacher_class (teacher_id,class_id)values(#{teacherId},#{classId})
+</insert>
+
+<!-- addClass -->
+<insert id="addClass">
+insert into teacher_class(teacher_id,class_id)values(#{teacherId},#{classId})
+</insert>
+</mapper>
