@@ -14,8 +14,5 @@ public class GlobalVar {
 	
 	public static final String solutionPicPath = "/solutions/";
 	
-<<<<<<< HEAD
 	public static final String questionPicPath="/question/";
-=======
->>>>>>> branch 'master' of https://github.com/scutJZH/lantian
 }
