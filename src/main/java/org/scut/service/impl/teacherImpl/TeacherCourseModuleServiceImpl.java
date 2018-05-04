@@ -27,7 +27,7 @@ import sun.misc.BASE64Encoder;
 @Service(value="teacherCourseModuleService")
 public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleService{
 	@Resource
-	private IClass_paperDao class_paperDao;
+	private IStudyDao studyDao;
 	@Resource
 	private ITeacher_classDao teacher_classDao;
 	@Resource
@@ -37,7 +37,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	@Resource //杩欎釜鍔熻兘杩樻病娴�
 	private IPptDao pptDao;
 	@Resource
-	private IStudent_paperDao student_paperDao;
+	private IStudent_studyDao student_studyDao;
 	@Resource
 	private ISolutionDao solutionDao; 
 	@Resource
@@ -47,7 +47,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			List<HashMap<String,Object>> r1=this.class_paperDao.selectList(teacherId, classId);
+			List<HashMap<String,Object>> r1=this.studyDao.selectList(teacherId, classId);
 			result.put("result",r1);
 		}
 		catch(Exception e) {
@@ -62,7 +62,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			this.class_paperDao.deleteList(paperId);
+			this.studyDao.deleteList(paperId);
 			result.put("result",status);
 		}
 		catch(Exception e) {
@@ -133,7 +133,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			List<HashMap<String,Object>> r1= this.class_paperDao.getCorrectionList(teacherId,classId);
+			List<HashMap<String,Object>> r1= this.studyDao.getCorrectionList(teacherId,classId);
 			HashMap<String,Object> r2=this.classDao.getStudentNumber(classId);
 			/**for unsubmittedNumber**/
 			for(int i=0;i<r1.size();i++) {
@@ -154,7 +154,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			List<HashMap<String,Object>> r1=this.class_paperDao.getCorrectionList(teacherId, classId);
+			List<HashMap<String,Object>> r1=this.studyDao.getCorrectionList(teacherId, classId);
 			result.put("result",r1);
 		}
 		catch(Exception e) {
@@ -169,7 +169,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
         String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			List<LinkedHashMap<String,Object>> a= this.student_paperDao.getRankDetails(paperId);
+			List<LinkedHashMap<String,Object>> a= this.student_studyDao.getRankDetails(paperId);
 			/**鎻掑叆鎺掑簭浣垮緱璇ョ粨鏋滄槸鎸夊垎鏁颁粠灏忓埌澶ф帓鐨�**/
 			
 	        /**鎻掑叆鎺掑簭浣垮緱璇ョ粨鏋滄槸鎸夊垎鏁颁粠灏忓埌澶ф帓鐨�**/
@@ -194,9 +194,9 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			List<HashMap<String,Object>> r1= this.student_paperDao.getCorrectStudentList(teacherId,paperId);
+			List<HashMap<String,Object>> r1= this.student_studyDao.getCorrectStudentList(teacherId,paperId);
 			/**閫氳繃鍒ゆ柇鎬诲垎鏄惁涓�0鏉ュ垽鏂槸鍚﹀凡鎵规敼**/
-			if((Integer)(this.class_paperDao.getCorrectionList2(teacherId, paperId).get("submitNumber"))!=0) {
+			if((Integer)(this.studyDao.getCorrectionList2(teacherId, paperId).get("submitNumber"))!=0) {
 			boolean a=true;
 			boolean b=false;
 			for(int i=0;i<r1.size();i++) {

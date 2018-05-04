@@ -2,25 +2,21 @@ package org.scut.service.impl.studentImpl;
 
 
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.Calendar;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import javax.annotation.Resource;
-
-import org.scut.dao.IClass_paperDao;
 import org.scut.dao.IPaperDao;
 import org.scut.dao.IQuestionDao;
 import org.scut.dao.IQuestion_paperDao;
 import org.scut.dao.IScheduleDao;
 import org.scut.dao.ISolutionDao;
 import org.scut.dao.IStudentDao;
-import org.scut.dao.IStudent_paperDao;
+import org.scut.dao.IStudent_studyDao;
+import org.scut.dao.IStudyDao;
 import org.scut.dao.ITitleDao;
 import org.scut.model.Question;
 
@@ -36,11 +32,11 @@ import org.springframework.stereotype.Service;
 public class StudentServiceImpl implements IStudentService{
 		
 		@Resource
-		private IStudent_paperDao student_paperDao;
+		private IStudent_studyDao student_studyDao;
 		@Resource
 		private IStudentDao studentDao;
 		@Resource
-		private IClass_paperDao class_paperDao;
+		private IStudyDao studyDao;
 		@Resource
 		private IPaperDao paperDao;
 		@Resource
@@ -62,11 +58,11 @@ public class StudentServiceImpl implements IStudentService{
 			Map<String, Object> responseBody = new HashMap<String, Object>();
 			
 		try {	
-			List<Map<String, Object>>result = student_paperDao.getStudentPaperBySId(studentId,submit);
+			List<Map<String, Object>>result = student_studyDao.getStudentPaperBySId(studentId,submit);
 					
 			String classId = (String) studentDao.getClassIDBySId(studentId).get("classId");
 			
-			List<Map<String, Object>>cpList = class_paperDao.getClassPaperByCId(classId);
+			List<Map<String, Object>>cpList = studyDao.getClassPaperByCId(classId);
 		
 								
 			for(Map<String,Object> y:result) {
@@ -272,7 +268,7 @@ public class StudentServiceImpl implements IStudentService{
 						
 						solutionDao.insertSolution(studentId,paperId,questionId,solutionContent,picPath,isRight);
 						}
-					student_paperDao.updateSubmit(studentId,paperId);
+					student_studyDao.updateSubmit(studentId,paperId);
 
 					}catch (Exception e) {System.out.println(e.getMessage());responseBody.put("status","-1");return responseBody;}
 			responseBody.put("status", "1");
