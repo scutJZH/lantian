@@ -1,6 +1,5 @@
 package org.scut.controller.teacherController;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -10,12 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.scut.dao.*;
 import org.scut.service.teacherService.ITeacherCourseModuleService;
+import org.scut.util.GlobalVar;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 //@RequestMapping(value="/teacher", method=RequestMethod.POST)
 @Controller
 public class TeacherCourseModuleController {
@@ -67,7 +66,7 @@ public class TeacherCourseModuleController {
 	@ResponseBody
 	public HashMap<String,Object> getClassList(@RequestBody Map<String,Object> request) {
 		//autoCorrect
-		ArrayList<HashMap<String,Object>> r1=this.solutionDao.autoCorrectSelect();
+		/**ArrayList<HashMap<String,Object>> r1=this.solutionDao.autoCorrectSelect();
 		int choiceScore=0;
 		for(int i=0;i<r1.size();i++) {
 		if(r1.get(i).get("content").toString()==this.questionDao.autoCorrectSelect(r1.get(i).get("questionId").toString()).toString()) {
@@ -79,7 +78,7 @@ public class TeacherCourseModuleController {
 			this.solutionDao.autoCorrectFalse(r1.get(i).get("studentId").toString(),r1.get(i).get("questionId").toString());
 			this.student_paperDao.autoCorrect(r1.get(i).get("studentId").toString(),r1.get(i).get("paperId").toString(),choiceScore);
 		}
-		}
+		}**/
 		
 		String teacherId=String.valueOf(request.get("teacherId"));
 		
@@ -340,11 +339,16 @@ public class TeacherCourseModuleController {
 		if(request.get("picPathPicture") != null) {
 			picPathPicture=String.valueOf(request.get("picPathPicture"));
 		}
-		String opaPicPath=request2.getSession().getServletContext().getRealPath("/")+"img\\"+picId1+".jpg";
-		String opbPicPath=request2.getSession().getServletContext().getRealPath("/")+"img\\"+picId2+".jpg";
-		String opcPicPath=request2.getSession().getServletContext().getRealPath("/")+"img\\"+picId3+".jpg";
-		String opdPicPath=request2.getSession().getServletContext().getRealPath("/")+"img\\"+picId4+".jpg";
-		String picPath=request2.getSession().getServletContext().getRealPath("/")+"img\\"+picId5+".jpg";
+		String opaPicPath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
++picId1+".jpg";
+		String opbPicPath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
+				+picId2+".jpg";
+		String opcPicPath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
+				+picId3+".jpg";
+		String opdPicPath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
+				+picId4+".jpg";
+		String picPath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
+				+picId5+".jpg";
 		return this.teacherCourseModuleService.createObjective(subjectId,grade,optionA,optionB,optionC,optionD,
 				answer,picA,picB,picC,picD,picPathPicture,opaPicPath,opbPicPath,opcPicPath,opdPicPath,picPath,titleContent
 				,picId1,picId2,picId3,picId4,picId5);
@@ -372,8 +376,10 @@ public class TeacherCourseModuleController {
 		System.out.println(String.valueOf(request.get("subjectId")));
 		System.out.println(String.valueOf(request.get("teacherId")));
 		//twice!!!error!!!not next time!!!
-		String picPath=request2.getSession().getServletContext().getRealPath("/")+"img\\"+picId1+".jpg";
-		String answer=request2.getSession().getServletContext().getRealPath("/")+"img\\"+picId2+".jpg";
+		String picPath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
+				+picId1+".jpg";
+		String answer=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
+				+picId2+".jpg";
 		return this.teacherCourseModuleService.createSubjective(teacherId,picSubjective,
 																picPath,picAnswer,
 																answer,subjectId,grade,picId1,picId2);

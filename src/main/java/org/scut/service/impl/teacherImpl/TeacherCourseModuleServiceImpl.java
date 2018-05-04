@@ -334,8 +334,8 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 			for(HashMap<String, Object> subfile:base64file) {
 				GenerateImage(String.valueOf(subfile.get("imgStr")),String.valueOf(subfile.get("picPath")));
 			}
-			this.titleDao.createSubjective(titleId,GlobalVar.picPath+picId1+".jpg");
-			this.questionDao.createSubjective(questionId,titleId,subjectId,grade,GlobalVar.picPath+picId2+".jpg");
+			this.titleDao.createSubjective(titleId,GlobalVar.questionPicPath+picId1+".jpg");
+			this.questionDao.createSubjective(questionId,titleId,subjectId,grade,GlobalVar.questionPicPath+picId2+".jpg");
 			result.put("result",status);
 		}
 		catch(Exception e) {
@@ -392,11 +392,11 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 				GenerateImage(subfile.get("imgStr").toString(),subfile.get("picPath").toString());
 			}
 			if(picPathPicture!=null)
-			this.titleDao.createObjective(titleId,titleContent,GlobalVar.picPath+picId5+".jpg");
+			this.titleDao.createObjective(titleId,titleContent,GlobalVar.questionPicPath+picId5+".jpg");
 			if(picPathPicture==null)
 			this.titleDao.createObjective(titleId,titleContent,null);
 			if(picA!=null|picB!=null|picC!=null|picD!=null|picPathPicture!=null)
-			this.questionDao.createObjective(questionId, titleId, subjectId, grade, optionA, optionB, optionC, optionD, answer, GlobalVar.picPath+picId1+".jpg", GlobalVar.picPath+picId2+".jpg", GlobalVar.picPath+picId3+".jpg", GlobalVar.picPath+picId4+".jpg");
+			this.questionDao.createObjective(questionId, titleId, subjectId, grade, optionA, optionB, optionC, optionD, answer, GlobalVar.questionPicPath+picId1+".jpg", GlobalVar.questionPicPath+picId2+".jpg", GlobalVar.questionPicPath+picId3+".jpg", GlobalVar.questionPicPath+picId4+".jpg");
 			if(picA==null)
 			this.questionDao.createObjective(questionId, titleId, subjectId, grade, optionA, optionB, optionC, optionD, answer, null, null,null, null);
 			
