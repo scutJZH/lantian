@@ -1,12 +1,13 @@
 package org.scut.model;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 @Component
 public class Class {
-    private String classId;
+    private List<String> classIdList;
 
     private String picPath;
 
@@ -17,13 +18,33 @@ public class Class {
     private String className;
 
     private Date createTime;
+    
+    private String createTeacherId;
+    
+    private String schoolId;
 
-	public String getClassId() {
-		return classId;
+	public String getSchoolId() {
+		return schoolId;
 	}
 
-	public void setClassId(String classId) {
-		this.classId = classId;
+	public void setSchoolId(String schoolId) {
+		this.schoolId = schoolId;
+	}
+
+	public String getCreateTeacherId() {
+		return createTeacherId;
+	}
+
+	public void setCreateTeacherId(String createTeacherId) {
+		this.createTeacherId = createTeacherId;
+	}
+
+	public void setClassIdList(List<String> classIdList) {
+		this.classIdList = classIdList;
+	}
+
+	public List<String> getClassIdList() {
+		return classIdList;
 	}
 
 	public String getPicPath() {
