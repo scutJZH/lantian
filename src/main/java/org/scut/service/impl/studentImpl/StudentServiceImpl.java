@@ -249,10 +249,11 @@ public class StudentServiceImpl implements IStudentService{
 		}
 
 		@Override
-		public Map<String, Object> uploadSolutions(String studentId, String paperId, List<Map<String, Object>> solutionList,String reqLoacation) {
+		public Map<String, Object> uploadSolutions(String studentId, String paperId, List<Map<String, Object>> solutionList) {
 			Map<String, Object> responseBody = new HashMap<String, Object>();
              
 			try {
+				    String picLocation = this.getClass().getClassLoader().getResource("../../").getPath();
 					for (Map<String, Object> map : solutionList) {
 						String questionId = (String) map.get("questionId");
 						String solutionContent = (String) map.get("solutionContent");
@@ -265,8 +266,8 @@ public class StudentServiceImpl implements IStudentService{
 						{
 	                        picPath = UUID.randomUUID().toString();
 
-							Base64Analysis.analysisPic(picPath, reqLoacation+GlobalVar.solutionPicPath, img);
-					
+							Base64Analysis.analysisPic(picPath, picLocation+GlobalVar.solutionPicPath, img);
+							
 							}
 						
 						solutionDao.insertSolution(studentId,paperId,questionId,solutionContent,picPath,isRight);
