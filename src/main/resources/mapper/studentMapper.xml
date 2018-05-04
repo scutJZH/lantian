@@ -100,7 +100,7 @@
 	</resultMap>
 	<!--getStudentByClassId  -->
 	<select id="getStudentByClassId" resultMap="getStudentByClassIdHashMap">
-	select student_id,nickname from student where class_id=#{classId}
+	select student_id,nickname from student where class_id_list=#{classId}
 	</select>
 	<resultMap type="HashMap" id="getStudentByClassIdHashMap">
 	<id property="studentId" column="student_id"/>
@@ -109,20 +109,20 @@
 	
 	<!-- checkStudentExist -->
 	<select id="checkStudentExist" resultMap="checkStudentExistHashMap">
-		select student_id,class_id from student where student_id=#{studentId}
+		select student_id,class_id_list from student where student_id=#{studentId}
 	</select>
 	<resultMap id="checkStudentExistHashMap" type="HashMap">
 	<id property="studentId" column="student_id"/>
-	<result property="classId" column="class_id"/>
+	<result property="classId" column="class_id_list"/>
 	</resultMap>
 	
 	<!-- addStudent --><!-- this tab associate other tab,maybe problem -->
 	<update id="addStudent">
-	update student set class_id=#{classId} where student_id=#{studentId}
+	update student set class_id_list=#{classId} where student_id=#{studentId}
 	</update>
 	<!-- getStudentIdByClassId -->
 	<select id="getStudentIdByClassId" resultMap="getStudentIdByClassIdHashMap">
-	select student_id from student where class_id=#{classId}
+	select student_id from student where class_id_list=#{classId}
 	</select>
 	<resultMap type="HashMap" id="getStudentIdByClassIdHashMap">
 	<id property="studentId" column="student_id"/>

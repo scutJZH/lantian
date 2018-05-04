@@ -10,7 +10,7 @@
 <!-- 9.获取统计排名详情,但缺少学生名字，需要从student表查再合并在这个结果中,这里注意每个学生只能做同一个作业1次才能用了natural join -->
 
 	<select id="getRankDetails" resultMap="getRankDetailsHashMap">
-		select student_id,score,nickname from student_paper natural join student where paper_id=#{paperId} order by score desc
+		select student_id,score,nickname from student_study natural join student where paper_id=#{paperId} order by score desc
 	</select>
 	<resultMap id="getRankDetailsHashMap" type="java.util.LinkedHashMap">
 		<id property="studentId" column="student_id"></id>
@@ -20,7 +20,7 @@
 	
 	<!-- 11.	获取批改作业学生列表（11-13为批改作业补充） -->
 	<select id="getCorrectStudentList" resultMap="getCorrectStudentListHashMap">
-	select student_id,nickname,choice_score,score from student_paper
+	select student_id,nickname,choice_score,score from student_study
 	natural join student where paper_id=#{paperId} order by score desc
 	<!-- 这里少用了一个teacherId参数，可能有问题 -->
 	</select>
@@ -38,11 +38,11 @@
 	
 	<!-- assignmentHomework -->
 <insert id="assignmentHomework">
-insert into student_paper (paper_id,student_id,submit,score,type,choice_score)
+insert into student_study (paper_id,student_id,submit,score,type,choice_score)
 values (#{paperId},#{studentId},#{submit},#{score},#{paperType},0)
 </insert>
 <!-- autoCorrect -->
 <update id="autoCorrect">
-update student_paper set choice_score=#{choiceScore} where student_id=#{studentId} and paper_id=#{paperId}
+update student_study set choice_score=#{choiceScore} where student_id=#{studentId} and paper_id=#{paperId}
 </update>
 </mapper>
