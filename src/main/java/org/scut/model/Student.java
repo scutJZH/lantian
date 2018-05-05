@@ -20,5 +20,4 @@ public class Student extends User{
 	public void setSchoolId(String schoolId){
 		this.schoolId = schoolId;
 	}
-	
 }
