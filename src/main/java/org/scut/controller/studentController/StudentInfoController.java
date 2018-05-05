@@ -114,9 +114,9 @@ public class StudentInfoController {
 		 String nickname = (String)m.get("nickname");
 		 String birthdayStr = (String)m.get("birthday");
 		 String sex = (String)m.get("sex");
-		 String schoolName = (String)m.get("schoolName");
+		 String schoolId = (String)m.get("schoolId");
 		 String filePath = this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.picPath;
-		 Map<String, Object> result = studentInfoService.modifyStudentInfo(studentId, imgBase64, nickname, birthdayStr, sex, schoolName, filePath);
+		 Map<String, Object> result = studentInfoService.modifyStudentInfo(studentId, imgBase64, nickname, birthdayStr, sex, schoolId, filePath);
 		 return result;
 	}
 

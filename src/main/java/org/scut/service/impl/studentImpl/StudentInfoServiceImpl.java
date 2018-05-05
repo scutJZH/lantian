@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Resource;
+
+import org.scut.dao.ISchoolDao;
 import org.scut.dao.IStudentDao;
 import org.scut.model.Student;
 import org.scut.service.studentService.IStudentInfoService;
@@ -18,6 +20,8 @@ public class StudentInfoServiceImpl implements IStudentInfoService{
 	
 	@Resource
 	private IStudentDao studentDao;
+	@Resource
+	private ISchoolDao schoolDao;
 
 
 	@Override
@@ -40,7 +44,12 @@ public class StudentInfoServiceImpl implements IStudentInfoService{
 				userInfo.put("birthday", birthdayStamp);
 				userInfo.put("nickname", student.getNickname());
 				userInfo.put("sex", student.getSex());
-				userInfo.put("schoolName", student.getSchoolName());
+				String schoolId = student.getSchoolId();
+				String schoolName = null;
+				if(schoolId != null){
+					schoolDao.getSchoolNameById(schoolId);
+				}
+				userInfo.put("schoolName", schoolName);
 			} else {
 				status = "-1";
 			}
@@ -56,7 +65,7 @@ public class StudentInfoServiceImpl implements IStudentInfoService{
 
 	@Override
 	public Map<String, Object> modifyStudentInfo(String studentId, String imgBase64, String nickname,
-			String birthdayStr, String sex, String schoolName, String filePath) {
+			String birthdayStr, String sex, String schoolId, String filePath) {
 
 		Map<String, Object> result = new HashMap<String, Object>();
 		
@@ -76,7 +85,7 @@ public class StudentInfoServiceImpl implements IStudentInfoService{
 				student.setBirthday(birthday);
 				student.setNickname(nickname);
 				student.setSex(sex);
-				student.setSchoolName(schoolName);
+				student.setSchoolId(schoolId);
 				
 				studentDao.updateStudent(student);
 				

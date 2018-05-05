@@ -17,13 +17,8 @@ public class Student extends User{
 	public String getSchoolId() {
 		return schoolId;
 	}
-	public void setSchoolName(String schoolId) {
+	public void setSchoolId(String schoolId){
 		this.schoolId = schoolId;
 	}
 	
-	
-
-
-    
-
 }

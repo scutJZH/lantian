@@ -69,9 +69,9 @@ public class TeacherInfoController {
 		 String birthdayStr = (String)m.get("birthday");
 		 String sex = (String)m.get("sex");
 		 String name = (String)m.get("name");
-		 String schoolName = (String)m.get("schoolName");
+		 String schoolId = (String)m.get("schoolId");
 		 String filePath = this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.picPath;
-		 Map<String, Object> result = teacherInfoService.modifyTeacherInfo(teacherId, imgBase64, nickname, birthdayStr, sex, name, schoolName, filePath);
+		 Map<String, Object> result = teacherInfoService.modifyTeacherInfo(teacherId, imgBase64, nickname, birthdayStr, sex, name, schoolId, filePath);
 		 return result;
 	}
 }
