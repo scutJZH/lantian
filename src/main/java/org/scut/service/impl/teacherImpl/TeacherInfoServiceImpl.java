@@ -1,12 +1,8 @@
 package org.scut.service.impl.teacherImpl;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Resource;
@@ -18,7 +14,6 @@ import org.scut.service.teacherService.ITeacherInfoService;
 import org.scut.util.Base64Analysis;
 import org.scut.util.GlobalVar;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service("teacherInfoService")
 public class TeacherInfoServiceImpl implements ITeacherInfoService{
@@ -54,6 +49,7 @@ public class TeacherInfoServiceImpl implements ITeacherInfoService{
 				if(schoolId != null){
 					schoolName = schoolDao.getSchoolNameById(schoolId);
 				}
+				userInfo.put("schoolId", schoolId);
 				userInfo.put("schoolName", schoolName);
 				userInfo.put("name", teacher.getName());
 			} else {
@@ -95,7 +91,7 @@ public class TeacherInfoServiceImpl implements ITeacherInfoService{
 				
 				teacherDao.updateTeacher(teacher);
 				
-				teacherInfo.put("picPath", "/img/"+picPath);
+				teacherInfo.put("picPath", GlobalVar.picPath+picPath);
 			}else{
 				status = "-1";
 			}

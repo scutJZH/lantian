@@ -8,21 +8,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import javax.annotation.Resource;
-
 import org.scut.dao.*;
 import org.scut.service.teacherService.ITeacherCourseModuleService;
 import org.scut.util.GlobalVar;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.FileOutputStream;  
-import java.io.IOException;  
-import java.io.InputStream;  
 import java.io.OutputStream;  
 import sun.misc.BASE64Decoder;  
-import sun.misc.BASE64Encoder;  
 
 @Service(value="teacherCourseModuleService")
 public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleService{
@@ -77,7 +69,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			List<HashMap<String,Object>> r1=this.teacher_classDao.getClassList(teacherId);
+			List<Map<String,Object>> r1=this.teacher_classDao.getClassList(teacherId);
 			result.put("result",r1);
 		}
 		catch(Exception e) {
@@ -134,7 +126,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
 			List<HashMap<String,Object>> r1= this.studyDao.getCorrectionList(teacherId,classId);
-			HashMap<String,Object> r2=this.classDao.getStudentNumber(classId);
+			Map<String,Object> r2=this.classDao.getStudentNumber(classId);
 			/**for unsubmittedNumber**/
 			for(int i=0;i<r1.size();i++) {
 				int unsubmittedNumber=(Integer.parseInt(String.valueOf(r2.get("studentNumber")))-(Integer)(r1.get(i).get("submitNumber")));

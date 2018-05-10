@@ -95,5 +95,38 @@ public class LogController {
 		return result;
 		
 	}
+	
+	@RequestMapping("/modifypassword/verify")
+	@ResponseBody
+	public Map<String, Object> modifyPassword(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+		request.setCharacterEncoding("utf-8");
+		response.setCharacterEncoding("utf-8");
+		
+		Map<String, Object> map = ParamsTransport.getParams(request);
+		
+		String userType = (String)map.get("userType");
+		String telnumber = (String)map.get("telnumber");
+		String verifyCode = (String)map.get("verifyCode");
+		String newPassword = (String)map.get("newPassword");
+		
+		Map<String, Object> result = this.logService.modifyPassword(userType, telnumber, newPassword, verifyCode);
+		
+		return result;
+	}
+	
+	@RequestMapping("modifypassword/sendverifycode")
+	@ResponseBody
+	public Map<String, Object> sendVerifyCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+		Map<String, Object> map = ParamsTransport.getParams(request);
+		
+		String telnumber = (String)map.get("telnumber");
+		String userType = (String)map.get("userType");
+		
+		Map<String, Object> result = this.logService.sendVerifyCode(userType, telnumber);
+		
+		return result;
+	}
 
 }

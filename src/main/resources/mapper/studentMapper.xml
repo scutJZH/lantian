@@ -12,12 +12,12 @@
 	<insert id="insertStudent" parameterType="Student">
 		 insert into student 
 		 (student_id, phone, password, create_time, pic_path, nickname, birthday, sex,
-		 school_id, token, class_id, state, verify_code)
+		 school_id, token, class_id_list, state, verify_code)
   		 values (#{student.id}, #{student.phone}, #{student.password, javaType=String, jdbcType=VARCHAR},
   		 #{student.createTime, javaType=Date, jdbcType=DATE}, #{student.picPath},
   		 #{student.nickname, javaType=String, jdbcType=VARCHAR}, #{student.birthday, javaType=Date, jdbcType=DATE},
   		 #{student.sex},#{student.schoolId, javaType=String, jdbcType=VARCHAR}, #{student.token, javaType=String, jdbcType=VARCHAR},
-  		 #{student.classId, javaType=String, jdbcType=VARCHAR}, #{student.state}, #{student.verifyCode, javaType=String, jdbcType=VARCHAR})
+  		 #{student.classIdList, javaType=String, jdbcType=VARCHAR}, #{student.state}, #{student.verifyCode, javaType=String, jdbcType=VARCHAR})
 	</insert>
 	
 	<insert id="insertUser" parameterType="User">
@@ -46,17 +46,6 @@
   		where student_id = #{user.id}
 	</update>
 	
-	<select id="getchildInfoByTel" parameterType="String" resultType="hashmap">
-		select student_id as studentId, nickname, student.class_id as classId, class_name as className, student.school_id as schoolId, student.pic_path as picPath, state
-		from student left join class on student.class_id = class.class_id
-		where student.phone = #{telnumber}
-	</select>
-	
-	<select id="getchildInfoById" parameterType="String" resultType="hashmap">
-		select student_id as studentId, nickname, student.class_id as classId, class_name as className, student.school_id as schoolId, student.pic_path as picPath, state
-		from student left join class on student.class_id = class.class_id
-		where student.student_id = #{studentId}
-	</select>
 	<select id="getStudentById" resultMap="studentMap" parameterType="String">
 		select * from student where student_id = #{studentId}
 	</select>
@@ -74,13 +63,12 @@
     	nickname = #{student.nickname},
     	birthday = #{student.birthday, javaType=Date, jdbcType=DATE},
     	sex = #{student.sex},
-    	class_id = #{student.classId, javaType=String, jdbcType=VARCHAR},
+    	class_id_list = #{student.classIdList, javaType=String, jdbcType=VARCHAR},
     	token = #{student.token, javaType=String, jdbcType=VARCHAR},
     	school_id = #{student.schoolId, javaType=String, jdbcType=VARCHAR},
     	state = #{student.state},
     	verify_code = #{student.verifyCode, javaType=String, jdbcType=VARCHAR}
   		where student_id = #{student.id}
-
 	</update>
 	
 	<resultMap type="Student" id="studentMap">
@@ -96,7 +84,7 @@
 		<result property="state" column="state"/>
 		<result property="verifyCode" column="verify_code"/>
 		<result property="schoolId" column="school_id"/>
-		<result property="classId" column="class_id"/>
+		<result property="classIdList" column="class_id_list"/>
 	</resultMap>
 	<!--getStudentByClassId  -->
 	<select id="getStudentByClassId" resultMap="getStudentByClassIdHashMap">
