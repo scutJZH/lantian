@@ -58,25 +58,15 @@ public class StudentServiceImpl implements IStudentService{
 			Map<String, Object> responseBody = new HashMap<String, Object>();
 			
 		try {	
-			List<Map<String, Object>>result = student_studyDao.getStudentPaperBySId(studentId,submit);
-					
-			String classId = (String) studentDao.getClassIDBySId(studentId).get("classId");
-			
-			List<Map<String, Object>>cpList = studyDao.getClassPaperByCId(classId);
-		
-								
-			for(Map<String,Object> y:result) {
+			List<Map<String, Object>>result = student_studyDao.getStudentStudyBySId(studentId,submit);
+																
+			for(Map<String,Object> y:result) {	
 				
-				y.put("assignTime" ,null);
-				y.put("deadLine" , null);
-				
-				for(Map<String,Object> x:cpList) {
-					if(x.get("paperId").equals(y.get("paperId"))) {
-						y.put("assignTime" , x.get("assighTime") );
-						y.put("deadLine" , x.get("deadLine") );
-						}
-				}
-				
+				Map<String,Object> x  = studyDao.getStudyById((String) y.get("studyId"));
+				y.put("assignTime" , x.get("assighTime") );
+				y.put("deadLine" , x.get("deadLine") );
+				y.put("paperId" , x.get("paperId") );
+				y.put("paperType" , x.get("paperType") );
 			}
 	
 			for(Map<String,Object> y:result) {
@@ -96,6 +86,10 @@ public class StudentServiceImpl implements IStudentService{
 			return responseBody ;
 			
 		}catch (Exception e) {
+			
+		    System.out.println(e);
+		    System.out.println();
+		    
 			responseBody.put("status", "-2");
 			return responseBody ;
 		}

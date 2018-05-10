@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.scut.dao.IStudyDao">
-	
-	<select id="getClassPaperByCId" resultType="hashmap" parameterType="String">
-		select paper_id as paperId,assign_time as assignTime,dead_line as deadLine from class_paper where class_id = #{classId}
+		
+	<select id="getStudyById" resultType="hashmap" parameterType="String">
+		select paper_id as paperId,assign_time as assignTime,dead_line as deadLine ,ave_time as aveTime ,ave_score  re ,class_id as classId,submit_number as submitNumber ,paper_type as paperType, exam_time as examTime from study where study_id = #{studyId}
 	</select>
 <!-- 获取作业列表 -->
 	<select id="selectList" resultMap="getHomeworkListHashMap">

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface IStudent_studyDao {
 
 	
-	List<Map<String, Object>> getStudentPaperBySId(@Param("studentId")String studentId,@Param("submit")String submit);
+	public List<Map<String, Object>> getStudentStudyBySId(@Param("studentId")String studentId,@Param("submit")String submit);
 
 
 
@@ -27,4 +27,8 @@ public interface IStudent_studyDao {
 	public int assignmentHomework(@Param("paperId")String paperId,@Param("studentId")String studentId,@Param("submit")String submit,@Param("score")int score,@Param("paperType")String paperType);
 	
 	public int autoCorrect(@Param("studentId")String studentId,@Param("paperId")String paperId,@Param("choiceScore")int choiceScore);
+
+
+
+
 }
