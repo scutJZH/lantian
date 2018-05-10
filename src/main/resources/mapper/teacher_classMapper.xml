@@ -21,7 +21,7 @@
 	<select id="isRealtionshipExist" resultType="boolean" parameterType="String">
 		select exists (
 		select * from teacher_class
-		where teacher_id = #{teacherId} and classId = #{classId}
+		where teacher_id = #{teacherId} and class_id = #{classId}
 		)
 	</select>
 	
@@ -41,8 +41,8 @@
 	</delete>
 	
 	<select id="getClassInfoListByTeacherId" parameterType="String" resultMap="classInfoMap">
-		select class.class_id, pic_path, grade, class_name, create_time, student_number,
-			teacher_number, class.school_id, school_name, create_teacher_id
+		select class.class_id as classId, pic_path, grade, class_name, create_time, student_number,
+			teacher_number, class.school_id as schoolId, school_name, create_teacher_id
 		from teacher_class left join class on teacher_class.class_id = class.class_id
 		left join school on class.school_id = school.school_id
 		where teacher_id = #{teacherId}
@@ -57,14 +57,14 @@
 	</select>
 	
 	<resultMap type="hashmap" id="classInfoMap">
-		<id property="classId" column="class.class_id"/>
+		<id property="classId" column="class_id"/>
 		<result property="picPath" column="pic_path"/>
 		<result property="grade" column="grade"/>
 		<result property="className" column="class_name"/>
 		<result property="createTime" column="create_time"/>
 		<result property="studentNumber" column="student_number"/>
 		<result property="teacherNumber" column="teacher_number"/>
-		<result property="schoolId" column="class.school_id"/>
+		<result property="schoolId" column="school_id"/>
 		<result property="createTeacherId" column="create_teacher_id"/>
 		<result property="schoolName" column="school_name"/>
 	</resultMap>
