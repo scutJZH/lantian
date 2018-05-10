@@ -7,13 +7,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Class {
-    private List<String> classIdList;
+	private String classId;
 
-    private String picPath;
+	private String picPath;
 
     private Integer studentNumber;
 
-    private Integer grade;
+    private String grade;
 
     private String className;
 
@@ -22,6 +22,25 @@ public class Class {
     private String createTeacherId;
     
     private String schoolId;
+    
+    private int teacherNumber;
+    
+    
+    public int getTeacherNumber() {
+		return teacherNumber;
+	}
+
+	public void setTeacherNumber(int teacherNumber) {
+		this.teacherNumber = teacherNumber;
+	}
+
+	public String getClassId() {
+		return classId;
+	}
+
+	public void setClassId(String classId) {
+		this.classId = classId;
+	}
 
 	public String getSchoolId() {
 		return schoolId;
@@ -37,14 +56,6 @@ public class Class {
 
 	public void setCreateTeacherId(String createTeacherId) {
 		this.createTeacherId = createTeacherId;
-	}
-
-	public void setClassIdList(List<String> classIdList) {
-		this.classIdList = classIdList;
-	}
-
-	public List<String> getClassIdList() {
-		return classIdList;
 	}
 
 	public String getPicPath() {
@@ -63,11 +74,11 @@ public class Class {
 		this.studentNumber = studentNumber;
 	}
 
-	public Integer getGrade() {
+	public String getGrade() {
 		return grade;
 	}
 
-	public void setGrade(Integer grade) {
+	public void setGrade(String grade) {
 		this.grade = grade;
 	}
 

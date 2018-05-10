@@ -24,6 +24,8 @@ public class RegisterServiceImpl implements IRegisterService {
 	private IParentDao parentDao;
 	@Resource
 	private ITeacherDao teacherDao;
+	@Resource
+	private User user;
 
 	@Override
 	public Map<String, Object> sendVerifyCode(String userType, String telnumber) {
@@ -31,8 +33,6 @@ public class RegisterServiceImpl implements IRegisterService {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		String status = "1";
-		
-		User user = null;
 
 		try {
 			user = this.getUserByType(userType, telnumber);
@@ -46,13 +46,14 @@ public class RegisterServiceImpl implements IRegisterService {
 					 */
 				}
 			} else {
-				user = new User();
 				String id = UUID.randomUUID().toString();
 				String verifyCode = "000000";//锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷证锟斤拷亩锟斤拷沤涌锟�
+				user = new User();
 				user.setId(id);
 				user.setPhone(telnumber);
 				user.setState("0");
 				user.setVerifyCode(verifyCode);
+				user.setPicPath("123.jpg");
 				this.inputUserByType(userType, user);
 			}
 		} catch (Exception e) {
@@ -75,8 +76,6 @@ public class RegisterServiceImpl implements IRegisterService {
 		Map<String, Object> result = new HashMap<String, Object>();
 		String status = "1";
 		Map<String, Object> userInfo = new HashMap<String, Object>();
-		
-		User user = null;
 		
 		try{
 			user = this.getUserByType(userType, telnumber);
@@ -121,7 +120,6 @@ public class RegisterServiceImpl implements IRegisterService {
 	
 	private User getUserByType(String userType, String telnumber) throws Exception{
 		
-		User user = null;
 		switch (userType) {
 		case "1":
 			user = studentDao.getStudentByTel(telnumber);

@@ -24,10 +24,6 @@ public interface IStudentDao {
 	
 	public void updateStudent(@Param("student")Student student);
 	
-	public HashMap<String, Object> getchildInfoByTel(@Param("telnumber")String telnumber);
-	
-	public HashMap<String, Object> getchildInfoById(@Param("studentId")String studentId);
-	
 	public Student getStudentById(@Param("studentId")String studentId);
 	
 	public Map<String, Object> getClassIDBySId(@Param("studentId")String studentId);
@@ -41,4 +37,9 @@ public interface IStudentDao {
 	public int addStudent(@Param("studentId")String studentId,@Param("classId")String classId);
 	
 	public ArrayList<HashMap<String,Object>> getStudentIdByClassId(@Param("classId")String classId);
+
+	public void updateClassList(@Param("studentId")String studentId);
+	
+	public List<String> getClassList(@Param("studentId")String studentId);
+	
 }

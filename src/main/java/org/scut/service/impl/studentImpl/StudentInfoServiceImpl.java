@@ -49,6 +49,7 @@ public class StudentInfoServiceImpl implements IStudentInfoService{
 				if(schoolId != null){
 					schoolDao.getSchoolNameById(schoolId);
 				}
+				userInfo.put("schoolId", schoolId);
 				userInfo.put("schoolName", schoolName);
 			} else {
 				status = "-1";
@@ -89,7 +90,7 @@ public class StudentInfoServiceImpl implements IStudentInfoService{
 				
 				studentDao.updateStudent(student);
 				
-				studentInfo.put("picPath", "/img/"+picPath);
+				studentInfo.put("picPath", GlobalVar.picPath+picPath);
 			}else{
 				status = "-1";
 			}

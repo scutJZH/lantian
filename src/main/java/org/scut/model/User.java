@@ -2,6 +2,9 @@ package org.scut.model;
 
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class User {
 
 	private String id;
@@ -9,7 +12,7 @@ public class User {
 	private String password;
 	private Date createTime;
 	private String token;
-	private String picPath = "123.JPG";
+	private String picPath;
 	private Date birthday;
 	private String sex = "1";
 	private String nickname;
