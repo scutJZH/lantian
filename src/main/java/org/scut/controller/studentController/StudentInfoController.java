@@ -149,5 +149,17 @@ public class StudentInfoController {
 		return responseBody;
 		
 	}
+	
+	@RequestMapping("/addclass")
+	@ResponseBody
+	public Map<String, Object> addclass (HttpServletRequest request,HttpServletResponse response) throws IOException {
+		Map<String, Object>map=ParamsTransport.getParams(request);
+		String classId=(String)map.get("classId");
+		String studentId=(String)map.get("studentId");
+		int status =studentService.addclass(classId, studentId);
+		return Json.getJson(status,"");
+		
+		
+	}
 
 }

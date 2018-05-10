@@ -23,6 +23,17 @@ public class Post {
     private Integer answerNumber;
 
     private String picPath;
+    
+//    private String postPath;
+//    
+//
+//	public String getPostPath() {
+//		return postPath;
+//	}
+//
+//	public void setPostPath(String postPath) {
+//		this.postPath = postPath;
+//	}
 
 	public String getPostId() {
 		return postId;
@@ -95,6 +106,7 @@ public class Post {
 	public void setPicPath(String picPath) {
 		this.picPath = picPath;
 	}
+
 
     
 }

@@ -21,4 +21,6 @@ public interface IStudentService {
 
 	Map<String, Object> getPaperQuestions(String paperId);
 	
+	int addclass (String classId,String studentId);
+	
 }

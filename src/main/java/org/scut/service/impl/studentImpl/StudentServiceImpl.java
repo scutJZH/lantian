@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Resource;
+
+import org.scut.dao.IClassDao;
 import org.scut.dao.IPaperDao;
 import org.scut.dao.IQuestionDao;
 import org.scut.dao.IQuestion_paperDao;
@@ -18,8 +20,9 @@ import org.scut.dao.IStudentDao;
 import org.scut.dao.IStudent_studyDao;
 import org.scut.dao.IStudyDao;
 import org.scut.dao.ITitleDao;
+import org.scut.model.Class;
 import org.scut.model.Question;
-
+import org.scut.model.Student;
 import org.scut.model.Title;
 import org.scut.service.studentService.IStudentService;
 import org.scut.util.Base64Analysis;
@@ -49,6 +52,8 @@ public class StudentServiceImpl implements IStudentService{
 		private IScheduleDao scheduleDao;
 		@Resource
 		private ISolutionDao solutionDao;
+		@Resource
+		private IClassDao classDao;
 		
 	    
 
@@ -273,6 +278,24 @@ public class StudentServiceImpl implements IStudentService{
 					}catch (Exception e) {System.out.println(e.getMessage());responseBody.put("status","-1");return responseBody;}
 			responseBody.put("status", "1");
 			return responseBody;
+		}
+
+		
+		public int addclass(String classId, String studentId) {
+			int status ;
+			try {
+				Student student= studentDao.getStudentById(studentId);
+				student.setClassId(classId);
+			    Class class1=classDao.selectByPrimaryKey(classId);
+			    class1.setStudentNumber(class1.getStudentNumber()+1);
+			    status=1; 
+			    
+			} catch (Exception e) {
+				status=-2;
+				e.printStackTrace();
+			}
+			return status;
+			
 		}
 		
 }

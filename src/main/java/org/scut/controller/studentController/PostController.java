@@ -19,6 +19,8 @@ import org.scut.model.Post;
 import org.scut.service.studentService.IAnserService;
 import org.scut.service.studentService.ILikeService;
 import org.scut.service.studentService.IPostService;
+import org.scut.util.Base64Analysis;
+import org.scut.util.GlobalVar;
 import org.scut.util.ParamsTransport;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,7 +50,18 @@ public class PostController {
 		String postContent=(String)map.get("postContent");
 		String studentId=(String)map.get("studentId");
 		String postSubject=(String)map.get("postSubject");
+		String imgbase64=(String)map.get("imgbase64");
 		Post post= new Post();
+		String filePath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.picPath;
+		
+		try {
+			String picPath=Base64Analysis.analysisPic(UUID.randomUUID().toString(), filePath, imgbase64);
+//			post.setPostPath(picPath);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
 		post.setPostId(UUID.randomUUID().toString());
 		post.setPostTitle(postTitle);
 		post.setStudentId(studentId);
@@ -182,6 +195,7 @@ public Map<String, Object>  answerAnswer(HttpServletRequest request, HttpServlet
 	public Map<String, Object> gettotal(HttpServletRequest request, HttpServletResponse response) throws  IOException{
 		
 		Map<String, Object> map =ParamsTransport.getParams(request);
+		String count=(String)map.get("count");
 		List<Post> posts= postService.gettotal();
 		if (posts!=null) {
 			return Json.getJson(1,posts);
