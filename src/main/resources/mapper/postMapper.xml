@@ -130,7 +130,7 @@
   <select id="getallpost" resultMap="BaseResultMap" >
     SELECT
     <include refid="Base_Column_List" />
-    from post
+    from post  order by create_time desc
   </select>
   <select id="findpostbyid" resultMap="BaseResultMap">
   SELECT
