@@ -61,11 +61,14 @@
     	state = #{teacher.state},
     	verify_code = #{teacher.verifyCode, javaType=String, jdbcType=VARCHAR}
   		where teacher_id = #{teacher.id}
-		
 	</update>
 	
 	<select id="getTeacherById" resultMap="teacherMap" parameterType="Teacher">
 		select * from teacher where teacher_id = #{teacherId}
+	</select>
+	
+	<select id="getSchoolId" resultType="String">
+		select school_id from teacher where teacher_id = #{teacherId}
 	</select>
 	
 	<resultMap type="Teacher" id="teacherMap">

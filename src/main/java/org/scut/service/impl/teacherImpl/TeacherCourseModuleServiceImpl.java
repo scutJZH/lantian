@@ -1,7 +1,6 @@
 package org.scut.service.impl.teacherImpl;
 
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,23 +8,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import javax.annotation.Resource;
-
 import org.scut.dao.*;
 import org.scut.service.teacherService.ITeacherCourseModuleService;
 import org.scut.util.GlobalVar;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.FileOutputStream;  
-import java.io.IOException;  
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.sql.Blob;
-
+import java.io.OutputStream;  
 import sun.misc.BASE64Decoder;  
 import sun.misc.BASE64Encoder;  
 

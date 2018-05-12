@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Resource;
+
+import org.scut.dao.IClassDao;
 import org.scut.dao.IPaperDao;
 import org.scut.dao.IQuestionDao;
 import org.scut.dao.IQuestion_paperDao;
@@ -18,8 +20,9 @@ import org.scut.dao.IStudentDao;
 import org.scut.dao.IStudent_studyDao;
 import org.scut.dao.IStudyDao;
 import org.scut.dao.ITitleDao;
+import org.scut.model.Class;
 import org.scut.model.Question;
-
+import org.scut.model.Student;
 import org.scut.model.Title;
 import org.scut.service.studentService.IStudentService;
 import org.scut.util.Base64Analysis;
@@ -49,6 +52,8 @@ public class StudentServiceImpl implements IStudentService{
 		private IScheduleDao scheduleDao;
 		@Resource
 		private ISolutionDao solutionDao;
+		@Resource
+		private IClassDao classDao;
 		
 	    
 
@@ -58,25 +63,15 @@ public class StudentServiceImpl implements IStudentService{
 			Map<String, Object> responseBody = new HashMap<String, Object>();
 			
 		try {	
-			List<Map<String, Object>>result = student_studyDao.getStudentPaperBySId(studentId,submit);
-					
-			String classId = (String) studentDao.getClassIDBySId(studentId).get("classId");
-			
-			List<Map<String, Object>>cpList = studyDao.getClassPaperByCId(classId);
-		
-								
-			for(Map<String,Object> y:result) {
+			List<Map<String, Object>>result = student_studyDao.getStudentStudyBySId(studentId,submit);
+																
+			for(Map<String,Object> y:result) {	
 				
-				y.put("assignTime" ,null);
-				y.put("deadLine" , null);
-				
-				for(Map<String,Object> x:cpList) {
-					if(x.get("paperId").equals(y.get("paperId"))) {
-						y.put("assignTime" , x.get("assighTime") );
-						y.put("deadLine" , x.get("deadLine") );
-						}
-				}
-				
+				Map<String,Object> x  = studyDao.getStudyById((String) y.get("studyId"));
+				y.put("assignTime" , x.get("assighTime") );
+				y.put("deadLine" , x.get("deadLine") );
+				y.put("paperId" , x.get("paperId") );
+				y.put("paperType" , x.get("paperType") );
 			}
 	
 			for(Map<String,Object> y:result) {
@@ -96,6 +91,10 @@ public class StudentServiceImpl implements IStudentService{
 			return responseBody ;
 			
 		}catch (Exception e) {
+			
+		    System.out.println(e);
+		    System.out.println();
+		    
 			responseBody.put("status", "-2");
 			return responseBody ;
 		}

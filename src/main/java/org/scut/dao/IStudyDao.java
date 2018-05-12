@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
 public interface IStudyDao {
 
 	
-	List<Map<String, Object>> getClassPaperByCId(@Param("classId")String classId);
+	public Map<String, Object> getStudyById(@Param("studyId")String studyId);
 
 	public List<HashMap<String,Object>> selectList(@Param("teacherId")String teacherId,@Param("classId")String classId);
 	public int deleteList(@Param("paperIdList")List<String> paperId);

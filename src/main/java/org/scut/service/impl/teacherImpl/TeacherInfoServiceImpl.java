@@ -1,28 +1,27 @@
 package org.scut.service.impl.teacherImpl;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Resource;
+
+import org.scut.dao.ISchoolDao;
 import org.scut.dao.ITeacherDao;
 import org.scut.model.Teacher;
 import org.scut.service.teacherService.ITeacherInfoService;
 import org.scut.util.Base64Analysis;
 import org.scut.util.GlobalVar;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service("teacherInfoService")
 public class TeacherInfoServiceImpl implements ITeacherInfoService{
 	
 	@Resource
 	private ITeacherDao teacherDao;
+	@Resource
+	private ISchoolDao schoolDao;
 
 	@Override
 	public Map<String, Object> getTeacherInfo(String teacherId) {
@@ -45,7 +44,13 @@ public class TeacherInfoServiceImpl implements ITeacherInfoService{
 				userInfo.put("birthday", birthdayStamp);
 				userInfo.put("nickname", teacher.getNickname());
 				userInfo.put("sex", teacher.getSex());
-				userInfo.put("schoolName", teacher.getSchoolName());
+				String schoolId = teacher.getSchoolId();
+				String schoolName = null;
+				if(schoolId != null){
+					schoolName = schoolDao.getSchoolNameById(schoolId);
+				}
+				userInfo.put("schoolId", schoolId);
+				userInfo.put("schoolName", schoolName);
 				userInfo.put("name", teacher.getName());
 			} else {
 				status = "-1";
@@ -61,7 +66,7 @@ public class TeacherInfoServiceImpl implements ITeacherInfoService{
 
 	@Override
 	public Map<String, Object> modifyTeacherInfo(String teacherId, String imgBase64, String nickname,
-			String birthdayStr, String sex, String name, String schoolName, String filePath) {
+			String birthdayStr, String sex, String name, String schoolId, String filePath) {
 
 
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -81,12 +86,12 @@ public class TeacherInfoServiceImpl implements ITeacherInfoService{
 				teacher.setBirthday(birthday);
 				teacher.setNickname(nickname);
 				teacher.setSex(sex);
-				teacher.setSchoolName(schoolName);
+				teacher.setSchoolId(schoolId);
 				teacher.setName(name);
 				
 				teacherDao.updateTeacher(teacher);
 				
-				teacherInfo.put("picPath", "/img/"+picPath);
+				teacherInfo.put("picPath", GlobalVar.picPath+picPath);
 			}else{
 				status = "-1";
 			}

@@ -11,10 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IStudent_studyDao {
 
-	
-	List<Map<String, Object>> getStudentPaperBySId(@Param("studentId")String studentId,@Param("submit")String submit);
-
-
+	public List<Map<String, Object>> getStudentStudyBySId(@Param("studentId")String studentId,@Param("submit")String submit);
 
 	public List<Map> getHomeworkInfo(@Param("studentId") String studentId, @Param("classId") String classid,
 			@Param("subjectId") String subjectId, @Param("paperType") String paperType);
@@ -27,4 +24,7 @@ public interface IStudent_studyDao {
 	public int assignmentHomework(@Param("paperId")String paperId,@Param("studentId")String studentId,@Param("submit")String submit,@Param("score")int score,@Param("paperType")String paperType);
 	
 	public int autoCorrect(@Param("studentId")String studentId,@Param("paperId")String paperId,@Param("choiceScore")int choiceScore);
+
+	public List<Map<String, Object>> getChildStudyInfoList(@Param("studentId")String studentId, @Param("classId")String classId, @Param("subjectId")String subjectId, @Param("studyType")String studyType);
+
 }
