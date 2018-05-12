@@ -53,4 +53,15 @@ values (#{paperId},#{classId},#{assignTeacherId},from_unixtime(#{deadLine},'%y-%
 	<resultMap type="HashMap" id="getCorrectionList2HashMap">
 	<id property="submitNumber" column="submit_number"/>
 	</resultMap>
+	<!-- getRankDetails -->
+	<update id="getRankDetails">
+	update study set rank=#{rank} where study_id=#{studyId}
+	</update>
+	<!-- getBlobRank -->
+	<select id="getBlobRank" resultMap="getBlobRankMap">
+	select rank from study where study_id=#{studyId}
+	</select>
+	<resultMap type="java.sql.Blob" id="getBlobRankMap">
+	<id property="rank" column="rank"></id>
+	</resultMap>
 </mapper>
