@@ -4,6 +4,7 @@ package org.scut.controller.studentController;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,7 @@ import org.scut.service.studentService.IPostService;
 import org.scut.util.Base64Analysis;
 import org.scut.util.GlobalVar;
 import org.scut.util.ParamsTransport;
+import org.springframework.cglib.util.ParallelSorter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -53,29 +55,27 @@ public class PostController {
 		String imgbase64=(String)map.get("imgbase64");
 		Post post= new Post();
 		String filePath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.picPath;
-		
+		String picPath;
+		int result;
 		try {
-			String picPath=Base64Analysis.analysisPic(UUID.randomUUID().toString(), filePath, imgbase64);
-//			post.setPostPath(picPath);
+			picPath=Base64Analysis.analysisPic(UUID.randomUUID().toString(), filePath, imgbase64);
+			post.setPostPic(picPath);
+			post.setPostId(UUID.randomUUID().toString());
+			post.setPostTitle(postTitle);
+			post.setStudentId(studentId);
+			post.setSubjectId(postSubject);
+			post.setPostContent(postContent);
+			post.setCreateTime(new Date());
+			result= postService.addpost(post);
 		} catch (Exception e) {
-			
+			// TODO 自动生成的 catch 块
 			e.printStackTrace();
+			result=-2;
 		}
 		
-		post.setPostId(UUID.randomUUID().toString());
-		post.setPostTitle(postTitle);
-		post.setStudentId(studentId);
-		post.setSubjectId(postSubject);
-		post.setPostContent(postContent);
-		post.setCreateTime(new Date());
-		int result= postService.addpost(post);
 		
-		if (result>0) {
-			return Json.getJson();
-		}
-		else {
-			return Json.getJson(-1,"");
-		}
+		
+		return Json.getJson(result,"");
 	
 	}
 	
@@ -101,7 +101,7 @@ public Map<String, Object>  answerpost(HttpServletRequest request, HttpServletRe
 		
 		Map<String, Object> map =ParamsTransport.getParams(request);
 		String postId=(String)map.get("postId");
-		String answerContent=(String)map.get("postContent");
+		String answerContent=(String)map.get("answerContent");
 		String studentId=(String)map.get("userId");
 
 		Answer answer=new Answer();
@@ -195,12 +195,23 @@ public Map<String, Object>  answerAnswer(HttpServletRequest request, HttpServlet
 	public Map<String, Object> gettotal(HttpServletRequest request, HttpServletResponse response) throws  IOException{
 		
 		Map<String, Object> map =ParamsTransport.getParams(request);
-		String count=(String)map.get("count");
+		Integer count=Integer.valueOf((String) map.get("count"));
+		List<Post> result=new ArrayList<>();
 		List<Post> posts= postService.gettotal();
-		if (posts!=null) {
-			return Json.getJson(1,posts);
+		int size=posts.size();
+		if(size>count+10&size==count+10) {
+			for(int i =count;i<count+10;i++) {
+				posts.get(i).setPicPath("/img/"+posts.get(i).getPicPath());
+				posts.get(i).setPostPic("/img/"+posts.get(i).getPostPic());
+				result.add(posts.get(i));
+			}
+		}else if (size<count+10) {
+			for(int j=count;j<size;j++) {
+				result.add(posts.get(j));
+			}
 		}
-		return Json.getJson(-2,"");		
+		
+		return Json.getJson(1,result);	
 	
 }
 }

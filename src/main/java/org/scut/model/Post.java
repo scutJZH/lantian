@@ -24,16 +24,9 @@ public class Post {
 
     private String picPath;
     
-//    private String postPath;
-//    
-//
-//	public String getPostPath() {
-//		return postPath;
-//	}
-//
-//	public void setPostPath(String postPath) {
-//		this.postPath = postPath;
-//	}
+    private String postPic;
+    
+
 
 	public String getPostId() {
 		return postId;
@@ -105,6 +98,14 @@ public class Post {
 
 	public void setPicPath(String picPath) {
 		this.picPath = picPath;
+	}
+
+	public String getPostPic() {
+		return postPic;
+	}
+
+	public void setPostPic(String postPic) {
+		this.postPic = postPic;
 	}
 
 

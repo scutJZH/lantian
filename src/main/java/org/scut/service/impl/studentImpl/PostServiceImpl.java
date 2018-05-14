@@ -22,24 +22,23 @@ private IStudentDao IStudentDao;
 	
 	
 
-	@SuppressWarnings("finally")
+	
 	public int addpost(Post post) {
 		int result=1;
 		try{
-			IPostDao.insertSelective(post);
+			
 			Student student=IStudentDao.getStudentById(post.getStudentId());
 			post.setPicPath(student.getPicPath());
-			
-			
-			
+			IPostDao.insertSelective(post);
+		
 		}
 		catch (Exception e) {
 			// TODO: handle exception
-			result=0;
+			result=-2;
 			e.printStackTrace();
-		}finally {
-			return result;
 		}
+			return result;
+		
 	}
 
 	public Post findpostbyid(String postId) {
