@@ -33,11 +33,11 @@
 	</select>
 	
 	<delete id="deleteRelationshipByClassId">
-		delete from student_class where class_id = #{classId}
+		delete from teacher_class where class_id = #{classId}
 	</delete>
 	
 	<delete id="deleteRelationship">
-		delete from student_class where class_id = #{classId} and teacher_id = #{teacherId}
+		delete from teacher_class where class_id = #{classId} and teacher_id = #{teacherId}
 	</delete>
 	
 	<select id="getClassInfoListByTeacherId" parameterType="String" resultMap="classInfoMap">
