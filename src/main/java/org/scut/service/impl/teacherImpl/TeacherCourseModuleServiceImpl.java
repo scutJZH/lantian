@@ -1,6 +1,7 @@
 package org.scut.service.impl.teacherImpl;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,9 +14,19 @@ import org.scut.dao.*;
 import org.scut.service.teacherService.ITeacherCourseModuleService;
 import org.scut.util.GlobalVar;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.FileOutputStream;  
+import java.io.IOException;  
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.sql.Blob;
 import java.io.OutputStream;  
 import sun.misc.BASE64Decoder;  
+import org.hibernate.Hibernate;
 
+@SuppressWarnings({ "restriction", "unused" })
 @Service(value="teacherCourseModuleService")
 public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleService{
 	@Resource
@@ -157,11 +168,12 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		result.put("status", status);
 		return result;
 	}
-	public HashMap<String,Object> getRankDetails(String paperId){
+	@SuppressWarnings("unchecked")
+	public HashMap<String,Object> getRankDetails(String studyId,String paperId){
         String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			List<LinkedHashMap<String,Object>> a= this.student_studyDao.getRankDetails(paperId);
+			List<LinkedHashMap<String,Object>> a= this.student_studyDao.getRankDetails(studyId,paperId);
 			/**鎻掑叆鎺掑簭浣垮緱璇ョ粨鏋滄槸鎸夊垎鏁颁粠灏忓埌澶ф帓鐨�**/
 			
 	        /**鎻掑叆鎺掑簭浣垮緱璇ョ粨鏋滄槸鎸夊垎鏁颁粠灏忓埌澶ф帓鐨�**/
@@ -173,6 +185,23 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	        	a.set(i, temp);
 	        }
 	        result.put("result",a);
+	        try  {  
+	            
+	            ByteArrayOutputStream out  =   new  ByteArrayOutputStream();  
+	            ObjectOutputStream outputStream  =   new  ObjectOutputStream(out);  
+	            outputStream.writeObject(result);  
+	             byte [] bytes  =  out.toByteArray();  
+	            outputStream.close();
+	            @SuppressWarnings("deprecation")
+				Blob b=Hibernate.createBlob(bytes);
+	            this.studyDao.getRankDetails(b,studyId);
+	        }  catch  (Exception e) {  
+	             //  TODO: handle exception  
+	            System.out.println("ObjectToBlob");  
+	            e.printStackTrace();
+				status = "-2";
+				result.put("result",status);
+	        }  
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -180,6 +209,22 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 			result.put("result",status);
 		}
 		result.put("status", status);
+		//test echo
+		Blob blob=this.studyDao.getBlobRank(studyId);
+		HashMap<String,Object> l=new HashMap<String,Object>();
+        try  {  
+            ObjectInputStream in  = new ObjectInputStream(blob.getBinaryStream());  
+            l = (HashMap<String,Object>)in.readObject();  
+            in.close();     
+        }  catch  (Exception e) {  
+             //  TODO: handle exception  
+            System.out.println("BlobToObject");  
+            e.printStackTrace();
+			status = "-2";
+			result.put("result",status); 
+        }  
+        //test echo end
+		System.out.println(String.valueOf((((List<LinkedHashMap<String,Object>>)l.get("result")).get(0).get("nickname"))));
 		return result;
 	}
 	public HashMap<String,Object> getCorrectStudentList(String teacherId,String paperId){
@@ -202,7 +247,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 			result.put("result",r1);
 			}
 			else result.put("result",new ArrayList<HashMap<String,Object>>());
-		}
+		}	
 		catch(Exception e) {
 			e.printStackTrace();
 			status = "-2";
@@ -232,12 +277,13 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		result.put("status", status);
 		return result;
 	}
+	//2 version completed
 	public HashMap<String,Object> getSubjectiveOrObjectiveList(String teacherId,String questionType,String subjectId,int grade){
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try {
-			List<HashMap<String,Object>> r1=this.questionDao.getSubjectiveList(subjectId,grade);
-			List<HashMap<String,Object>> r2=this.questionDao.getObjectiveList(subjectId,grade);
+			List<HashMap<String,Object>> r1=this.questionDao.getSubjectiveList(teacherId,subjectId,grade);
+			List<HashMap<String,Object>> r2=this.questionDao.getObjectiveList(teacherId,subjectId,grade);
 			int str2=2;
 			//should use String.equals(),not==
 			if(Integer.parseInt(questionType) != str2) result.put("result",r1);
@@ -256,7 +302,8 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	}
 	**/
 	  //base64 String to photo
-    public int GenerateImage(String imgStr,String picPath)  
+    @SuppressWarnings("restriction")
+	public int GenerateImage(String imgStr,String picPath)  
     {   //对字节数组字符串进行Base64解码并生成图片  
         BASE64Decoder decoder = new BASE64Decoder();  
         try
