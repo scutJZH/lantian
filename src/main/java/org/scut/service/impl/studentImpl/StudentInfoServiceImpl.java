@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 
 import org.scut.dao.ISchoolDao;
 import org.scut.dao.IStudentDao;
+import org.scut.model.School;
 import org.scut.model.Student;
 import org.scut.service.studentService.IStudentInfoService;
 import org.scut.util.Base64Analysis;
@@ -45,12 +46,13 @@ public class StudentInfoServiceImpl implements IStudentInfoService{
 				userInfo.put("nickname", student.getNickname());
 				userInfo.put("sex", student.getSex());
 				String schoolId = student.getSchoolId();
-				String schoolName = null;
+				School schoolInfo = null;
 				if(schoolId != null){
-					schoolDao.getSchoolNameById(schoolId);
+					schoolInfo = schoolDao.getSchoolById(schoolId);
 				}
 				userInfo.put("schoolId", schoolId);
-				userInfo.put("schoolName", schoolName);
+				userInfo.put("schoolName", schoolInfo.getSchoolName());
+				userInfo.put("city", schoolInfo.getCity());
 			} else {
 				status = "-1";
 			}

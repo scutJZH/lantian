@@ -229,9 +229,13 @@ public class ClassManagementServiceImpl implements IClassManagementService{
 		try{
 			String createTeacherId = classDao.getCreateTeacherId(classId);
 			if(createTeacherId.equals(headTeacherId)){
-				teacherClassDao.deleteRelationship(teacherId, classId);
-				int teacherNumber = classDao.getTeacherNumber(classId);
-				classDao.updateTeacherNumber(classId, teacherNumber-1);
+				if(!headTeacherId.equals(teacherId)){
+					teacherClassDao.deleteRelationship(teacherId, classId);
+					int teacherNumber = classDao.getTeacherNumber(classId);
+					classDao.updateTeacherNumber(classId, teacherNumber-1);
+				}else{
+					status = "-3";
+				}
 			}else{
 				status = "-1";
 			}
@@ -282,9 +286,14 @@ public class ClassManagementServiceImpl implements IClassManagementService{
 		try{
 			boolean isRelationshipExist = teacherClassDao.isRealtionshipExist(teacherId, classId);
 			if(isRelationshipExist){
-				teacherClassDao.deleteRelationship(teacherId, classId);
-				int teacherNumber = classDao.getTeacherNumber(classId);
-				classDao.updateTeacherNumber(classId, teacherNumber-1);
+				String headTeacherId = classDao.getCreateTeacherId(classId);
+				if(!headTeacherId.equals(teacherId)){
+					teacherClassDao.deleteRelationship(teacherId, classId);
+					int teacherNumber = classDao.getTeacherNumber(classId);
+					classDao.updateTeacherNumber(classId, teacherNumber-1);
+				}else{
+					status = "-1";
+				}
 			}
 		}catch(Exception e){
 			e.printStackTrace();

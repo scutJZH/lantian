@@ -55,7 +55,7 @@
 
 	<select id="getChildStudyInfoList" resultMap="childStudyInfoMap">
 		select
-		study.study_id, study_name, assign_time, deadline, max_score, rank,
+		study.study_id, study_name, assign_time, dead_line, max_score, rank,
 		submit,
 		submit_time, score, used_time, start_time
 		from student_study left join study on
@@ -64,14 +64,14 @@
 		study.paper_id = paper.paper_id
 		where student_id = #{studentId} and
 		class_id = #{classId} and subject_id = #{subjectId}
-		and type = #{studyType}
+		and paper_type = #{studyType}
 	</select>
 
 	<resultMap type="hashmap" id="childStudyInfoMap">
 		<id property="studyId" column="study.study_id" />
 		<result property="studyName" column="study_name" />
 		<result property="assignTime" column="assign_time" />
-		<result property="deadline" column="deadline" />
+		<result property="deadline" column="dead_line" />
 		<result property="max_score" column="maxScore" />
 		<result property="aveScore" column="ave_score" />
 		<result property="rank" column="rank" />
