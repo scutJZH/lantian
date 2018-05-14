@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IQuestion_paperDao {
 	
-	List<Map<String, Object>> getQuestionIds(@Param("paperId")String paperId);
+	List<Map<String, Object>> getQuestions(@Param("paperId")String paperId);
 	public int assignHomework(@Param("paperId")String paperId,@Param("questionId")String questionId,@Param("point")int point);
 }

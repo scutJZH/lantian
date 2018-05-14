@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Resource;
 import org.scut.dao.*;
+import org.scut.model.Title;
 import org.scut.service.teacherService.ITeacherCourseModuleService;
 import org.scut.util.GlobalVar;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,8 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	private ISolutionDao solutionDao; 
 	@Resource
 	private ITitleDao titleDao;
+	@Resource
+	private IQuestion_paperDao Question_paperDao;
 	
 	public HashMap<String,Object> selectList(String teacherId,String classId){
 		String status = "1";
@@ -196,7 +199,6 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 				Blob b=Hibernate.createBlob(bytes);
 	            this.studyDao.getRankDetails(b,studyId);
 	        }  catch  (Exception e) {  
-	             //  TODO: handle exception  
 	            System.out.println("ObjectToBlob");  
 	            e.printStackTrace();
 				status = "-2";
@@ -217,7 +219,6 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
             l = (HashMap<String,Object>)in.readObject();  
             in.close();     
         }  catch  (Exception e) {  
-             //  TODO: handle exception  
             System.out.println("BlobToObject");  
             e.printStackTrace();
 			status = "-2";
@@ -256,28 +257,45 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		result.put("status", status);
 		return result;
 	}
-	public HashMap<String,Object> getCorrectQuestionList(String teacherId,String paperId,String studentId){
+	
+	public Map<String,Object> getCorrectQuestionList(String teacherId,String studyId,String studentId){
 		String status = "1";
-		HashMap<String, Object> result = new HashMap<String, Object>();
+		Map<String, Object> responsBody = new HashMap<String, Object>();
 		try{
-			List<HashMap<String,Object>> r1= this.solutionDao.getSolution(teacherId,paperId,studentId);
-			for(int i=0;i<r1.size();i++) {
-				/**杩欓噷闇�瑕佹敞鎰忎娇鐢ㄤ簡string鍙傛暟鐨�,
-				 * 杩欓噷鎶妔olutionDao.getSolution鐨勬煡璇㈢粨鏋滃綋浣滀簡getTitleContent鐨勫弬鏁般��**/
-				HashMap<String,Object> r2=this.titleDao.getTitleContent((String)(r1.get(i).get("questionId")));
-				r1.get(i).putAll(r2);
+			
+			List<Map<String,Object>> solutionList=this.solutionDao.getUncheckedSolution(studyId,studentId);
+			
+			String paperId = (String) studyDao.getStudyById(studyId).get("paperId");
+
+			List<Map<String,Object>> pointList= Question_paperDao.getQuestions(paperId);
+
+			for(Map<String,Object> eachSolution:solutionList) {				
+				
+				for(Map<String,Object> eachQuestion:pointList) {
+					if(eachQuestion.get("questionId").equals(eachSolution.get("questionId"))){
+						eachSolution.put("maxPoint", eachQuestion.get("point"));
+						break;
+					}
+				}
+			
+				String titleId = questionDao.selectByPrimaryKey(((String) eachSolution.get("questionId"))).getTitleId();
+
+				Title eachTitle = titleDao.selectByPrimaryKey(titleId);				
+				eachSolution.put("titleContent", eachTitle.getTitleContent());
+				eachSolution.put("titlePicPath", eachTitle.getPicPath());
 			}
-			result.put("result",r1);
+			responsBody.put("solutionList",solutionList);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 			status = "-2";
-			result.put("result",status);
+			responsBody.put("status",status);
 		}
-		result.put("status", status);
-		return result;
+
+		responsBody.put("status", status);
+		return responsBody;
 	}
-	//2 version completed
+	
 	public HashMap<String,Object> getSubjectiveOrObjectiveList(String teacherId,String questionType,String subjectId,int grade){
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();

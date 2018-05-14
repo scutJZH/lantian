@@ -109,7 +109,7 @@ public class StudentServiceImpl implements IStudentService{
 			Map<String,Object> result = new HashMap<>();
 			
 			try {
-			List<Map<String, Object>>questionIdList = question_paperDao.getQuestionIds(paperId);
+			List<Map<String, Object>>questionIdList = question_paperDao.getQuestions(paperId);
 						
 			List<Question>optionsList = new ArrayList<>();
 										

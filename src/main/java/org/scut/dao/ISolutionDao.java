@@ -3,6 +3,7 @@ package org.scut.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ISolutionDao {
 
-	public List<HashMap<String, Object>> getSolution(@Param("teacherId")String teacherId,@Param("paperId")String paperId,@Param("studentId")String studentId);
+	public List<Map<String, Object>> getUncheckedSolution(@Param("studyId")String paperId,@Param("studentId")String studentId);
 
 	public void insertSolution(@Param("studentId")String studentId,@Param("paperId") String paperId,@Param("questionId") String questionId,@Param("solutionContent") String solutionContent, @Param("picPath")String picPath,  @Param("isRight")String isRight);
 
