@@ -3,8 +3,14 @@
 <mapper namespace="org.scut.dao.IStudyDao">
 		
 	<select id="getStudyById" resultType="hashmap" parameterType="String">
-		select paper_id as paperId,assign_time as assignTime,dead_line as deadLine ,ave_time as aveTime ,ave_score  re ,class_id as classId,submit_number as submitNumber ,paper_type as paperType, exam_time as examTime from study where study_id = #{studyId}
+		select paper_id as paperId,assign_time as assignTime,dead_line as deadLine ,ave_time as aveTime ,ave_score as aveScore ,assign_teacher_id as assignTeacherId,class_id as classId,submit_number as submitNumber ,paper_type as paperType, exam_time as examTime from study where study_id = #{studyId}
 	</select>
+	
+	<update id="updateSubmitNum">
+		update study set submit_number=submit_number+1
+		where study_id=#{studyId}
+    </update>
+    
 <!-- 获取作业列表 -->
 	<select id="selectList" resultMap="getHomeworkListHashMap">
 select paper_id,assign_time,submit_number,paper_name,student_number from study natural join paper,class

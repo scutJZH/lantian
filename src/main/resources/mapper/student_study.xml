@@ -5,7 +5,16 @@
 	<select id="getStudentStudyBySId" resultType="hashmap" parameterType="String">
 		select study_id as studyId,submit_time as submitTime,score, used_time as usedTime,start_time as startTime from student_study where student_id = #{studentId} AND submit = #{submit}
 	</select>
-
+	
+	<select id="getStudentStudy" resultType="hashmap">
+		select submit_time as submitTime,score, used_time as usedTime,start_time as startTime choice_score as choiceScore from student_study where student_id = #{studentId} AND studyId = #{studyId}
+	</select>
+	
+	<update id="updateCorrectedStatus">
+		update student_study set score=#{totalScore},corrected=1,teacher_id=#{teacherId}
+		where student_id=#{studentId} AND study_id=#{studyId}
+    </update>
+    
 <!-- 9.获取统计排名详情,但缺少学生名字，需要从student表查再合并在这个结果中,这里注意每个学生只能做同一个作业1次才能用了natural join -->
 
 	<select id="getRankDetails" resultMap="getRankDetailsHashMap">
@@ -31,10 +40,10 @@
 	</resultMap>
 	
 	<update id="updateSubmit">
-		update student_paper set submit=1
-		where student_id=#{studentId} AND paper_id=#{paperId}
+		update student_study set submit=1,choice_score=#{choiceScore}
+		where student_id=#{studentId} AND study_id=#{studyId}
     </update>
-	
+    
 	<!-- assignmentHomework -->
 <insert id="assignmentHomework">
 insert into student_study (paper_id,student_id,submit,score,type,choice_score)

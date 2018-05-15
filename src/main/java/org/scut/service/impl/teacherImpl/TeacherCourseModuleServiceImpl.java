@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 import org.scut.dao.*;
 import org.scut.model.Title;
 import org.scut.service.teacherService.ITeacherCourseModuleService;
+import org.scut.util.Base64Analysis;
 import org.scut.util.GlobalVar;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -242,6 +243,9 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 						break;
 					}
 				}
+				
+				if(eachSolution.get("picPath")!=null && !eachSolution.get("picPath").equals("")) {
+					eachSolution.put( "picPath", GlobalVar.solutionPicPath + (String)eachSolution.get("picPath") );}
 			
 				String titleId = questionDao.selectByPrimaryKey(((String) eachSolution.get("questionId"))).getTitleId();
 
@@ -449,6 +453,54 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		}
 		result.put("status", status);
 		return result;
+	}
+	@Override
+	public Map<String, Object> submitCorrection(String teacherId, String studyId, String studentId,
+			List<Map<String, Object>> correctionResultList) {
+		Map<String, Object> responseBody = new HashMap<>();
+		try {
+			String paperId = (String) studyDao.getStudyById(studyId).get("paperId");
+			int choiceScore = (int) student_studyDao.getStudentStudy(studentId, studyId).get("choiceScore");
+			int totalScore = 0;
+			for(Map<String, Object>eachCorrectionResult:correctionResultList) {
+				
+				String questionId = (String) eachCorrectionResult.get("questionId");
+				int point  = (int) eachCorrectionResult.get("point");
+				String correctedPic = (String) eachCorrectionResult.get("correctedPic");
+				String picId = null;
+				String isright = null;
+				int maxPoint = (int) Question_paperDao.getQuestion(paperId, questionId).get("point");
+				
+				totalScore += point;
+				
+				if(point==maxPoint) {isright = "1";}
+				else if ( 0 < point && point < maxPoint ) {isright = "2";}
+				else if ( point==0 ) {isright = "0";}
+				else {
+					responseBody.put("status", -2);
+					return responseBody;
+				}
+				
+				if(correctedPic!=null && correctedPic!="") {
+					picId = UUID.randomUUID().toString();
+					Base64Analysis.analysisPic(picId, this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.solutionPicPath, correctedPic);
+				}				
+				solutionDao.correctSolution(studentId, studyId, questionId, point,picId,isright);				
+			}
+			totalScore+=choiceScore;
+			
+			System.out.println(totalScore);
+			System.out.println();
+			
+			student_studyDao.updateCorrectedStatus(studentId, studyId, totalScore,teacherId);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			responseBody.put("status", -1);
+			return responseBody;
+		}
+		responseBody.put("status", 1);
+		return responseBody;
 	}
 
 }

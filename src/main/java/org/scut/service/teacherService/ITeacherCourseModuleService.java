@@ -25,5 +25,7 @@ public interface ITeacherCourseModuleService {
 			String picPath,
 			String picAnswer,String answer,String subjectId,int grade,String picId1,String picId2);
 	public HashMap<String,Object> checkTitle(String question);
-	public int GenerateImage(String imgStr,String picPath); 
+	public int GenerateImage(String imgStr,String picPath);
+	public Map<String, Object> submitCorrection(String teacherId, String studyId, String studentId,
+			List<Map<String, Object>> correctionResultList); 
 }

@@ -4,6 +4,7 @@ package org.scut.service.impl.studentImpl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,8 +64,8 @@ public class StudentServiceImpl implements IStudentService{
 			for(Map<String,Object> y:result) {	
 				
 				Map<String,Object> x  = studyDao.getStudyById((String) y.get("studyId"));
-				y.put("assignTime" , x.get("assighTime") );
-				y.put("deadLine" , x.get("deadLine") );
+				y.put("assignTime" , ((Date)x.get("assignTime")).getTime() );
+				y.put("deadLine" , ((Date)x.get("deadLine")).getTime() );
 				y.put("paperId" , x.get("paperId") );
 				y.put("paperType" , x.get("paperType") );
 			}
@@ -239,32 +240,39 @@ public class StudentServiceImpl implements IStudentService{
 		}
 
 		@Override
-		public Map<String, Object> uploadSolutions(String studentId, String paperId, List<Map<String, Object>> solutionList) {
+		public Map<String, Object> uploadSolutions(String studentId, String studyId, List<Map<String, Object>> solutionList) {
 			Map<String, Object> responseBody = new HashMap<String, Object>();
              
 			try {
-				    String picLocation = this.getClass().getClassLoader().getResource("../../").getPath();
+				    int choiceScore = 0;
+				    String paperId = (String) studyDao.getStudyById(studyId).get("paperId");
+				    boolean allTheQuestionsAreChoices = true;
+				    String teacherId = (String) studyDao.getStudyById(studyId).get("assignTeacherId");
 					for (Map<String, Object> map : solutionList) {
 						String questionId = (String) map.get("questionId");
 						String solutionContent = (String) map.get("solutionContent");
 						String img = (String) map.get("img");
-						String isRight = (String) map.get("isRight");
-						
-						String picPath = null;						
-						
+						String isRight = (String) map.get("isRight");						
+						String picPath = null;
+												
+						if(!isRight.equals("1")|| !isRight.equals("0")) {allTheQuestionsAreChoices=false;}
+						if(isRight.equals("1")) {
+							choiceScore += (int)(question_paperDao.getQuestion(paperId, questionId).get("point"));
+						}						
 						if( img!=null && img.length()!=0 )
 						{
 	                        picPath = UUID.randomUUID().toString();
-
-							Base64Analysis.analysisPic(picPath, picLocation+GlobalVar.solutionPicPath, img);
-							
-							}
-						
-						solutionDao.insertSolution(studentId,paperId,questionId,solutionContent,picPath,isRight);
+							picPath = Base64Analysis.analysisPic(picPath, this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.solutionPicPath, img);
+							System.out.println(this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.solutionPicPath);
+							System.out.println();
+							}						
+						solutionDao.insertSolution(studentId,studyId,questionId,solutionContent,picPath,isRight);
 						}
-					student_studyDao.updateSubmit(studentId,paperId);
-
-					}catch (Exception e) {System.out.println(e.getMessage());responseBody.put("status","-1");return responseBody;}
+					student_studyDao.updateSubmit(studentId,studyId,choiceScore);
+				    studyDao.updateSubmitNum(studyId); 
+                    if(allTheQuestionsAreChoices) {student_studyDao.updateCorrectedStatus(studentId, studyId, choiceScore, teacherId);}
+                    
+					}catch (Exception e) {e.printStackTrace();responseBody.put("status","-1");return responseBody;}
 			responseBody.put("status", "1");
 			return responseBody;
 		}

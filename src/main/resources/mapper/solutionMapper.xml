@@ -15,15 +15,14 @@ where study_id=#{studyId} AND student_id=#{studentId} AND (isright is null or is
 </resultMap>
 
   <insert id="insertSolution">
-		insert into solution (student_id , paper_id , question_id , content,pic_path,isright) 
-		values (#{studentId},#{paperId},#{questionId},#{solutionContent},#{picPath},#{isRight})
+		insert into solution (student_id , study_id , question_id , content,pic_path,isright) 
+		values (#{studentId},#{studyId},#{questionId},#{solutionContent},#{picPath},#{isRight})
   </insert>
   
-  <update id="updateSolution">
-		update solution set content=#{solutionContent}
-		where student_id=#{studentId} AND paper_id=#{paperId} AND question_id=#{questionId}
+  <update id="correctSolution">
+		update solution set correctedPic=#{picId},point=#{point},isright=#{isright}
+		where student_id=#{studentId} AND study_id=#{studyId} AND question_id=#{questionId}
   </update>
-  
   
  <!-- submitCorrection -->
  <update id="submitCorrection">

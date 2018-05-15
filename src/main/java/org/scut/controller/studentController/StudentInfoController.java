@@ -68,17 +68,17 @@ public class StudentInfoController {
 	@RequestMapping("/uploadSolutions")
 	@ResponseBody
 
-	public  Map<String, Object> getPaperDetails(HttpServletRequest request, HttpServletResponse response) throws IOException{
+	public  Map<String, Object> uploadSolutions(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		    
 		    request.setCharacterEncoding("UTF-8");
 		    
 		    Map<String, Object> m  = ParamsTransport.getParams(request);
 						
-			String paperId = (String) m.get("paperId");
+			String studyId = (String) m.get("studyId");
 			String studentId = (String) m.get("studentId");
 			List<Map<String, Object>> solutionList =  (List<Map<String, Object>>) m.get("solutionList");
 						
-			Map<String, Object> responseBody = this.studentService.uploadSolutions(studentId,paperId,solutionList);
+			Map<String, Object> responseBody = this.studentService.uploadSolutions(studentId,studyId,solutionList);
 			
 			return responseBody;
 	}

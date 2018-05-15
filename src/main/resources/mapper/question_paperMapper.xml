@@ -5,6 +5,10 @@
 	<select id="getQuestions" resultType="hashmap" parameterType="String">
 		select question_id as questionId ,point from question_paper where paper_id = #{paperId}
 	</select>
+	
+	<select id="getQuestion" resultType="hashmap" >
+		select paper_id as paperId,question_id as questionId ,point from question_paper where paper_id = #{paperId} AND question_id = #{questionId}
+	</select>
 <!-- assignHomework -->
 <insert id="assignHomework">
 insert into question_paper (paper_id,question_id,point)
