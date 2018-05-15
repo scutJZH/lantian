@@ -13,9 +13,6 @@ public interface IStudent_studyDao {
 
 	public List<Map<String, Object>> getStudentStudyBySId(@Param("studentId")String studentId,@Param("submit")String submit);
 
-	public List<Map> getHomeworkInfo(@Param("studentId") String studentId, @Param("classId") String classid,
-			@Param("subjectId") String subjectId, @Param("paperType") String paperType);
-
 	public List<LinkedHashMap<String,Object>> getRankDetails(@Param("studyId")String studyId,@Param("paperId")String paperId);
 	public List<HashMap<String,Object>> getCorrectStudentList(@Param("teacherId")String teacherId,@Param("paperId")String paperId);
 
