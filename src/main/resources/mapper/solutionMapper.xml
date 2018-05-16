@@ -48,4 +48,13 @@ where study_id=#{studyId} AND student_id=#{studentId} AND (isright is null or is
  <update id="autoCorrectFalse">
  update solution set point=0,isright="0" where student_id=#{studentId} and question_id=#{questionId}
  </update>
+ 
+ <select id="getsolution" resultType="java.lang.String" >
+ select    content  from solution
+ where  student_id=#{studentId,jdbcType=VARCHAR} and study_id=#{studyId,jdbcType=VARCHAR} and question_id=#{questionId,jdbcType=VARCHAR}
+ 
+ </select>
+ 
+ 
+ 
 </mapper>

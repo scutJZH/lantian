@@ -9,6 +9,7 @@ import java.util.UUID;
 import javax.annotation.Resource;
 import org.scut.dao.IClassDao;
 import org.scut.dao.ISchoolDao;
+import org.scut.dao.ISolutionDao;
 import org.scut.dao.IStudentDao;
 import org.scut.model.School;
 import org.scut.dao.IStudent_classDao;
@@ -31,7 +32,11 @@ public class StudentInfoServiceImpl implements IStudentInfoService{
 	private IClassDao classdao;
 	@Resource
 	private IStudent_classDao student_classdao;
-	@Resource ITeacher_classDao teacher_classdao;
+	@Resource
+	private ITeacher_classDao teacher_classdao;
+	@Resource
+	private ISolutionDao solutiondao;
+	
 
 
 	@Override
@@ -178,6 +183,7 @@ public class StudentInfoServiceImpl implements IStudentInfoService{
 			e.printStackTrace();
 			stastus="-2";
 		}
+		
 		result.put("status", stastus);
 		return result;
 	}

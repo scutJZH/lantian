@@ -4,6 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Resource;
 import org.scut.dao.*;
+import org.scut.model.Question;
 import org.scut.model.Title;
 import org.scut.service.teacherService.ITeacherCourseModuleService;
 import org.scut.util.Base64Analysis;
@@ -535,6 +537,24 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 					System.out.println();
 				}				
 				solutionDao.correctSolution(studentId, studyId, questionId, point,picId,isright);
+				if (isright=="0") {
+					Question question=questionDao.selectByPrimaryKey(questionId);
+					
+					if (question.getOptionA()!=null) {
+						String questionType="2";
+						String note=null;
+						Date createTime=new Date();
+						String content=solutionDao.getsolution(studentId, studyId, questionId);
+						mistakeDao.insertmistake(studentId, questionId, note, questionType, content, createTime);
+						
+					}else {
+						String questionType="1";
+						String note=null;
+						Date createTime=new Date();
+						String content=solutionDao.getsolution(studentId, studyId, questionId);
+						mistakeDao.insertmistake(studentId, questionId, note, questionType, content, createTime);
+					}
+				}
 				
 			}
 			totalScore+=choiceScore;
