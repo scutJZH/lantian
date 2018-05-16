@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 import org.scut.dao.*;
 import org.scut.model.Title;
 import org.scut.service.teacherService.ITeacherCourseModuleService;
+import org.scut.util.Base64Analysis;
 import org.scut.util.GlobalVar;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,6 +49,8 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	private ITitleDao titleDao;
 	@Resource
 	private IQuestion_paperDao Question_paperDao;
+	@Resource
+	private IMistakeDao mistakeDao;
 	
 	public HashMap<String,Object> selectList(String teacherId,String classId){
 		String status = "1";
@@ -277,14 +280,25 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 						break;
 					}
 				}
-			
+				
+				if(eachSolution.get("solutionPic")!=null && !eachSolution.get("solutionPic").equals("")) {
+					eachSolution.put( "solutionPic", GlobalVar.solutionPicPath + (String)eachSolution.get("solutionPic") );}
+				
+				if(eachSolution.get("correctedPic")!=null && !eachSolution.get("correctedPic").equals("")) {
+					eachSolution.put( "correctedPic", GlobalVar.solutionPicPath + (String)eachSolution.get("correctedPic") );}
+			    
+				System.out.println(this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.solutionPicPath);
+				System.out.println();
+				
 				String titleId = questionDao.selectByPrimaryKey(((String) eachSolution.get("questionId"))).getTitleId();
 
 				Title eachTitle = titleDao.selectByPrimaryKey(titleId);				
 				eachSolution.put("titleContent", eachTitle.getTitleContent());
 				eachSolution.put("titlePicPath", eachTitle.getPicPath());
+				if(eachSolution.get("titlePicPath")!=null && !eachSolution.get("titlePicPath").equals("")) {
+					eachSolution.put( "titlePicPath", GlobalVar.titlePicPath + (String)eachSolution.get("titlePicPath") );}
 			}
-			responsBody.put("solutionList",solutionList);
+			responsBody.put("result",solutionList);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -486,6 +500,57 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		}
 		result.put("status", status);
 		return result;
+	}
+	@Override
+	public Map<String, Object> submitCorrection(String teacherId, String studyId, String studentId,
+			List<Map<String, Object>> correctionResultList) {
+		Map<String, Object> responseBody = new HashMap<>();
+		try {
+			String paperId = (String) studyDao.getStudyById(studyId).get("paperId");
+			int choiceScore = (int) student_studyDao.getStudentStudy(studentId, studyId).get("choiceScore");
+			int totalScore = 0;
+			for(Map<String, Object>eachCorrectionResult:correctionResultList) {
+				
+				String questionId = (String) eachCorrectionResult.get("questionId");
+				int point  = Integer.parseInt((String) eachCorrectionResult.get("point"));
+				String correctedPic = (String) eachCorrectionResult.get("correctedPic");
+				String picId = null;
+				String isright = null;
+				int maxPoint = (int) Question_paperDao.getQuestion(paperId, questionId).get("point");
+				
+				totalScore += point;
+				
+				if(point==maxPoint) {isright = "1";}
+				else if ( 0 < point && point < maxPoint ) {isright = "2";}
+				else if ( point==0 ) {isright = "0";}
+				else {
+					responseBody.put("status", -2);
+					return responseBody;
+				}
+				
+				if(correctedPic!=null && correctedPic!="") {
+					picId = UUID.randomUUID().toString();
+					picId = Base64Analysis.analysisPic(picId, this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.solutionPicPath, correctedPic);
+					System.out.println(this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.solutionPicPath);
+					System.out.println();
+				}				
+				solutionDao.correctSolution(studentId, studyId, questionId, point,picId,isright);
+				
+			}
+			totalScore+=choiceScore;
+			
+			System.out.println(totalScore);
+			System.out.println();
+			
+			student_studyDao.updateCorrectedStatus(studentId, studyId, totalScore,teacherId);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			responseBody.put("status", -1);
+			return responseBody;
+		}
+		responseBody.put("status", 1);
+		return responseBody;
 	}
 
 }

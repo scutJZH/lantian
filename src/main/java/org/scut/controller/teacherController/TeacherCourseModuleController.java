@@ -246,39 +246,14 @@ public class TeacherCourseModuleController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/submitCorrection", method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> submitCorrection(@RequestBody HashMap<String,Object> request,HttpServletRequest request2,HttpServletResponse response) throws IOException {
-				String status = "1";
-		HashMap<String, Object> result = new HashMap<String, Object>();
+	public Map<String,Object> submitCorrection(@RequestBody HashMap<String,Object> request,HttpServletResponse response) throws IOException {
 		@SuppressWarnings("unused")
 		String teacherId=String.valueOf(request.get("teacherId"));
 		String studentId=String.valueOf(request.get("studentId"));
-		String paperId=String.valueOf(request.get("paperId"));
-		//the method below is ok锛宼est completed
-		ArrayList<Map<String,Object>> questionArr=(ArrayList<Map<String,Object>>)request.get("questionArr");
-		for(int i=0;i<((ArrayList<Map<String,Object>>)request.get("questionArr")).size();i++) {
-			 int point=Integer.parseInt(String.valueOf(questionArr.get(i).get("point")));
-			 String isright="0";
-			 if(point>0) isright="1";
-			 else isright="0";
-			 String questionId=String.valueOf(questionArr.get(i).get("questionId"));
-			 String picId1=UUID.randomUUID().toString();
-			 String content=request2.getSession().getServletContext().getRealPath("/")+"img\\"+picId1+".jpg";
-			 HashMap<String, Object> hashmap1 = new HashMap<String, Object>();
-			 hashmap1.put("imgStr", String.valueOf(request.get("content")));
-			 hashmap1.put("picPath", content);
-			 this.teacherCourseModuleService.GenerateImage(String.valueOf(hashmap1.get("imgStr")),String.valueOf(hashmap1.get("picPath")));
-			 try{
-				 this.solutionDao.submitCorrection(studentId,paperId,questionId,point,isright,content);
-				 result.put("result",status);
-			 }catch(Exception e) {
-					e.printStackTrace();
-					status = "-2";
-					result.put("result",status);
-			}
-		} 
-		//int resultpre=teacherCourseModuleService.submitCorrection(teacherId,paperId,studentId,questionArr);
-		result.put("status", status);
-		return result;
+		String studyId=String.valueOf(request.get("studyId"));
+		List<Map<String,Object>> correctionResultList=(List<Map<String,Object>>)request.get("correctionResultList");
+		Map<String,Object> responseBody=teacherCourseModuleService.submitCorrection(teacherId,studyId,studentId,correctionResultList);
+		return responseBody;
 	}
 	//14test well
 	@RequestMapping(value="/getSubjectiveOrObjectiveList", method=RequestMethod.POST)
