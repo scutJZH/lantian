@@ -465,7 +465,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 			for(Map<String, Object>eachCorrectionResult:correctionResultList) {
 				
 				String questionId = (String) eachCorrectionResult.get("questionId");
-				int point  = (int) eachCorrectionResult.get("point");
+				int point  = Integer.parseInt((String) eachCorrectionResult.get("point"));
 				String correctedPic = (String) eachCorrectionResult.get("correctedPic");
 				String picId = null;
 				String isright = null;
@@ -483,7 +483,9 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 				
 				if(correctedPic!=null && correctedPic!="") {
 					picId = UUID.randomUUID().toString();
-					Base64Analysis.analysisPic(picId, this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.solutionPicPath, correctedPic);
+					picId = Base64Analysis.analysisPic(picId, this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.solutionPicPath, correctedPic);
+					System.out.println(this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.solutionPicPath);
+					System.out.println();
 				}				
 				solutionDao.correctSolution(studentId, studyId, questionId, point,picId,isright);				
 			}

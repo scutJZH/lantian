@@ -7,7 +7,7 @@
 	</select>
 	
 	<select id="getStudentStudy" resultType="hashmap">
-		select submit_time as submitTime,score, used_time as usedTime,start_time as startTime choice_score as choiceScore from student_study where student_id = #{studentId} AND studyId = #{studyId}
+		select submit_time as submitTime,score, used_time as usedTime,start_time as startTime,choice_score as choiceScore from student_study where student_id = #{studentId} AND study_id = #{studyId}
 	</select>
 	
 	<update id="updateCorrectedStatus">

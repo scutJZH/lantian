@@ -20,7 +20,7 @@ where study_id=#{studyId} AND student_id=#{studentId} AND (isright is null or is
   </insert>
   
   <update id="correctSolution">
-		update solution set correctedPic=#{picId},point=#{point},isright=#{isright}
+		update solution set corrected_pic=#{picId},point=#{point},isright=#{isright}
 		where student_id=#{studentId} AND study_id=#{studyId} AND question_id=#{questionId}
   </update>
   

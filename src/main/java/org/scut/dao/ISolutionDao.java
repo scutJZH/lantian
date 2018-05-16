@@ -20,7 +20,7 @@ public interface ISolutionDao {
 	public int autoCorrectRight(@Param("studentId")String studentId,@Param("questionId")String questionId);
 	public int autoCorrectFalse(@Param("studentId")String studentId,@Param("questionId")String questionId);
 
-	public void correctSolution(String studentId, String studyId, String questionId, int point, String picId,
-			String isright);
+	public void correctSolution(@Param("studentId")String studentId,@Param("studyId") String studyId,@Param("questionId") String questionId,@Param("point") int point,@Param("picId") String picId,
+			@Param("isright") String isright);
 	
 }
