@@ -253,7 +253,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 				eachSolution.put("titleContent", eachTitle.getTitleContent());
 				eachSolution.put("titlePicPath", eachTitle.getPicPath());
 			}
-			responsBody.put("solutionList",solutionList);
+			responsBody.put("result",solutionList);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
