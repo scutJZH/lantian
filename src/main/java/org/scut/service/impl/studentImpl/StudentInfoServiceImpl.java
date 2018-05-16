@@ -1,18 +1,16 @@
 package org.scut.service.impl.studentImpl;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Resource;
-
 import org.scut.dao.IClassDao;
 import org.scut.dao.ISchoolDao;
 import org.scut.dao.IStudentDao;
+import org.scut.model.School;
 import org.scut.dao.IStudent_classDao;
 import org.scut.dao.ITeacher_classDao;
 import org.scut.model.Student;
@@ -57,12 +55,13 @@ public class StudentInfoServiceImpl implements IStudentInfoService{
 				userInfo.put("nickname", student.getNickname());
 				userInfo.put("sex", student.getSex());
 				String schoolId = student.getSchoolId();
-				String schoolName = null;
+				School schoolInfo = null;
 				if(schoolId != null){
-					schoolDao.getSchoolNameById(schoolId);
+					schoolInfo = schoolDao.getSchoolById(schoolId);
 				}
 				userInfo.put("schoolId", schoolId);
-				userInfo.put("schoolName", schoolName);
+				userInfo.put("schoolName", schoolInfo.getSchoolName());
+				userInfo.put("city", schoolInfo.getCity());
 			} else {
 				status = "-1";
 			}

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.mchange.v2.sql.filter.SynchronizedFilterCallableStatement;
 //@RequestMapping(value="/teacher", method=RequestMethod.POST)
 @Controller
 public class TeacherCourseModuleController {
@@ -217,7 +219,8 @@ public class TeacherCourseModuleController {
 	@ResponseBody
 	public HashMap<String,Object> getRankDetails(@RequestBody Map<String,Object> request){
 		String paperId=String.valueOf(request.get("paperId"));
-		HashMap<String,Object> result=teacherCourseModuleService.getRankDetails(paperId);
+		String studyId=String.valueOf(request.get("studyId"));
+		HashMap<String,Object> result=teacherCourseModuleService.getRankDetails(studyId,paperId);
 		return result;
 	}
 	//11test well
@@ -232,12 +235,12 @@ public class TeacherCourseModuleController {
 	//12test well
 	@RequestMapping(value="/getCorrectQuestionList", method=RequestMethod.POST)
 	@ResponseBody
-	public HashMap<String,Object> getCorrectQuestionList(@RequestBody Map<String,Object> request){
+	public Map<String,Object> getCorrectQuestionList(@RequestBody Map<String,Object> request){
 		String teacherId=String.valueOf(request.get("teacherId"));
-		String paperId=String.valueOf(request.get("paperId"));
+		String studyId=String.valueOf(request.get("studyId"));
 		String studentId=String.valueOf(request.get("studentId"));
-		HashMap<String,Object> result=teacherCourseModuleService.getCorrectQuestionList(teacherId,paperId,studentId);
-		return result;
+		Map<String,Object> responsBody=teacherCourseModuleService.getCorrectQuestionList(teacherId,studyId,studentId);
+		return responsBody;
 	}
 	//13submitCorrection test well
 	@SuppressWarnings("unchecked")
@@ -283,8 +286,8 @@ public class TeacherCourseModuleController {
 	public HashMap<String,Object> getSubjectiveOrObjectiveList(@RequestBody Map<String,Object> request){
 		String teacherId=String.valueOf(request.get("teacherId"));
 		String questionType=String.valueOf(request.get("questionType"));
-		String subjectId="1";
-		int grade=7;
+		String subjectId=String.valueOf(request.get("subjectId"));
+		int grade=Integer.parseInt(String.valueOf(request.get("grade")));
 		HashMap<String,Object> result=teacherCourseModuleService.getSubjectiveOrObjectiveList(teacherId,questionType,subjectId,grade);
 		return result;
 	}

@@ -50,26 +50,26 @@
 	</select>
 	
 	<resultMap type="hashmap" id="classInfoMap">
-		<id property="classId" column="class.class_id"/>
+		<id property="classId" column="class_id"/>
 		<result property="picPath" column="pic_path"/>
 		<result property="grade" column="grade"/>
 		<result property="className" column="class_name"/>
 		<result property="createTime" column="create_time"/>
 		<result property="studentNumber" column="student_number"/>
 		<result property="teacherNumber" column="teacher_number"/>
-		<result property="schoolId" column="class.school_id"/>
+		<result property="schoolId" column="school_id"/>
 		<result property="createTeacherId" column="create_teacher_id"/>
 		<result property="schoolName" column="school_name"/>
 	</resultMap>
 	
 	<resultMap type="hashmap" id="studentInfoMap">
-		<id property="studentId" column="student_class.student_id"/>
+		<id property="studentId" column="student_id"/>
 		<result property="telnumber" column="phone"/>
 		<result property="nickname" column="nickname"/>
 		<result property="picPath" column="pic_path"/>
 		<result property="sex" column="sex"/>
 		<result property="birthday" column="birthday"/>
-		<result property="schoolId" column="student.school_id"/>
+		<result property="schoolId" column="school_id"/>
 		<result property="schoolName" column="school_name"/>
 	</resultMap>
 
