@@ -11,10 +11,11 @@
     <result column="change_time" property="changeTime" jdbcType="TIMESTAMP" />
     <result column="answer_number" property="answerNumber" jdbcType="INTEGER" />
     <result column="pic_path" property="picPath" jdbcType="VARCHAR" />
+    <result column="post_pic" property="postPic" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     post_id, student_id, post_title, post_content, create_time, subject_id, change_time, 
-    answer_number, pic_path
+    answer_number, pic_path, post_pic
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -29,12 +30,12 @@
   <insert id="insert" parameterType="org.scut.model.Post" >
     insert into post (post_id, student_id, post_title, 
       post_content, create_time, subject_id, 
-      change_time, answer_number, pic_path
-      )
+      change_time, answer_number, pic_path, 
+      post_pic)
     values (#{postId,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR}, #{postTitle,jdbcType=VARCHAR}, 
       #{postContent,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{subjectId,jdbcType=VARCHAR}, 
-      #{changeTime,jdbcType=TIMESTAMP}, #{answerNumber,jdbcType=INTEGER}, #{picPath,jdbcType=VARCHAR}
-      )
+      #{changeTime,jdbcType=TIMESTAMP}, #{answerNumber,jdbcType=INTEGER}, #{picPath,jdbcType=VARCHAR}, 
+      #{postPic,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="org.scut.model.Post" >
     insert into post
@@ -66,6 +67,9 @@
       <if test="picPath != null" >
         pic_path,
       </if>
+      <if test="postPic != null" >
+        post_pic,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="postId != null" >
@@ -94,6 +98,9 @@
       </if>
       <if test="picPath != null" >
         #{picPath,jdbcType=VARCHAR},
+      </if>
+      <if test="postPic != null" >
+        #{postPic,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -124,13 +131,29 @@
       <if test="picPath != null" >
         pic_path = #{picPath,jdbcType=VARCHAR},
       </if>
+      <if test="postPic != null" >
+        post_pic = #{postPic,jdbcType=VARCHAR},
+      </if>
     </set>
+    where post_id = #{postId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.scut.model.Post" >
+    update post
+    set student_id = #{studentId,jdbcType=VARCHAR},
+      post_title = #{postTitle,jdbcType=VARCHAR},
+      post_content = #{postContent,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      subject_id = #{subjectId,jdbcType=VARCHAR},
+      change_time = #{changeTime,jdbcType=TIMESTAMP},
+      answer_number = #{answerNumber,jdbcType=INTEGER},
+      pic_path = #{picPath,jdbcType=VARCHAR},
+      post_pic = #{postPic,jdbcType=VARCHAR}
     where post_id = #{postId,jdbcType=VARCHAR}
   </update>
   <select id="getallpost" resultMap="BaseResultMap" >
     SELECT
     <include refid="Base_Column_List" />
-    from post
+    from post  order by create_time DESC
   </select>
   <select id="findpostbyid" resultMap="BaseResultMap">
   SELECT
@@ -146,23 +169,4 @@
   
   
   </select>
-  <select id="getpostfuzzycount">
-  SELECT
-  count(post_id)
-  from post where  post_title like CONCAT(CONCAT('%',#{sort,jdbcType=VARCHAR}),'%')
-    or post_content like CONCAT(CONCAT('%',#{sort,jdbcType=VARCHAR}),'%') 
-    or subject_id like CONCAT(CONCAT('%',#{sort,jdbcType=VARCHAR}),'%')
-  </select>
-  <update id="updateByPrimaryKey" parameterType="org.scut.model.Post" >
-    update post
-    set student_id = #{studentId,jdbcType=VARCHAR},
-      post_title = #{postTitle,jdbcType=VARCHAR},
-      post_content = #{postContent,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      subject_id = #{subjectId,jdbcType=VARCHAR},
-      change_time = #{changeTime,jdbcType=TIMESTAMP},
-      answer_number = #{answerNumber,jdbcType=INTEGER},
-      pic_path = #{picPath,jdbcType=VARCHAR}
-    where post_id = #{postId,jdbcType=VARCHAR}
-  </update>
 </mapper>

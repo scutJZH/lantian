@@ -11,15 +11,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IStudent_studyDao {
 
-	
 	public List<Map<String, Object>> getStudentStudyBySId(@Param("studentId")String studentId,@Param("submit")String submit);
-
 	public Map<String, Object> getStudentStudy(@Param("studentId")String studentId,@Param("studyId")String studyId);
 
-	public List<Map> getHomeworkInfo(@Param("studentId") String studentId, @Param("classId") String classid,
-			@Param("subjectId") String subjectId, @Param("paperType") String paperType);
-
+	
 	public List<LinkedHashMap<String,Object>> getRankDetails(@Param("paperId")String paperId);
+
+	public List<LinkedHashMap<String,Object>> getRankDetails(@Param("studyId")String studyId,@Param("paperId")String paperId);
+
 	public List<HashMap<String,Object>> getCorrectStudentList(@Param("teacherId")String teacherId,@Param("paperId")String paperId);
 
 	void updateSubmit(@Param("studentId")String studentId, @Param("studyId")String studyId,@Param("choiceScore") int choiceScore);
@@ -31,6 +30,9 @@ public interface IStudent_studyDao {
 	public void updateCorrectedStatus(@Param("studentId")String studentId,@Param("studyId") String studyId,@Param("totalScore") int totalScore,@Param("teacherId")String teacherId);
 
 
+
+
+	public List<Map<String, Object>> getChildStudyInfoList(@Param("studentId")String studentId, @Param("classId")String classId, @Param("subjectId")String subjectId, @Param("studyType")String studyType);
 
 
 }

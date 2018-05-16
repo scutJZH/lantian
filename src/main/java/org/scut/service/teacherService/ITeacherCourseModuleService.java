@@ -13,7 +13,7 @@ public interface ITeacherCourseModuleService {
 	public HashMap<String,Object> getPptList(String teacherId);
 	public HashMap<String,Object> getCorrectionList(String teacherId,String classId);
 	public HashMap<String,Object> getRankList(String teacherId,String classId);
-	public HashMap<String,Object> getRankDetails(String paperId);
+	public HashMap<String,Object> getRankDetails(String StudyId,String paperId);
 	public HashMap<String,Object> getCorrectStudentList(String teacherId,String paperId);
 	public Map<String, Object> getCorrectQuestionList(String teacherId,String studyId,String studentId);
 	public HashMap<String,Object> getSubjectiveOrObjectiveList(String teacherId,String questionType,String subjectId,int grade);

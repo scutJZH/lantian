@@ -7,6 +7,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.scut.service.studentService.IStudentService;
+import org.apache.ibatis.javassist.compiler.JvstTypeChecker;
+import org.omg.CORBA.PUBLIC_MEMBER;
 import org.scut.service.studentService.IStudentInfoService;
 import org.scut.util.GlobalVar;
 import org.scut.util.ParamsTransport;
@@ -149,5 +151,35 @@ public class StudentInfoController {
 		return responseBody;
 		
 	}
+	
+	@RequestMapping("/mine/joinclass")
+	@ResponseBody
+	public Map<String, Object> joinclass(HttpServletRequest request ,HttpServletResponse response) throws IOException{
+		Map<String, Object>map=ParamsTransport.getParams(request);
+		String studentId=(String)map.get("studentId");
+		String classId=(String)map.get("classId");
+		int status=studentInfoService.joinclass(studentId, classId);
+		return Json.getJson(status,"");
+	
+	}
+	@RequestMapping("/mine/getclass")
+	@ResponseBody
+	public Map<String, Object>getclasslist(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		Map<String, Object>map=ParamsTransport.getParams(request);
+		String studentId=(String)map.get("studentId");
+		Map<String, Object> result=studentInfoService.getclasslist(studentId);
+		return result;
+	}
+	
+	@RequestMapping("/mine/quitclass")
+	@ResponseBody
+	public Map<String, Object> quitclass(HttpServletRequest request ,HttpServletResponse response) throws IOException{
+		Map<String, Object>map=ParamsTransport.getParams(request);
+		String studentId=(String)map.get("studentId");
+		String classId=(String)map.get("classId");
+		int status=studentInfoService.quitclass(studentId, classId);
+		return Json.getJson(status,"");
+	
 
+	}
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/parent/children/study")
+@RequestMapping("/parent/children")
 public class ChildInfoController {
 	@Resource
 	private IChildInfoService childInfoService;
@@ -27,10 +27,27 @@ public class ChildInfoController {
 		
 		String studentId = (String)m.get("studentId");
 		String subjectId = (String)m.get("subjectId");
+		String classId = (String)m.get("classId");
+		String parentId = (String)m.get("parentId");
 		
-		Map<String, Object> result = childInfoService.getChildHomework(studentId, subjectId);
+		Map<String, Object> result = childInfoService.getChildStudy(studentId, parentId,classId, subjectId, "1");
 		
-				return result;
+		return result;
 	}
-
+	
+	@RequestMapping("/exam")
+	@ResponseBody
+	public Map<String, Object> getChildExam(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		
+		Map<String, Object> m = ParamsTransport.getParams(request);	
+		
+		String studentId = (String)m.get("studentId");
+		String subjectId = (String)m.get("subjectId");
+		String classId = (String)m.get("classId");
+		String parentId = (String)m.get("parentId");
+		
+		Map<String, Object> result = childInfoService.getChildStudy(studentId, parentId, classId, subjectId, "2");
+		
+		return result;
+	}
 }

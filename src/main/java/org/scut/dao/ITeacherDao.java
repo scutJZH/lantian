@@ -21,4 +21,7 @@ public interface ITeacherDao {
 	public Teacher getTeacherById(@Param("teacherId")String teacherId);
 
 	public void updateTeacher(@Param("teacher")Teacher Teacher);
+	
+	public String getSchoolId(@Param("teacherId")String teacherId);
+	
 }

@@ -1,24 +1,83 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.scut.dao.ITeacher_classDao" >
-<!-- getClassList -->
-<select id="getClassList" resultMap="getClassListHashMap">
-	select class_name,class_id,grade from class where class_id in
-	(select class_id from teacher_class where teacher_id=#{teacherId})
-</select>
-<resultMap id="getClassListHashMap" type="HashMap">
-	<id property="classId" column="class_id"></id>
-	<result property="className" column="class_name"/>
-	<result property="grade" column="grade"/>
-</resultMap>
+<mapper namespace="org.scut.dao.ITeacher_classDao">
+	<!-- getClassList -->
+	<select id="getClassList" resultMap="getClassListHashMap">
+		select class_name,class_id,grade from class where class_id in
+		(select class_id from teacher_class where teacher_id=#{teacherId})
+	</select>
+	<resultMap id="getClassListHashMap" type="HashMap">
+		<id property="classId" column="class_id"></id>
+		<result property="className" column="class_name" />
+		<result property="grade" column="grade" />
+	</resultMap>
 
-<!-- addStudent -->
-<insert id="addStudent">
-insert into teacher_class (teacher_id,class_id)values(#{teacherId},#{classId})
-</insert>
+	<insert id="insertRelationship">
+		insert into teacher_class
+		(teacher_id, class_id)
+		values (#{teacherId}, #{classId})
+	</insert>
 
-<!-- addClass -->
-<insert id="addClass">
-insert into teacher_class(teacher_id,class_id)values(#{teacherId},#{classId})
-</insert>
+	<select id="isRealtionshipExist" resultType="boolean" parameterType="String">
+		select exists (
+		select * from teacher_class
+		where teacher_id = #{teacherId} and class_id = #{classId}
+		)
+	</select>
+	
+	<select id="getClassIdAndNameByTeacherId" parameterType="String" resultType="hashMap">
+		select teacher_class.class_id as classId, class_name as className
+		from teacher_class left join class
+		on teacher_class.class_id = class.class_id
+		where teacher_id = #{teacherId}
+	</select>
+	
+	<delete id="deleteRelationshipByClassId">
+		delete from teacher_class where class_id = #{classId}
+	</delete>
+	
+	<delete id="deleteRelationship">
+		delete from teacher_class where class_id = #{classId} and teacher_id = #{teacherId}
+	</delete>
+	
+	<select id="getClassInfoListByTeacherId" parameterType="String" resultMap="classInfoMap">
+		select class.class_id as classId, pic_path, grade, class_name, create_time, student_number,
+			teacher_number, class.school_id as schoolId, school_name, create_teacher_id
+		from teacher_class left join class on teacher_class.class_id = class.class_id
+		left join school on class.school_id = school.school_id
+		where teacher_id = #{teacherId}
+	</select>
+	
+	<select id="getTeacherInfoListByClassId" parameterType="String" resultMap="teacherInfoMap">
+		select teacher_class.teacher_id, phone, nickname, name, pic_path, sex, birthday,
+			teacher.school_id, school_name
+		from teacher_class left join teacher on teacher_class.teacher_id = teacher.teacher_id
+		left join school on teacher.school_id = school.school_id
+		where class_id = #{classId}
+	</select>
+	
+	<resultMap type="hashmap" id="classInfoMap">
+		<id property="classId" column="class_id"/>
+		<result property="picPath" column="pic_path"/>
+		<result property="grade" column="grade"/>
+		<result property="className" column="class_name"/>
+		<result property="createTime" column="create_time"/>
+		<result property="studentNumber" column="student_number"/>
+		<result property="teacherNumber" column="teacher_number"/>
+		<result property="schoolId" column="school_id"/>
+		<result property="createTeacherId" column="create_teacher_id"/>
+		<result property="schoolName" column="school_name"/>
+	</resultMap>
+	
+	<resultMap type="hashmap" id="teacherInfoMap">
+		<id property="teacherId" column="teacher_class.teacher_id"/>
+		<result property="telnumber" column="telnumber"/>
+		<result property="nickname" column="nickname"/>
+		<result property="name" column="name"/>
+		<result property="picPath" column="pic_path"/>
+		<result property="sex" column="sex"/>
+		<result property="birthday" column="birthday"/>
+		<result property="schoolId" column="teacher.school_id"/>
+		<result property="schoolName" column="school_name"/>
+	</resultMap>
 </mapper>

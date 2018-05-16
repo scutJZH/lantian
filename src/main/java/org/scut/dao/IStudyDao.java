@@ -3,6 +3,7 @@ package org.scut.dao;
 
 import java.util.List;
 import java.util.Map;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,5 +27,10 @@ public interface IStudyDao {
 	public int assignHomework(@Param("paperId")String paperId,@Param("classId")String classId,@Param("assignTeacherId")String assignTeacherId,@Param("deadLine")String deadLine,@Param("submitNumber")int submitNumber,@Param("assignTime")String assignTime,@Param("paperType")String paperType,@Param("examTime")int examTime);
 	public HashMap<String,Object> getCorrectionList2(@Param("teacherId")String teacherId,@Param("paperId")String paperId);
 
+
 	public void updateSubmitNum(@Param("studyId")String studyId);
+
+	public int getRankDetails(@Param("rank")Blob rank,@Param("studyId")String studyId);
+	public Blob getBlobRank(@Param("studyId")String studyId);
+
 }

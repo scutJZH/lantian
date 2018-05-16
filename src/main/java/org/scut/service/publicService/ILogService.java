@@ -8,4 +8,9 @@ public interface ILogService {
 	
 	public Map<String, Object> logout(String id, String token);
 	
+	public Map<String, Object> modifyPassword(String userType, String telnumber, String newPassword, String verifyCode);
+	
+	public Map<String, Object> sendVerifyCode(String userType, String telnumber);
+	
+	
 }

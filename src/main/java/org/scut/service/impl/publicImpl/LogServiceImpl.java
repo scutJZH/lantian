@@ -96,6 +96,112 @@ public class LogServiceImpl implements ILogService {
 		result.put("status", status);
 		return result;
 	}
+
+	@Override
+	public Map<String, Object> modifyPassword(String userType, String telnumber, String newPassword,
+			String verifyCode) {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		String status = "1";
+		
+		try{
+			User user = null;
+			switch(userType){
+			case "1":
+				user = studentDao.getStudentByTel(telnumber);
+				break;
+			case "2":
+				user = teacherDao.getTeacherByTel(telnumber);
+				break;
+			case "3":
+				user = parentDao.getParentByTel(telnumber);
+				break;
+			}
+			if(user != null && user.getState().equals("1")){
+				if(user.getVerifyCode() != null){
+					if(user.getVerifyCode().equals(verifyCode)){
+						user.setPassword(newPassword);
+						switch(userType){
+						case "1":
+							studentDao.updateUser(user);
+							break;
+						case "2":
+							teacherDao.updateUser(user);
+							break;
+						case "3":
+							parentDao.updateUser(user);
+							break;
+						}
+					}else{
+						status = "-1";
+					}
+				}else{
+					status = "-3";
+				}
+			}else{
+				status = "-4";
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			status = "-2";
+		}
+		
+		result.put("status", status);
+		return result;
+	}
+
+	@Override
+	public Map<String, Object> sendVerifyCode(String userType, String telnumber) {
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		String status = "1";
+		
+		try{
+			/*
+			 * send verify to phone,and set reserved time in db
+			 */
+			String verifyCode = "111111";
+			User user = null;
+			switch(userType){
+			case "1":
+				user = studentDao.getStudentByTel(telnumber);
+				break;
+			case "2":
+				teacherDao.getTeacherByTel(telnumber);
+				break;
+			case "3":
+				parentDao.getParentByTel(telnumber);
+				break;
+			}
+			
+			if(user != null && user.getState().equals("1")){
+				user.setVerifyCode(verifyCode);
+				switch(userType){
+				case "1":
+					studentDao.updateUser(user);
+					break;
+				case "2":
+					teacherDao.updateUser(user);
+					break;
+				case "3":
+					parentDao.updateUser(user);
+					break;
+				}
+			}else{
+				status = "-1";
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			status = "-2";
+		}
+		
+		result.put("status", status);
+		
+		return result;
+	}
 	
 
 }

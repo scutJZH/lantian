@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Resource;
+
+import org.scut.dao.IClassDao;
 import org.scut.dao.IPaperDao;
 import org.scut.dao.IQuestionDao;
 import org.scut.dao.IQuestion_paperDao;
@@ -19,8 +21,9 @@ import org.scut.dao.IStudentDao;
 import org.scut.dao.IStudent_studyDao;
 import org.scut.dao.IStudyDao;
 import org.scut.dao.ITitleDao;
+import org.scut.model.Class;
 import org.scut.model.Question;
-
+import org.scut.model.Student;
 import org.scut.model.Title;
 import org.scut.service.studentService.IStudentService;
 import org.scut.util.Base64Analysis;
@@ -50,6 +53,8 @@ public class StudentServiceImpl implements IStudentService{
 		private IScheduleDao scheduleDao;
 		@Resource
 		private ISolutionDao solutionDao;
+		@Resource
+		private IClassDao classDao;
 		
 	    
 

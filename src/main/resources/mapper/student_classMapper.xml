@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.scut.dao.IStudent_classDao" >
+	
+	<select id="getClassIdListByStudentId" resultType="String" parameterType="String">
+		select class_id as classId from student_class where student_id = #{studentId}
+	</select>
+	
+	<insert id="insertRelationship">
+		insert into student_class (student_id, class_id)
+		values (#{studentId}, #{classId})
+	</insert>
+	
+	<select id="getClassIdAndNameByStudentId" resultType="hashMap">
+		select class_id as classId, class.class_name as className
+		from student_class left join class
+		on student_class.class_id = class.class_id
+		where student_id = #{studentId}
+	</select>
+	
+	<delete id="deleteRelationshipByClassId">
+		delete from student_class where class_id = #{classId}
+	</delete>
+	
+	<delete id="deleteRelationship">
+		delete from student_class where class_id = #{classId} and student_id = #{studentId}
+	</delete>
+	
+	<select id="isRelationshipExist" resultType="boolean">
+		select exists(
+			select *
+			from student_class
+			where student_id = #{studentId} and class_id = #{classId}
+		)
+	</select>
+	
+	<select id="getStudentInfoListByClassId" parameterType="String" resultMap="classInfoMap">
+		select student_class.student_id, phone, nickname, pic_path, sex, birthday, student.school_id, school_name
+		from student_class left join student on student_class.student_id = student.student_id
+		left join school on student.school_id = school.school_id
+		where student_class.class_id = #{classId}
+	</select>
+	
+	<select id="getClassInfoListByStudentId" parameterType="String" resultMap="classInfoMap">
+		select class.class_id, pic_path, grade, class_name, create_time, student_number,
+			teacher_number, class.school_id, school_name, create_teacher_id
+		from student_class left join class on student_class.class_id = class.class_id
+		left join school on class.school_id = school.school_id
+		where student_id = #{studentId}
+	</select>
+	
+	<resultMap type="hashmap" id="classInfoMap">
+		<id property="classId" column="class.class_id"/>
+		<result property="picPath" column="pic_path"/>
+		<result property="grade" column="grade"/>
+		<result property="className" column="class_name"/>
+		<result property="createTime" column="create_time"/>
+		<result property="studentNumber" column="student_number"/>
+		<result property="teacherNumber" column="teacher_number"/>
+		<result property="schoolId" column="class.school_id"/>
+		<result property="createTeacherId" column="create_teacher_id"/>
+		<result property="schoolName" column="school_name"/>
+	</resultMap>
+	
+	<resultMap type="hashmap" id="studentInfoMap">
+		<id property="studentId" column="student_class.student_id"/>
+		<result property="telnumber" column="phone"/>
+		<result property="nickname" column="nickname"/>
+		<result property="picPath" column="pic_path"/>
+		<result property="sex" column="sex"/>
+		<result property="birthday" column="birthday"/>
+		<result property="schoolId" column="student.school_id"/>
+		<result property="schoolName" column="school_name"/>
+	</resultMap>
+
+</mapper>

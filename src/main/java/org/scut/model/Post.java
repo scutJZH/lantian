@@ -23,6 +23,10 @@ public class Post {
     private Integer answerNumber;
 
     private String picPath;
+    
+    private String postPic;
+    
+
 
 	public String getPostId() {
 		return postId;
@@ -95,6 +99,15 @@ public class Post {
 	public void setPicPath(String picPath) {
 		this.picPath = picPath;
 	}
+
+	public String getPostPic() {
+		return postPic;
+	}
+
+	public void setPostPic(String postPic) {
+		this.postPic = postPic;
+	}
+
 
     
 }

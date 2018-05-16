@@ -219,7 +219,8 @@ public class TeacherCourseModuleController {
 	@ResponseBody
 	public HashMap<String,Object> getRankDetails(@RequestBody Map<String,Object> request){
 		String paperId=String.valueOf(request.get("paperId"));
-		HashMap<String,Object> result=teacherCourseModuleService.getRankDetails(paperId);
+		String studyId=String.valueOf(request.get("studyId"));
+		HashMap<String,Object> result=teacherCourseModuleService.getRankDetails(studyId,paperId);
 		return result;
 	}
 	//11test well
@@ -260,8 +261,8 @@ public class TeacherCourseModuleController {
 	public HashMap<String,Object> getSubjectiveOrObjectiveList(@RequestBody Map<String,Object> request){
 		String teacherId=String.valueOf(request.get("teacherId"));
 		String questionType=String.valueOf(request.get("questionType"));
-		String subjectId="1";
-		int grade=7;
+		String subjectId=String.valueOf(request.get("subjectId"));
+		int grade=Integer.parseInt(String.valueOf(request.get("grade")));
 		HashMap<String,Object> result=teacherCourseModuleService.getSubjectiveOrObjectiveList(teacherId,questionType,subjectId,grade);
 		return result;
 	}
