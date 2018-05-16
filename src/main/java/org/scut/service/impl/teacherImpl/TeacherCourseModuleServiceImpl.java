@@ -244,14 +244,22 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 					}
 				}
 				
-				if(eachSolution.get("picPath")!=null && !eachSolution.get("picPath").equals("")) {
-					eachSolution.put( "picPath", GlobalVar.solutionPicPath + (String)eachSolution.get("picPath") );}
-			
+				if(eachSolution.get("solutionPic")!=null && !eachSolution.get("solutionPic").equals("")) {
+					eachSolution.put( "solutionPic", GlobalVar.solutionPicPath + (String)eachSolution.get("solutionPic") );}
+				
+				if(eachSolution.get("correctedPic")!=null && !eachSolution.get("correctedPic").equals("")) {
+					eachSolution.put( "correctedPic", GlobalVar.solutionPicPath + (String)eachSolution.get("correctedPic") );}
+			    
+				System.out.println(this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.solutionPicPath);
+				System.out.println();
+				
 				String titleId = questionDao.selectByPrimaryKey(((String) eachSolution.get("questionId"))).getTitleId();
 
 				Title eachTitle = titleDao.selectByPrimaryKey(titleId);				
 				eachSolution.put("titleContent", eachTitle.getTitleContent());
 				eachSolution.put("titlePicPath", eachTitle.getPicPath());
+				if(eachSolution.get("titlePicPath")!=null && !eachSolution.get("titlePicPath").equals("")) {
+					eachSolution.put( "titlePicPath", GlobalVar.titlePicPath + (String)eachSolution.get("titlePicPath") );}
 			}
 			responsBody.put("result",solutionList);
 		}
