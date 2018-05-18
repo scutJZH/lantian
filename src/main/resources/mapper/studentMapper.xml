@@ -94,7 +94,15 @@
 	<id property="studentId" column="student_id"/>
 	<result property="nickname" column="nickname"/>
 	</resultMap>
+	<select id="getstudentidbyclass" resultMap="getstudentidbyclassidMap">
+	select student_id from student_class where class_id=#{classId}
+	</select>
 	
+	<resultMap type="HashMap" id="getstudentidbyclassidMap">
+	
+	<id property="studentId" column="student_id"/>
+	
+	</resultMap>
 	<!-- checkStudentExist -->
 	<select id="checkStudentExist" resultMap="checkStudentExistHashMap">
 		select student_id,class_id_list from student where student_id=#{studentId}

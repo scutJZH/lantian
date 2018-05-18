@@ -28,7 +28,7 @@
 	<!-- 11.	获取批改作业学生列表（11-13为批改作业补充） -->
 	<select id="getCorrectStudentList" resultMap="getCorrectStudentListHashMap">
 	select student_id,nickname,choice_score,score from student_study
-	natural join student where paper_id=#{paperId} order by score desc
+	natural join student where study_id=#{studyId} order by score desc
 	<!-- 这里少用了一个teacherId参数，可能有问题 -->
 	</select>
 	<resultMap id="getCorrectStudentListHashMap" type="java.util.HashMap">
@@ -45,8 +45,8 @@
     
 	<!-- assignmentHomework -->
 <insert id="assignmentHomework">
-insert into student_study (paper_id,student_id,submit,score,type,choice_score)
-values (#{paperId},#{studentId},#{submit},#{score},#{paperType},0)
+insert into student_study (study_id,student_id,submit,score,choice_score)
+values (#{studyId},#{studentId},#{submit},#{score},0)
 </insert>
 <!-- autoCorrect -->
 <update id="autoCorrect">

@@ -112,6 +112,7 @@ public class TeacherCourseModuleController {
 		String createTeacherId=String.valueOf(request.get("teacherId"));
 		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
 		String createTime=date.format(new Date());
+		String studyId=UUID.randomUUID().toString();
 		int maxScore=0;
 		@SuppressWarnings("unchecked")
 		List<HashMap<String,Object>>questionArr= (List<HashMap<String,Object>>)request.get("questionArr");
@@ -129,6 +130,7 @@ public class TeacherCourseModuleController {
 		}
 		/**table class_paper**/
 		//paperId
+		
 		String classId=String.valueOf(request.get("classId"));
 		//none ave_time
 		//none ave_score
@@ -144,7 +146,7 @@ public class TeacherCourseModuleController {
 		//none rank
 		//action
 		try {
-			this.studyDao.assignHomework(paperId,classId,assignTeacherId,deadLine,submitNumber,assignTime,paperType,examTime);
+			this.studyDao.assignHomework(studyId,paperId,classId,assignTeacherId,deadLine,submitNumber,assignTime,paperType,examTime,paperName);
 		}catch(Exception e) {
 			e.printStackTrace();
 			status="-2";
@@ -154,6 +156,7 @@ public class TeacherCourseModuleController {
 		//paperId
 		//questionArr:include questionIdArr,pointArr
 		//action
+		
 		for(HashMap<String,Object> i:questionArr){
 			String questionId=String.valueOf(i.get("questionId"));
 			int point=Integer.parseInt(String.valueOf(i.get("point")));
@@ -167,22 +170,23 @@ public class TeacherCourseModuleController {
 			}
 		}
 		/**table student test well**/
-		ArrayList<HashMap<String,Object>> studentIdArr=new ArrayList<HashMap<String,Object>>();
+		List<HashMap<String, Object>> studentIdArr=new ArrayList<HashMap<String,Object>>();
 		try {
-			studentIdArr=this.studentDao.getStudentIdByClassId(classId);
+			studentIdArr=studentDao.getstudentidbyclass(classId);
 		}catch(Exception e){
 			e.printStackTrace();
 			status="-2";
 			result.put("result", status);
 		}
 		/**table student_paper test well**/
+		System.out.println(studentIdArr);
 		for(HashMap<String,Object> i:studentIdArr) {
 			String studentId=String.valueOf(i.get("studentId"));
 			try{
 				String submit="0";
 				int score=0;
 				//paperType
-				this.student_studyDao.assignmentHomework(paperId,studentId,submit,score,paperType);
+				this.student_studyDao.assignmentHomework(studyId,studentId,submit,score,paperType);
 			}catch(Exception e){
 				e.printStackTrace();
 				status="-2";
@@ -228,8 +232,8 @@ public class TeacherCourseModuleController {
 	@ResponseBody
 	public HashMap<String,Object> getCorrectStudentList(@RequestBody Map<String,Object> request){
 		String teacherId=String.valueOf(request.get("teacherId"));
-		String paperId=String.valueOf(request.get("paperId"));
-		HashMap<String,Object> result=teacherCourseModuleService.getCorrectStudentList(teacherId,paperId);
+		String studyId=String.valueOf(request.get("studyId"));
+		HashMap<String,Object> result=teacherCourseModuleService.getCorrectStudentList(teacherId,studyId);
 		return result;
 	}
 	//12test well
@@ -251,7 +255,7 @@ public class TeacherCourseModuleController {
 		String teacherId=String.valueOf(request.get("teacherId"));
 		String studentId=String.valueOf(request.get("studentId"));
 		String studyId=String.valueOf(request.get("studyId"));
-		List<Map<String,Object>> correctionResultList=(List<Map<String,Object>>)request.get("correctionResultList");
+		List<Map<String,Object>> correctionResultList=(List<Map<String,Object>>)request.get("questionArr");
 		Map<String,Object> responseBody=teacherCourseModuleService.submitCorrection(teacherId,studyId,studentId,correctionResultList);
 		return responseBody;
 	}
@@ -262,7 +266,7 @@ public class TeacherCourseModuleController {
 		String teacherId=String.valueOf(request.get("teacherId"));
 		String questionType=String.valueOf(request.get("questionType"));
 		String subjectId=String.valueOf(request.get("subjectId"));
-		int grade=Integer.parseInt(String.valueOf(request.get("grade")));
+		int grade=7;
 		HashMap<String,Object> result=teacherCourseModuleService.getSubjectiveOrObjectiveList(teacherId,questionType,subjectId,grade);
 		return result;
 	}

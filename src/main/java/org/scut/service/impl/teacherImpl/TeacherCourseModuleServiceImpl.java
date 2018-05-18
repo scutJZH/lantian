@@ -233,13 +233,13 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		System.out.println(String.valueOf((((List<LinkedHashMap<String,Object>>)l.get("result")).get(0).get("nickname"))));
 		return result;
 	}
-	public HashMap<String,Object> getCorrectStudentList(String teacherId,String paperId){
+	public HashMap<String,Object> getCorrectStudentList(String teacherId,String studyId){
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			List<HashMap<String,Object>> r1= this.student_studyDao.getCorrectStudentList(teacherId,paperId);
+			List<HashMap<String,Object>> r1= this.student_studyDao.getCorrectStudentList(studyId);
 			/**閫氳繃鍒ゆ柇鎬诲垎鏄惁涓�0鏉ュ垽鏂槸鍚﹀凡鎵规敼**/
-			if((Integer)(this.studyDao.getCorrectionList2(teacherId, paperId).get("submitNumber"))!=0) {
+			if((Integer)(this.studyDao.getCorrectionList2(studyId).get("submitNumber"))!=0) {
 			boolean a=true;
 			boolean b=false;
 			for(int i=0;i<r1.size();i++) {

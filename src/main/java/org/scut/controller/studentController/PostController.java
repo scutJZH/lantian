@@ -210,6 +210,11 @@ public Map<String, Object>  answerAnswer(HttpServletRequest request, HttpServlet
 				result.add(posts.get(j));
 			}
 		}
+		for(int i=0;i<result.size();i++) {
+			result.get(i).setPicPath("/img/"+result.get(i).getPicPath());
+			result.get(i).setPostPic("/img/"+result.get(i).getPostPic());
+			
+		}
 		
 		return Json.getJson(1,result);	
 	

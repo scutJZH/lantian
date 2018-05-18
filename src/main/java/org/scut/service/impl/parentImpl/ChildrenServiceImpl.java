@@ -109,12 +109,16 @@ public class ChildrenServiceImpl implements IChildrenService {
 					
 					Student child = studentDao.getStudentById(childId);
 					String classIdListStr = child.getClassIdList();
-					List<String> classIdList = Arrays.asList(classIdListStr.split(","));
+					List<String> classIdList=new ArrayList<>();
 					List<Map<String, Object>> classInfoList = new ArrayList<Map<String, Object>>();
-					for(String classId : classIdList){
-						Map<String, Object> classInfo = classDao.getClassNameAndPicAndSchoolById(classId);
-						classInfoList.add(classInfo);
+					if (classIdListStr!=null) {
+						classIdList = Arrays.asList(classIdListStr.split(","));	
+						for(String classId : classIdList){
+							Map<String, Object> classInfo = classDao.getClassNameAndPicAndSchoolById(classId);
+							classInfoList.add(classInfo);
+						}
 					}
+					
 					childInfo.put("studentId", child.getId());
 					childInfo.put("nickname", child.getNickname());
 					childInfo.put("classList", classInfoList);
