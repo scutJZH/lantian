@@ -68,6 +68,10 @@ values (#{paperId},#{classId},#{assignTeacherId},from_unixtime(#{deadLine},'%y-%
 	select rank from study where study_id=#{studyId}
 	</select>
 	<resultMap type="java.sql.Blob" id="getBlobRankMap">
-	<id property="rank" column="rank"></id>
+	<id property="rank" column="rank" jdbcType="BLOB" typeHandler="org.apache.ibatis.type.BlobTypeHandler"></id>
 	</resultMap>
+	
+	<select id="getRankById" parameterType="String" resultType="hashmap">
+		select rank from study where study_id=#{studyId}
+	</select>
 </mapper>

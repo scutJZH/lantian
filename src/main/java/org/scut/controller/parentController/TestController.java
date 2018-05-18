@@ -1,28 +1,39 @@
 package org.scut.controller.parentController;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.sql.Blob;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.type.BlobTypeHandler;
+import org.scut.dao.IStudyDao;
 import org.scut.util.Base64Analysis;
 import org.scut.util.GlobalVar;
 import org.scut.util.ParamsTransport;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 @Controller
 @RequestMapping("/test")
 public class TestController {
+	@Resource
+	private IStudyDao studyDao;
 
 	@RequestMapping("/fileupload")
 	public void fileUpload(HttpServletRequest request, HttpServletResponse response) throws IOException{
@@ -143,5 +154,24 @@ public void cookieRead(HttpServletRequest request, HttpServletResponse response)
 			e.printStackTrace();
 		}
 	}
-
+	
+	@ResponseBody
+	@RequestMapping("/blobtest")
+	public void blobTest(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		Map<String, Object> map = ParamsTransport.getParams(request);
+		String studyId = (String)map.get("studyId");
+		try{
+		Map<String, Object> result = studyDao.getRankById(studyId);
+		byte[] blob = (byte[])result.get("rank");
+		if(blob != null){
+		ByteArrayInputStream byteis = new ByteArrayInputStream(blob);
+		ObjectInputStream objis = new ObjectInputStream(byteis);
+		Object obj = objis.readObject();
+//		List<Map<String, Object>> rankMap = (List<Map<String, Object>>)objis.readObject();
+//		System.out.println(rankMap);
+		System.out.println(objis);}else{System.out.println("null");}
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 }

@@ -4,14 +4,10 @@ package org.scut.dao;
 import java.util.List;
 import java.util.Map;
 import java.sql.Blob;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.context.annotation.ComponentScan;  
-import org.springframework.context.annotation.Configuration;  
 
 
 @Repository
@@ -32,5 +28,6 @@ public interface IStudyDao {
 
 	public int getRankDetails(@Param("rank")Blob rank,@Param("studyId")String studyId);
 	public Blob getBlobRank(@Param("studyId")String studyId);
-
+	
+	public Map<String, Object> getRankById(@Param("studyId")String studyId);
 }

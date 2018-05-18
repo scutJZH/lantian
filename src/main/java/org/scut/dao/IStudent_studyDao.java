@@ -29,9 +29,6 @@ public interface IStudent_studyDao {
 
 	public void updateCorrectedStatus(@Param("studentId")String studentId,@Param("studyId") String studyId,@Param("totalScore") int totalScore,@Param("teacherId")String teacherId);
 
-
-
-
 	public List<Map<String, Object>> getChildStudyInfoList(@Param("studentId")String studentId, @Param("classId")String classId, @Param("subjectId")String subjectId, @Param("studyType")String studyType);
 
 
