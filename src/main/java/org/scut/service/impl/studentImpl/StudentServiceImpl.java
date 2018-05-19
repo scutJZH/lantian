@@ -12,6 +12,7 @@ import java.util.UUID;
 import javax.annotation.Resource;
 
 import org.scut.dao.IClassDao;
+import org.scut.dao.IMistakeDao;
 import org.scut.dao.IPaperDao;
 import org.scut.dao.IQuestionDao;
 import org.scut.dao.IQuestion_paperDao;
@@ -55,7 +56,8 @@ public class StudentServiceImpl implements IStudentService{
 		private ISolutionDao solutionDao;
 		@Resource
 		private IClassDao classDao;
-		
+		@Resource
+		private IMistakeDao mistakeDao;
 	    
 
 		@Override
@@ -82,13 +84,10 @@ public class StudentServiceImpl implements IStudentService{
 				
 			}
 			
-			if(result == null || result.isEmpty()) {
-			    responseBody.put("status", "-1");
-			}
-			else {
+			
 				responseBody.put("status", "1");
 				responseBody.put("result", result);
-			}
+			
 			return responseBody ;
 			
 		}catch (Exception e) {
@@ -247,7 +246,7 @@ public class StudentServiceImpl implements IStudentService{
 		@Override
 		public Map<String, Object> uploadSolutions(String studentId, String studyId, List<Map<String, Object>> solutionList) {
 			Map<String, Object> responseBody = new HashMap<String, Object>();
-             
+            System.out.println(studyId);
 			try {
 				    int choiceScore = 0;
 				    String paperId = (String) studyDao.getStudyById(studyId).get("paperId");
@@ -260,8 +259,8 @@ public class StudentServiceImpl implements IStudentService{
 						String isRight = (String) map.get("isRight");						
 						String picPath = null;
 												
-						if(!isRight.equals("1")|| !isRight.equals("0")) {allTheQuestionsAreChoices=false;}
-						if(isRight.equals("1")) {
+						if(isRight==null) {allTheQuestionsAreChoices=false;}
+						if(isRight=="1") {
 							choiceScore += (int)(question_paperDao.getQuestion(paperId, questionId).get("point"));
 						}						
 						if( img!=null && img.length()!=0 )
@@ -272,6 +271,15 @@ public class StudentServiceImpl implements IStudentService{
 							System.out.println();
 							}						
 						solutionDao.insertSolution(studentId,studyId,questionId,solutionContent,picPath,isRight);
+						if ( isRight==("0")) {
+							String questionType="2";
+							String note=null;
+							Date createTime=new Date();
+							String content=solutionDao.getsolution(studentId, studyId, questionId);
+							mistakeDao.insertmistake(studentId, questionId, note, questionType, content, createTime);
+						
+						}
+						
 						}
 					student_studyDao.updateSubmit(studentId,studyId,choiceScore);
 				    studyDao.updateSubmitNum(studyId); 

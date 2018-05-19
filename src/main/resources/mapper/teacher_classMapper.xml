@@ -70,14 +70,14 @@
 	</resultMap>
 	
 	<resultMap type="hashmap" id="teacherInfoMap">
-		<id property="teacherId" column="teacher_class.teacher_id"/>
+		<id property="teacherId" column="teacher_id"/>
 		<result property="telnumber" column="telnumber"/>
 		<result property="nickname" column="nickname"/>
 		<result property="name" column="name"/>
 		<result property="picPath" column="pic_path"/>
 		<result property="sex" column="sex"/>
 		<result property="birthday" column="birthday"/>
-		<result property="schoolId" column="teacher.school_id"/>
+		<result property="schoolId" column="school_id"/>
 		<result property="schoolName" column="school_name"/>
 	</resultMap>
 </mapper>

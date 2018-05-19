@@ -32,6 +32,8 @@ public interface IStudentDao {
 	
 	public List<HashMap<String,Object>> getStudentByClassId(@Param("classId")String classId);
 	
+	public List<HashMap<String,Object>> getstudentidbyclass(@Param("classId")String classId);
+	
 	public HashMap<String,Object> checkStudentExist(@Param("studentId")String studentId);
 	
 	public int addStudent(@Param("studentId")String studentId,@Param("classId")String classId);

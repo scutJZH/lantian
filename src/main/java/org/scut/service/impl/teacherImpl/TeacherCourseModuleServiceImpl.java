@@ -4,6 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Resource;
 import org.scut.dao.*;
+import org.scut.model.Question;
 import org.scut.model.Title;
 import org.scut.service.teacherService.ITeacherCourseModuleService;
 import org.scut.util.Base64Analysis;
@@ -49,6 +51,8 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	private ITitleDao titleDao;
 	@Resource
 	private IQuestion_paperDao Question_paperDao;
+	@Resource
+	private IMistakeDao mistakeDao;
 	
 	public HashMap<String,Object> selectList(String teacherId,String classId){
 		String status = "1";
@@ -229,13 +233,13 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		System.out.println(String.valueOf((((List<LinkedHashMap<String,Object>>)l.get("result")).get(0).get("nickname"))));
 		return result;
 	}
-	public HashMap<String,Object> getCorrectStudentList(String teacherId,String paperId){
+	public HashMap<String,Object> getCorrectStudentList(String teacherId,String studyId){
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			List<HashMap<String,Object>> r1= this.student_studyDao.getCorrectStudentList(teacherId,paperId);
+			List<HashMap<String,Object>> r1= this.student_studyDao.getCorrectStudentList(studyId);
 			/**閫氳繃鍒ゆ柇鎬诲垎鏄惁涓�0鏉ュ垽鏂槸鍚﹀凡鎵规敼**/
-			if((Integer)(this.studyDao.getCorrectionList2(teacherId, paperId).get("submitNumber"))!=0) {
+			if((Integer)(this.studyDao.getCorrectionList2(studyId).get("submitNumber"))!=0) {
 			boolean a=true;
 			boolean b=false;
 			for(int i=0;i<r1.size();i++) {
@@ -532,7 +536,26 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 					System.out.println(this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.solutionPicPath);
 					System.out.println();
 				}				
-				solutionDao.correctSolution(studentId, studyId, questionId, point,picId,isright);				
+				solutionDao.correctSolution(studentId, studyId, questionId, point,picId,isright);
+				if (isright=="0") {
+					Question question=questionDao.selectByPrimaryKey(questionId);
+					
+					if (question.getOptionA()!=null) {
+						String questionType="2";
+						String note=null;
+						Date createTime=new Date();
+						String content=solutionDao.getsolution(studentId, studyId, questionId);
+						mistakeDao.insertmistake(studentId, questionId, note, questionType, content, createTime);
+						
+					}else {
+						String questionType="1";
+						String note=null;
+						Date createTime=new Date();
+						String content=solutionDao.getsolution(studentId, studyId, questionId);
+						mistakeDao.insertmistake(studentId, questionId, note, questionType, content, createTime);
+					}
+				}
+				
 			}
 			totalScore+=choiceScore;
 			
