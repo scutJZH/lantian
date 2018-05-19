@@ -3,6 +3,7 @@ package org.scut.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,5 +63,16 @@ public class ParamsTransport {
 		return paramsMapList;
 	}
 	
+	public static String listToJson(List list){
+		Gson gson = new Gson();
+		String json = gson.toJson(list);
+		return json;
+	}
+	
+	public static List stringToList(String json){
+		Gson gson = new Gson();
+		List list = gson.fromJson(json, ArrayList.class);
+		return list;
+	}
 
 }
