@@ -96,7 +96,8 @@ public class TeacherCourseModuleController {
 		String subjectId=String.valueOf(request.get("subjectId"));
 		//we drop the grade function for test
 		String grade=(String.valueOf(request.get("grade")));
-		HashMap<String,Object> result=teacherCourseModuleService.getQuestionList(subjectId,grade);
+		String teacherId=(String.valueOf(request.get("teacherId")));
+		HashMap<String,Object> result=teacherCourseModuleService.getQuestionList(subjectId,grade,teacherId);
 		return result;
 	}
 	//4assign homework,all actions were done in controller,completed!!! test well!
@@ -347,7 +348,7 @@ public class TeacherCourseModuleController {
 				+picId5+".jpg";
 		return this.teacherCourseModuleService.createObjective(subjectId,grade,optionA,optionB,optionC,optionD,
 				answer,picA,picB,picC,picD,picPathPicture,opaPicPath,opbPicPath,opcPicPath,opdPicPath,picPath,titleContent
-				,picId1,picId2,picId3,picId4,picId5);
+				,picId1,picId2,picId3,picId4,picId5,teacherId);
 	}
 	//17create subjective completed test well
 	@RequestMapping(value="/createSubjective", method=RequestMethod.POST)
@@ -396,4 +397,6 @@ public class TeacherCourseModuleController {
 		
 		
 	}**/
+	
+	//20.
 }

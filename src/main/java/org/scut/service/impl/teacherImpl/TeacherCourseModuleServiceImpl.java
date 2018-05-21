@@ -53,7 +53,8 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	private IQuestion_paperDao Question_paperDao;
 	@Resource
 	private IMistakeDao mistakeDao;
-	
+	@Resource
+	private ITeacher_questionDao teacher_questionDao;
 	public HashMap<String,Object> selectList(String teacherId,String classId){
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
@@ -69,11 +70,13 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		result.put("status", status);
 		return result;
 	}
-	public HashMap<String,Object> deleteList(List<String> studyId) {
+	public HashMap<String,Object> deleteList(List<String> studyIdArr) {
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			this.studyDao.deleteList(studyId);
+			this.student_studyDao.deleteList(studyIdArr);
+			this.studyDao.deleteList(studyIdArr);
+
 			result.put("result",status);
 		}
 		catch(Exception e) {
@@ -99,11 +102,11 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		result.put("status", status);
 		return result;
 	}
-	public HashMap<String,Object> getQuestionList(String sunjectId,String grade){
+	public HashMap<String,Object> getQuestionList(String sunjectId,String grade,String teacherId){
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			List<HashMap<String,Object>> r1=this.questionDao.getQuestionList(sunjectId,grade);
+			List<HashMap<String,Object>> r1=this.questionDao.getQuestionList(sunjectId,grade,teacherId);
 			HashMap<String,Object> questionTypeId=new HashMap<String,Object>();
 			for(int i=0;i<r1.size();i++) {
 			if(r1.get(i).get("optionA")!=null)
@@ -409,6 +412,8 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 			}
 			this.titleDao.createSubjective(titleId,GlobalVar.questionPicPath+picId1+".jpg");
 			this.questionDao.createSubjective(questionId,titleId,subjectId,grade,answer);
+			
+			this.teacher_questionDao.createQuestion(teacherId,questionId);
 			result.put("result",status);
 		}
 		catch(Exception e) {
@@ -423,7 +428,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	public HashMap<String,Object> createObjective(String subjectId,String grade,String optionA,String optionB,String optionC,String optionD,
 			String answer,String picA,String picB,String picC,String picD,String picPathPicture
 			,String opaPicPath,String opbPicPath,String opcPicPath,String opdPicPath,String picPath,String titleContent,
-			String picId1,String picId2,String picId3,String picId4,String picId5){
+			String picId1,String picId2,String picId3,String picId4,String picId5,String teacherId){
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		ArrayList<HashMap<String, Object>> base64file=new ArrayList<HashMap<String, Object>>();
@@ -473,6 +478,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 			if(picA==null)
 			this.questionDao.createObjective(questionId, titleId, subjectId, grade, optionA, optionB, optionC, optionD, answer, null, null,null, null);
 			
+			this.teacher_questionDao.createQuestion(teacherId,questionId);
 			result.put("result",status);
 		}
 		catch(Exception e) {

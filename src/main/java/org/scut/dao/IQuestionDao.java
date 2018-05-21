@@ -24,7 +24,7 @@ public interface IQuestionDao {
 
     Map<String, Object> getQuestion(@Param("questionId")String questionId);
 
-    public List<HashMap<String,Object>> getQuestionList(@Param("subjectId")String subjectId,@Param("grade")String grade);
+    public List<HashMap<String,Object>> getQuestionList(@Param("subjectId")String subjectId,@Param("grade")String grade,@Param("teacherId")String teacherId);
 
     public List<HashMap<String,Object>> getSubjectiveList(@Param("teacherId")String teacherId,@Param("subjectId")String subjectId,@Param("grade")String grade);
     

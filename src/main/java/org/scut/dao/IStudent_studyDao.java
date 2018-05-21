@@ -31,5 +31,6 @@ public interface IStudent_studyDao {
 
 	public List<Map<String, Object>> getChildStudyInfoList(@Param("studentId")String studentId, @Param("classId")String classId, @Param("subjectId")String subjectId, @Param("studyType")String studyType);
 
+	public int deleteList(@Param("studyIdList")List<String> studyIdArr);
 
 }

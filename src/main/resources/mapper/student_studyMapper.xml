@@ -82,4 +82,11 @@ update student_study set choice_score=#{choiceScore} where student_id=#{studentI
 		<result property="startTime" column="start_time" />
 		<result property="usedTime" column="used_time" />
 	</resultMap>
+	<!-- 2.deleteList -->
+	<delete id="deleteList">
+	delete from student_study where study_id in(
+	<foreach collection="studyIdList" index="index" item="item" separator=",">
+	#{item}
+	</foreach>)
+	</delete>
 </mapper>

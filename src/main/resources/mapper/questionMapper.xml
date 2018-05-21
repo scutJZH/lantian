@@ -142,8 +142,8 @@
   </update>
   
   <select id="getQuestionList" resultMap="getQuestionListHashMap">
-	select question_id,title_content,option_a from question natural join title
-	 where subject_id=#{subjectId} and grade=#{grade}
+	select question.question_id,title.title_content,question.option_a from question natural join title,teacher_question
+	 where question.subject_id=#{subjectId} and question.grade=#{grade} and teacher_question.question_id=question.question_id and teacher_question.teacher_id=#{teacherId}
   </select>
 <resultMap id="getQuestionListHashMap" type="HashMap">
 	<id property="questionId" column="question_id"></id>
