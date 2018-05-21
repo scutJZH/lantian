@@ -29,7 +29,7 @@ import java.sql.Blob;
 import java.io.OutputStream;  
 import sun.misc.BASE64Decoder;  
 import org.hibernate.Hibernate;
-
+import org.scut.util.*;
 @SuppressWarnings({ "restriction", "unused" })
 @Service(value="teacherCourseModuleService")
 public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleService{
@@ -69,11 +69,11 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		result.put("status", status);
 		return result;
 	}
-	public HashMap<String,Object> deleteList(List<String> paperId) {
+	public HashMap<String,Object> deleteList(List<String> studyId) {
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			this.studyDao.deleteList(paperId);
+			this.studyDao.deleteList(studyId);
 			result.put("result",status);
 		}
 		catch(Exception e) {
@@ -99,11 +99,11 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		result.put("status", status);
 		return result;
 	}
-	public HashMap<String,Object> getQuestionList(String sunjectId){
+	public HashMap<String,Object> getQuestionList(String sunjectId,String grade){
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			List<HashMap<String,Object>> r1=this.questionDao.getQuestionList(sunjectId);
+			List<HashMap<String,Object>> r1=this.questionDao.getQuestionList(sunjectId,grade);
 			HashMap<String,Object> questionTypeId=new HashMap<String,Object>();
 			for(int i=0;i<r1.size();i++) {
 			if(r1.get(i).get("optionA")!=null)
@@ -193,22 +193,23 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	        	a.set(i, temp);
 	        }
 	        result.put("result",a);
-	        try  {  
+	        String transferA=ParamsTransport.listToJson(a);
+	       try  {  
 	            
-	            ByteArrayOutputStream out  =   new  ByteArrayOutputStream();  
+	            /**ByteArrayOutputStream out  =   new  ByteArrayOutputStream();  
 	            ObjectOutputStream outputStream  =   new  ObjectOutputStream(out);  
 	            outputStream.writeObject(result);  
 	             byte [] bytes  =  out.toByteArray();  
 	            outputStream.close();
 	            @SuppressWarnings("deprecation")
-				Blob b=Hibernate.createBlob(bytes);
-	            this.studyDao.getRankDetails(b,studyId);
+				Blob b=Hibernate.createBlob(bytes);**/
+	            this.studyDao.getRankDetails(transferA,studyId);
 	        }  catch  (Exception e) {  
-	            System.out.println("ObjectToBlob");  
+	           // System.out.println("ObjectToBlob");  
 	            e.printStackTrace();
 				status = "-2";
 				result.put("result",status);
-	        }  
+	        }
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -217,7 +218,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		}
 		result.put("status", status);
 		//test echo
-		Blob blob=this.studyDao.getBlobRank(studyId);
+		/**Blob blob=this.studyDao.getBlobRank(studyId);
 		HashMap<String,Object> l=new HashMap<String,Object>();
         try  {  
             ObjectInputStream in  = new ObjectInputStream(blob.getBinaryStream());  
@@ -231,7 +232,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
         }  
         //test echo end
 		System.out.println(String.valueOf((((List<LinkedHashMap<String,Object>>)l.get("result")).get(0).get("nickname"))));
-		return result;
+		**/return result;
 	}
 	public HashMap<String,Object> getCorrectStudentList(String teacherId,String studyId){
 		String status = "1";
@@ -312,7 +313,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		return responsBody;
 	}
 	
-	public HashMap<String,Object> getSubjectiveOrObjectiveList(String teacherId,String questionType,String subjectId,int grade){
+	public HashMap<String,Object> getSubjectiveOrObjectiveList(String teacherId,String questionType,String subjectId,String grade){
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try {
@@ -386,7 +387,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	@Override
 	public HashMap<String,Object> createSubjective(String teacherId,String picSubjective,
 			String picPath,
-			String picAnswer,String answer,String subjectId,int grade,String picId1,String picId2) {
+			String picAnswer,String answer,String subjectId,String grade,String picId1,String picId2) {
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		ArrayList<HashMap<String, Object>> base64file=new ArrayList<HashMap<String, Object>>();
@@ -419,7 +420,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		return result;
 	}
 	//16.create objective completed!
-	public HashMap<String,Object> createObjective(String subjectId,int grade,String optionA,String optionB,String optionC,String optionD,
+	public HashMap<String,Object> createObjective(String subjectId,String grade,String optionA,String optionB,String optionC,String optionD,
 			String answer,String picA,String picB,String picC,String picD,String picPathPicture
 			,String opaPicPath,String opbPicPath,String opcPicPath,String opdPicPath,String picPath,String titleContent,
 			String picId1,String picId2,String picId3,String picId4,String picId5){

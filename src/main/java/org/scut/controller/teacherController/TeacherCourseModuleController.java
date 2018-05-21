@@ -52,16 +52,17 @@ public class TeacherCourseModuleController {
 	public HashMap<String,Object> getHomeworkList(@RequestBody Map<String,Object> request) {
 	String teacherId=String.valueOf(request.get("teacherId"));
 	String classId=String.valueOf(request.get("classId"));
+	System.out.println(classId);
 	HashMap<String,Object> result=teacherCourseModuleService.selectList(teacherId, classId);
 	return result;
 }
 	//2.haven't delete table student_paper,other test well
 	@RequestMapping(value="/deleteHomeworkList", method=RequestMethod.POST)
 	@ResponseBody
-	public HashMap<String,Object> deleteHomeworkList(@RequestBody Map<String,Object> paperId){
+	public HashMap<String,Object> deleteHomeworkList(@RequestBody Map<String,Object> studyId){
 		@SuppressWarnings("unchecked")
-		List<String> paperIdArr=(List<String>)paperId.get("paperId");
-		HashMap<String,Object> result=teacherCourseModuleService.deleteList(paperIdArr);
+		List<String> studyIdArr=(List<String>)studyId.get("studyId");
+		HashMap<String,Object> result=teacherCourseModuleService.deleteList(studyIdArr);
 		return result;
 	}
 	//3.1test well
@@ -94,8 +95,8 @@ public class TeacherCourseModuleController {
 	public HashMap<String,Object> getQuestionList(@RequestBody Map<String,Object> request){
 		String subjectId=String.valueOf(request.get("subjectId"));
 		//we drop the grade function for test
-		//int grade=Integer.parseInt(String.valueOf(request.get("grade")));
-		HashMap<String,Object> result=teacherCourseModuleService.getQuestionList(subjectId);
+		String grade=(String.valueOf(request.get("grade")));
+		HashMap<String,Object> result=teacherCourseModuleService.getQuestionList(subjectId,grade);
 		return result;
 	}
 	//4assign homework,all actions were done in controller,completed!!! test well!
@@ -108,7 +109,7 @@ public class TeacherCourseModuleController {
 		String paperId=UUID.randomUUID().toString();
 		String paperName=String.valueOf(request.get("paperName"));
 		//for test,use the value=7
-		int grade=7;//Integer.parseInt(String.valueOf(request.get("grade")));
+		String grade=String.valueOf(request.get("grade"));//Integer.parseInt(String.valueOf(request.get("grade")));
 		String subjectId=String.valueOf(request.get("subjectId"));
 		String createTeacherId=String.valueOf(request.get("teacherId"));
 		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
@@ -147,8 +148,9 @@ public class TeacherCourseModuleController {
 		}
 		//none rank
 		//action
+		String studyName=String.valueOf(request.get("studyName"));
 		try {
-			this.studyDao.assignHomework(studyId,paperId,classId,assignTeacherId,deadLine,submitNumber,assignTime,paperType,examTime,paperName);
+			this.studyDao.assignHomework(studyId,paperId,classId,assignTeacherId,deadLine,submitNumber,assignTime,paperType,examTime,studyName);
 		}catch(Exception e) {
 			e.printStackTrace();
 			status="-2";
@@ -233,7 +235,7 @@ public class TeacherCourseModuleController {
 	@RequestMapping(value="/getRankDetails", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> getRankDetails(@RequestBody Map<String,Object> request){
-		String paperId=String.valueOf(request.get("paperId"));
+		String paperId=null;
 		String studyId=String.valueOf(request.get("studyId"));
 		HashMap<String,Object> result=teacherCourseModuleService.getRankDetails(studyId,paperId);
 		return result;
@@ -277,7 +279,7 @@ public class TeacherCourseModuleController {
 		String teacherId=String.valueOf(request.get("teacherId"));
 		String questionType=String.valueOf(request.get("questionType"));
 		String subjectId=String.valueOf(request.get("subjectId"));
-		int grade=7;
+		String grade=String.valueOf(request.get("grade"));
 		HashMap<String,Object> result=teacherCourseModuleService.getSubjectiveOrObjectiveList(teacherId,questionType,subjectId,grade);
 		return result;
 	}
@@ -298,7 +300,8 @@ public class TeacherCourseModuleController {
 		@SuppressWarnings("unused")
 		String teacherId=String.valueOf(request.get("teacherId"));
 		String subjectId=String.valueOf(request.get("subjectId"));
-		int grade=7;//Integer.parseInt(String.valueOf(request.get("grade")));
+		String grade=String.valueOf(request.get("grade"));
+		//Integer.parseInt(String.valueOf(request.get("grade")));
 		String optionA=String.valueOf(request.get("optionA"));
 		String optionB=String.valueOf(request.get("optionB"));
 		String optionC=String.valueOf(request.get("optionC"));
@@ -354,7 +357,8 @@ public class TeacherCourseModuleController {
 		//String createTime=date.format(new Date());
 		String teacherId=String.valueOf(request.get("teacherId"));
 		String subjectId=String.valueOf(request.get("subjectId"));
-		int grade=7;//=Integer.parseInt(request.get("grade"));
+		String grade=String.valueOf(request.get("grade"));
+		//=Integer.parseInt(request.get("grade"));
 		String picId1=UUID.randomUUID().toString();
 		String picId2=UUID.randomUUID().toString();
 		String picSubjective=null;
