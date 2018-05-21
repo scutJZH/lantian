@@ -391,15 +391,15 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		ArrayList<HashMap<String, Object>> base64file=new ArrayList<HashMap<String, Object>>();
 		HashMap<String, Object> hashmap1=new HashMap<String, Object>();
-		HashMap<String, Object> hashmap2=new HashMap<String, Object>();
+		//HashMap<String, Object> hashmap2=new HashMap<String, Object>();
 		hashmap1.put("imgStr", picSubjective);
 		hashmap1.put("picPath", picPath);
-		hashmap2.put("imgStr", picAnswer);
-		hashmap2.put("picPath", answer);
+		//hashmap2.put("imgStr", picAnswer);
+		//hashmap2.put("picPath", answer);
 		base64file.add(hashmap1);
-		base64file.add(hashmap2);
-		result.put("picPath",picPath);
-		result.put("picPath2",picAnswer);
+		//base64file.add(hashmap2);
+		//result.put("picPath",picPath); for_test
+		//result.put("picPath2",picAnswer);
 		try{
 			String questionId=UUID.randomUUID().toString();
 			String titleId=UUID.randomUUID().toString();
@@ -407,7 +407,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 				GenerateImage(String.valueOf(subfile.get("imgStr")),String.valueOf(subfile.get("picPath")));
 			}
 			this.titleDao.createSubjective(titleId,GlobalVar.questionPicPath+picId1+".jpg");
-			this.questionDao.createSubjective(questionId,titleId,subjectId,grade,GlobalVar.questionPicPath+picId2+".jpg");
+			this.questionDao.createSubjective(questionId,titleId,subjectId,grade,answer);
 			result.put("result",status);
 		}
 		catch(Exception e) {

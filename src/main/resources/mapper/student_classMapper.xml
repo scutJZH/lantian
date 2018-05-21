@@ -72,5 +72,10 @@
 		<result property="schoolId" column="school_id"/>
 		<result property="schoolName" column="school_name"/>
 	</resultMap>
-
+<select id="getStudentIdByClassId" resultMap="getStudentIdByClassIdHashMap">
+select studentId from student_class where class_id=#{classId}
+</select>
+<resultMap type="HashMap" id="getStudentIdByClassIdHashMap">
+<id property="studentId" column="student_id"/>
+</resultMap>
 </mapper>
