@@ -1,5 +1,6 @@
 package org.scut.controller.teacherController;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -46,6 +47,8 @@ public class TeacherCourseModuleController {
 	private IQuestion_paperDao question_paperDao;
 	@Resource
 	private IStudent_classDao student_classDao;
+	@Resource
+	private ITeacher_questionDao teacher_questionDao;
 	//1.test well
 	@RequestMapping(value="/getHomeworkList")
 	@ResponseBody
@@ -139,7 +142,8 @@ public class TeacherCourseModuleController {
 		//none ave_time
 		//none ave_score
 		String assignTeacherId=createTeacherId;
-		String deadLine=String.valueOf(request.get("deadLine"));
+		String deadLine=String.valueOf((Long.parseLong(String.valueOf(request.get("deadLine")))));
+		System.out.println(deadLine);
 		int submitNumber=0;
 		String assignTime=createTime;
 		String paperType=String.valueOf(request.get("paperType"));
@@ -337,15 +341,15 @@ public class TeacherCourseModuleController {
 		if(request.get("picPathPicture") != null) {
 			picPathPicture=String.valueOf(request.get("picPathPicture"));
 		}
-		String opaPicPath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
+		String opaPicPath=this.getClass().getClassLoader().getResource("../../").getPath().substring(1)+GlobalVar.questionPicPath
 +picId1+".jpg";
-		String opbPicPath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
+		String opbPicPath=this.getClass().getClassLoader().getResource("../../").getPath().substring(1)+GlobalVar.questionPicPath
 				+picId2+".jpg";
-		String opcPicPath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
+		String opcPicPath=this.getClass().getClassLoader().getResource("../../").getPath().substring(1)+GlobalVar.questionPicPath
 				+picId3+".jpg";
-		String opdPicPath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
+		String opdPicPath=this.getClass().getClassLoader().getResource("../../").getPath().substring(1)+GlobalVar.questionPicPath
 				+picId4+".jpg";
-		String picPath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
+		String picPath=this.getClass().getClassLoader().getResource("../../").getPath().substring(1)+GlobalVar.questionPicPath
 				+picId5+".jpg";
 		return this.teacherCourseModuleService.createObjective(subjectId,grade,optionA,optionB,optionC,optionD,
 				answer,picA,picB,picC,picD,picPathPicture,opaPicPath,opbPicPath,opcPicPath,opdPicPath,picPath,titleContent
@@ -375,8 +379,9 @@ public class TeacherCourseModuleController {
 		System.out.println(String.valueOf(request.get("subjectId")));
 		System.out.println(String.valueOf(request.get("teacherId")));*/
 		//twice!!!error!!!not next time!!!
-		String picPath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
+		String picPath=this.getClass().getClassLoader().getResource("../../").getPath().substring(1)+GlobalVar.questionPicPath
 				+picId1+".jpg";
+		System.out.println(picPath);
 		/*String answer=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
 				+picId2+".jpg";*/
 		String answer=String.valueOf(request.get("answer"));//that is 'answer' and 'picAnswer' is consistent!
@@ -399,5 +404,24 @@ public class TeacherCourseModuleController {
 		
 	}**/
 	
-	//20.
+	//20.deleteTitle
+	@RequestMapping(value="/deleteTitle", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> deleteTitle(@RequestBody Map<String,Object> request) {
+		String status="1";
+		HashMap<String,Object> result=new HashMap<String,Object>();
+		@SuppressWarnings("unchecked")
+		String questionId=String.valueOf((request.get("questionId")));
+		System.out.println(questionId);
+		String teacherId=String.valueOf(request.get("teacherId"));
+		try {
+			this.teacher_questionDao.deleteTitle(questionId,teacherId);
+		}catch(Exception e){
+			e.printStackTrace();
+			status="-2";
+			result.put("result", status);
+		}
+		result.put("status", status);
+		return result;
+	}
 }

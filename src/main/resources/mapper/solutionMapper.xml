@@ -54,7 +54,12 @@ where study_id=#{studyId} AND student_id=#{studentId} AND (isright is null or is
  where  student_id=#{studentId,jdbcType=VARCHAR} and study_id=#{studyId,jdbcType=VARCHAR} and question_id=#{questionId,jdbcType=VARCHAR}
  
  </select>
- 
- 
+ <!-- deleteList -->
+ <delete id="deleteList">
+ delete from solution where study_id in(
+	<foreach collection="studyIdList" index="index" item="item" separator=",">
+	#{item}
+	</foreach>)
+ </delete>
  
 </mapper>

@@ -74,6 +74,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
+			this.solutionDao.deleteList(studyIdArr);
 			this.student_studyDao.deleteList(studyIdArr);
 			this.studyDao.deleteList(studyIdArr);
 
@@ -325,7 +326,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 			List<HashMap<String,Object>> r1=this.questionDao.getSubjectiveList(teacherId,subjectId,grade);
 			List<HashMap<String,Object>> r2=this.questionDao.getObjectiveList(teacherId,subjectId,grade);
 			int str2=2;
-			//should use String.equals(),not==
+			//should use String.equals(),not==	
 			if(Integer.parseInt(questionType) != str2) result.put("result",r1);
 			else result.put("result",r2);
 		}catch(Exception e) {

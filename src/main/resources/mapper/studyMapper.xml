@@ -49,7 +49,7 @@ select study_id,paper_id,assign_time,submit_number,study_name,student_number fro
 <!-- assignHomework -->
 <insert id="assignHomework">
 insert into study (study_id,paper_id,class_id,assign_teacher_id,dead_line,submit_number,assign_time,paper_type,exam_time,study_name)
-values (#{studyId},#{paperId},#{classId},#{assignTeacherId},from_unixtime(#{deadLine},'%y-%m-%d %h:%i:%s'),#{submitNumber},#{assignTime,jdbcType=DATE},#{paperType},#{examTime},#{studyName});
+values (#{studyId},#{paperId},#{classId},#{assignTeacherId},from_unixtime(#{deadLine},'%y-%m-%d %T'),#{submitNumber},#{assignTime,jdbcType=DATE},#{paperType},#{examTime},#{studyName});
 
 </insert>
 

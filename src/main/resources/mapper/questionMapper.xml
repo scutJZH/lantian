@@ -161,8 +161,8 @@ select question.question_id,title_content from question natural join title
 	<result property="titleContent" column="title_content"/>
 </resultMap>
 <select id="getObjectiveList" resultMap="getObjectiveListMap">
-select question_id,title_content from question natural join title
-	 where subject_id=#{subjectId} and grade=#{grade} and option_a is not null
+select question.question_id,title_content from question natural join title
+	join teacher_question on question.question_id=teacher_question.question_id and teacher_question.teacher_id=#{teacherId} where subject_id=#{subjectId} and grade=#{grade} and option_a is not null
 </select>
 <resultMap id="getObjectiveListMap" type="HashMap">
 	<id property="questionId" column="question_id"></id>

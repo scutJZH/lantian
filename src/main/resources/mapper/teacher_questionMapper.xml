@@ -4,4 +4,7 @@
 <insert id="createQuestion">
 insert into teacher_question (teacher_id,question_id)values(#{teacherId},#{questionId})
 </insert>
+<delete id="deleteTitle">
+	delete from teacher_question where question_id=#{questionId} and teacher_id=#{teacherId}
+</delete>
 </mapper>
