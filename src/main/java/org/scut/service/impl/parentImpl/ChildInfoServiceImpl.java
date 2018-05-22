@@ -40,7 +40,7 @@ public class ChildInfoServiceImpl implements IChildInfoService {
 							for(Map<String, Object> rankMap : rankMapList){
 								String studentIdInRank = (String)rankMap.get("studentId");
 								if(studentIdInRank.equals(studentId)){
-									rank = (String)rankMap.get("rank");
+									rank = (String)rankMap.get("rankNumber");
 									break;
 								}
 							}
