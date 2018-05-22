@@ -228,6 +228,7 @@ public class TeacherCourseModuleController {
 	@ResponseBody
 	public HashMap<String,Object> getRankList(@RequestBody Map<String,Object> request){
 		String teacherId=String.valueOf(request.get("teacherId"));
+		System.out.println(teacherId);
 		String classId=String.valueOf(request.get("classId"));
 		HashMap<String,Object> result=teacherCourseModuleService.getRankList(teacherId,classId);
 		return result;

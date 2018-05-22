@@ -166,10 +166,12 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	}
 	public HashMap<String,Object> getRankList(String teacherId,String classId){
 		String status = "1";
-		HashMap<String, Object> result = new HashMap<String, Object>();
+		HashMap<String,Object> result = new HashMap<String,Object>();
+		//System.out.println(teacherId+classId);
 		try{
 			List<HashMap<String,Object>> r1=this.studyDao.getCorrectionList(teacherId, classId);
 			result.put("result",r1);
+			//System.out.println(r1.size());
 		}
 		catch(Exception e) {
 			e.printStackTrace();
