@@ -1,5 +1,7 @@
 package org.scut.dao;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,4 +26,6 @@ public interface IStudent_classDao {
 	public List<Map<String, Object>> getStudentInfoListByClassId(@Param("classId")String classId);
 
 	public List<Map<String, Object>> getClassInfoListByStudentId(@Param("studentId")String studentId);
+	
+	public ArrayList<HashMap<String,Object>> getStudentIdByClassId(@Param("classId")String classId);
 }

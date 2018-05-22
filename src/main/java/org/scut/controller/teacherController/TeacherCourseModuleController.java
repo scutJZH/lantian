@@ -44,7 +44,8 @@ public class TeacherCourseModuleController {
 	private IPaperDao paperDao;
 	@Resource
 	private IQuestion_paperDao question_paperDao;
-	
+	@Resource
+	private IStudent_classDao student_classDao;
 	//1.test well
 	@RequestMapping(value="/getHomeworkList")
 	@ResponseBody
@@ -129,6 +130,7 @@ public class TeacherCourseModuleController {
 			result.put("result", status);
 		}
 		/**table class_paper**/
+		/**2version has changed to another table study**/
 		//paperId
 		
 		String classId=String.valueOf(request.get("classId"));
@@ -169,10 +171,19 @@ public class TeacherCourseModuleController {
 				result.put("result", status);
 			}
 		}
-		/**table student test well**/
-		List<HashMap<String, Object>> studentIdArr=new ArrayList<HashMap<String,Object>>();
+		/**table student test well
+		ArrayList<HashMap<String,Object>> studentIdArr=new ArrayList<HashMap<String,Object>>();
 		try {
 			studentIdArr=studentDao.getstudentidbyclass(classId);
+		}catch(Exception e){
+			e.printStackTrace();
+			status="-2";
+			result.put("result", status);
+		}**/
+		//2 version use student_class table
+		ArrayList<HashMap<String,Object>> studentIdArr=new ArrayList<HashMap<String,Object>>();
+		try {
+			studentIdArr=this.student_classDao.getStudentIdByClassId(classId);
 		}catch(Exception e){
 			e.printStackTrace();
 			status="-2";
@@ -353,15 +364,16 @@ public class TeacherCourseModuleController {
 		}if(String.valueOf(request.get("answer")) != null) {
 			picAnswer=String.valueOf(request.get("answer"));
 		}
-		System.out.println(String.valueOf(request.get("pic")));
+		/*System.out.println(String.valueOf(request.get("pic")));
 		System.out.println(String.valueOf(request.get("answer")));
 		System.out.println(String.valueOf(request.get("subjectId")));
-		System.out.println(String.valueOf(request.get("teacherId")));
+		System.out.println(String.valueOf(request.get("teacherId")));*/
 		//twice!!!error!!!not next time!!!
 		String picPath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
 				+picId1+".jpg";
-		String answer=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
-				+picId2+".jpg";
+		/*String answer=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
+				+picId2+".jpg";*/
+		String answer=String.valueOf(request.get("answer"));//that is 'answer' and 'picAnswer' is consistent!
 		return this.teacherCourseModuleService.createSubjective(teacherId,picSubjective,
 																picPath,picAnswer,
 																answer,subjectId,grade,picId1,picId2);
