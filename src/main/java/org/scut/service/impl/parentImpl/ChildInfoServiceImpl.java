@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 public class ChildInfoServiceImpl implements IChildInfoService {
 
 	@Resource
-	private IStudentDao studentDao;
-	@Resource
 	private IStudent_studyDao studentStudyDao;
 	@Resource
 	private IParent_studentDao parentStudentDao;
