@@ -1,5 +1,6 @@
 package org.scut.controller.teacherController;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -46,22 +47,25 @@ public class TeacherCourseModuleController {
 	private IQuestion_paperDao question_paperDao;
 	@Resource
 	private IStudent_classDao student_classDao;
+	@Resource
+	private ITeacher_questionDao teacher_questionDao;
 	//1.test well
 	@RequestMapping(value="/getHomeworkList")
 	@ResponseBody
 	public HashMap<String,Object> getHomeworkList(@RequestBody Map<String,Object> request) {
 	String teacherId=String.valueOf(request.get("teacherId"));
 	String classId=String.valueOf(request.get("classId"));
+	System.out.println(classId);
 	HashMap<String,Object> result=teacherCourseModuleService.selectList(teacherId, classId);
 	return result;
 }
 	//2.haven't delete table student_paper,other test well
 	@RequestMapping(value="/deleteHomeworkList", method=RequestMethod.POST)
 	@ResponseBody
-	public HashMap<String,Object> deleteHomeworkList(@RequestBody Map<String,Object> paperId){
+	public HashMap<String,Object> deleteHomeworkList(@RequestBody Map<String,Object> studyId){
 		@SuppressWarnings("unchecked")
-		List<String> paperIdArr=(List<String>)paperId.get("paperId");
-		HashMap<String,Object> result=teacherCourseModuleService.deleteList(paperIdArr);
+		List<String> studyIdArr=(List<String>)studyId.get("studyId");
+		HashMap<String,Object> result=teacherCourseModuleService.deleteList(studyIdArr);
 		return result;
 	}
 	//3.1test well
@@ -69,7 +73,7 @@ public class TeacherCourseModuleController {
 	@ResponseBody
 	public HashMap<String,Object> getClassList(@RequestBody Map<String,Object> request) {
 		//autoCorrect
-		/**ArrayList<HashMap<String,Object>> r1=this.solutionDao.autoCorrectSelect();
+		/**Array	List<HashMap<String,Object>> r1=this.solutionDao.autoCorrectSelect();
 		int choiceScore=0;
 		for(int i=0;i<r1.size();i++) {
 		if(r1.get(i).get("content").toString()==this.questionDao.autoCorrectSelect(r1.get(i).get("questionId").toString()).toString()) {
@@ -94,8 +98,9 @@ public class TeacherCourseModuleController {
 	public HashMap<String,Object> getQuestionList(@RequestBody Map<String,Object> request){
 		String subjectId=String.valueOf(request.get("subjectId"));
 		//we drop the grade function for test
-		//int grade=Integer.parseInt(String.valueOf(request.get("grade")));
-		HashMap<String,Object> result=teacherCourseModuleService.getQuestionList(subjectId);
+		String grade=(String.valueOf(request.get("grade")));
+		String teacherId=(String.valueOf(request.get("teacherId")));
+		HashMap<String,Object> result=teacherCourseModuleService.getQuestionList(subjectId,grade,teacherId);
 		return result;
 	}
 	//4assign homework,all actions were done in controller,completed!!! test well!
@@ -108,7 +113,7 @@ public class TeacherCourseModuleController {
 		String paperId=UUID.randomUUID().toString();
 		String paperName=String.valueOf(request.get("paperName"));
 		//for test,use the value=7
-		int grade=7;//Integer.parseInt(String.valueOf(request.get("grade")));
+		String grade=String.valueOf(request.get("grade"));//Integer.parseInt(String.valueOf(request.get("grade")));
 		String subjectId=String.valueOf(request.get("subjectId"));
 		String createTeacherId=String.valueOf(request.get("teacherId"));
 		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
@@ -137,7 +142,8 @@ public class TeacherCourseModuleController {
 		//none ave_time
 		//none ave_score
 		String assignTeacherId=createTeacherId;
-		String deadLine=String.valueOf(request.get("deadLine"));
+		String deadLine=String.valueOf((Long.parseLong(String.valueOf(request.get("deadLine")))));
+		System.out.println(deadLine);
 		int submitNumber=0;
 		String assignTime=createTime;
 		String paperType=String.valueOf(request.get("paperType"));
@@ -147,8 +153,9 @@ public class TeacherCourseModuleController {
 		}
 		//none rank
 		//action
+		String studyName=String.valueOf(request.get("studyName"));
 		try {
-			this.studyDao.assignHomework(studyId,paperId,classId,assignTeacherId,deadLine,submitNumber,assignTime,paperType,examTime,paperName);
+			this.studyDao.assignHomework(studyId,paperId,classId,assignTeacherId,deadLine,submitNumber,assignTime,paperType,examTime,studyName);
 		}catch(Exception e) {
 			e.printStackTrace();
 			status="-2";
@@ -225,6 +232,7 @@ public class TeacherCourseModuleController {
 	@ResponseBody
 	public HashMap<String,Object> getRankList(@RequestBody Map<String,Object> request){
 		String teacherId=String.valueOf(request.get("teacherId"));
+		//System.out.println(teacherId);
 		String classId=String.valueOf(request.get("classId"));
 		HashMap<String,Object> result=teacherCourseModuleService.getRankList(teacherId,classId);
 		return result;
@@ -233,7 +241,7 @@ public class TeacherCourseModuleController {
 	@RequestMapping(value="/getRankDetails", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> getRankDetails(@RequestBody Map<String,Object> request){
-		String paperId=String.valueOf(request.get("paperId"));
+		String paperId=null;
 		String studyId=String.valueOf(request.get("studyId"));
 		HashMap<String,Object> result=teacherCourseModuleService.getRankDetails(studyId,paperId);
 		return result;
@@ -277,7 +285,7 @@ public class TeacherCourseModuleController {
 		String teacherId=String.valueOf(request.get("teacherId"));
 		String questionType=String.valueOf(request.get("questionType"));
 		String subjectId=String.valueOf(request.get("subjectId"));
-		int grade=7;
+		String grade=String.valueOf(request.get("grade"));
 		HashMap<String,Object> result=teacherCourseModuleService.getSubjectiveOrObjectiveList(teacherId,questionType,subjectId,grade);
 		return result;
 	}
@@ -298,7 +306,8 @@ public class TeacherCourseModuleController {
 		@SuppressWarnings("unused")
 		String teacherId=String.valueOf(request.get("teacherId"));
 		String subjectId=String.valueOf(request.get("subjectId"));
-		int grade=7;//Integer.parseInt(String.valueOf(request.get("grade")));
+		String grade=String.valueOf(request.get("grade"));
+		//Integer.parseInt(String.valueOf(request.get("grade")));
 		String optionA=String.valueOf(request.get("optionA"));
 		String optionB=String.valueOf(request.get("optionB"));
 		String optionC=String.valueOf(request.get("optionC"));
@@ -332,19 +341,19 @@ public class TeacherCourseModuleController {
 		if(request.get("picPathPicture") != null) {
 			picPathPicture=String.valueOf(request.get("picPathPicture"));
 		}
-		String opaPicPath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
+		String opaPicPath=this.getClass().getClassLoader().getResource("../../").getPath().substring(1)+GlobalVar.questionPicPath
 +picId1+".jpg";
-		String opbPicPath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
+		String opbPicPath=this.getClass().getClassLoader().getResource("../../").getPath().substring(1)+GlobalVar.questionPicPath
 				+picId2+".jpg";
-		String opcPicPath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
+		String opcPicPath=this.getClass().getClassLoader().getResource("../../").getPath().substring(1)+GlobalVar.questionPicPath
 				+picId3+".jpg";
-		String opdPicPath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
+		String opdPicPath=this.getClass().getClassLoader().getResource("../../").getPath().substring(1)+GlobalVar.questionPicPath
 				+picId4+".jpg";
-		String picPath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
+		String picPath=this.getClass().getClassLoader().getResource("../../").getPath().substring(1)+GlobalVar.questionPicPath
 				+picId5+".jpg";
 		return this.teacherCourseModuleService.createObjective(subjectId,grade,optionA,optionB,optionC,optionD,
 				answer,picA,picB,picC,picD,picPathPicture,opaPicPath,opbPicPath,opcPicPath,opdPicPath,picPath,titleContent
-				,picId1,picId2,picId3,picId4,picId5);
+				,picId1,picId2,picId3,picId4,picId5,teacherId);
 	}
 	//17create subjective completed test well
 	@RequestMapping(value="/createSubjective", method=RequestMethod.POST)
@@ -354,7 +363,8 @@ public class TeacherCourseModuleController {
 		//String createTime=date.format(new Date());
 		String teacherId=String.valueOf(request.get("teacherId"));
 		String subjectId=String.valueOf(request.get("subjectId"));
-		int grade=7;//=Integer.parseInt(request.get("grade"));
+		String grade=String.valueOf(request.get("grade"));
+		//=Integer.parseInt(request.get("grade"));
 		String picId1=UUID.randomUUID().toString();
 		String picId2=UUID.randomUUID().toString();
 		String picSubjective=null;
@@ -369,8 +379,9 @@ public class TeacherCourseModuleController {
 		System.out.println(String.valueOf(request.get("subjectId")));
 		System.out.println(String.valueOf(request.get("teacherId")));*/
 		//twice!!!error!!!not next time!!!
-		String picPath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
+		String picPath=this.getClass().getClassLoader().getResource("../../").getPath().substring(1)+GlobalVar.questionPicPath
 				+picId1+".jpg";
+		System.out.println(picPath);
 		/*String answer=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.questionPicPath
 				+picId2+".jpg";*/
 		String answer=String.valueOf(request.get("answer"));//that is 'answer' and 'picAnswer' is consistent!
@@ -392,4 +403,25 @@ public class TeacherCourseModuleController {
 		
 		
 	}**/
+	
+	//20.deleteTitle
+	@RequestMapping(value="/deleteTitle", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> deleteTitle(@RequestBody Map<String,Object> request) {
+		String status="1";
+		HashMap<String,Object> result=new HashMap<String,Object>();
+		@SuppressWarnings("unchecked")
+		String questionId=String.valueOf((request.get("questionId")));
+		System.out.println(questionId);
+		String teacherId=String.valueOf(request.get("teacherId"));
+		try {
+			this.teacher_questionDao.deleteTitle(questionId,teacherId);
+		}catch(Exception e){
+			e.printStackTrace();
+			status="-2";
+			result.put("result", status);
+		}
+		result.put("status", status);
+		return result;
+	}
 }
