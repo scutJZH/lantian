@@ -73,7 +73,7 @@ public class TeacherCourseModuleController {
 	@ResponseBody
 	public HashMap<String,Object> getClassList(@RequestBody Map<String,Object> request) {
 		//autoCorrect
-		/**ArrayList<HashMap<String,Object>> r1=this.solutionDao.autoCorrectSelect();
+		/**Array	List<HashMap<String,Object>> r1=this.solutionDao.autoCorrectSelect();
 		int choiceScore=0;
 		for(int i=0;i<r1.size();i++) {
 		if(r1.get(i).get("content").toString()==this.questionDao.autoCorrectSelect(r1.get(i).get("questionId").toString()).toString()) {
