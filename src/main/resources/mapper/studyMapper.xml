@@ -34,17 +34,11 @@ select study_id,paper_id,assign_time,submit_number,study_name,student_number fro
 	</foreach>)
 </delete>
 <!-- 7.获取作业批改列表 -->
-<select id="getCorrectionList" resultMap="getCorrectionListHashMap">
+<select id="getCorrectionList" resultMap="getHomeworkListHashMap">
 	select study_id, study_name, paper_id,assign_time,submit_number from study natural join paper
 	where assign_teacher_id=#{teacherId} and class_id=#{classId}
 </select>
-<resultMap id="getCorrectionListHashMap" type="java.util.HashMap">
-<id property="studyId" column="study_id"></id>
-<result property="paperId" column="paper_id"/>
-<result property="assignTime" column="assign_time"/>
-<result property="submitNumber" column="submit_number"/>
-<result property="studyName" column="study_name"/>
-</resultMap>
+
 
 <!-- assignHomework -->
 <insert id="assignHomework">
