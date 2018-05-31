@@ -106,7 +106,17 @@ public class ClassManagementServiceImpl implements IClassManagementService{
 						classDao.updateStudentNumber(classId, studentNumber+1);
 						String classIdListStr = student.getClassIdList();
 						if(classIdListStr != null && classIdListStr.length()>0){
-							classIdListStr += ","+classId;
+							String[] classIdList = classIdListStr.split(",");
+							boolean flag = false;
+							for(int i = 0; i<classIdList.length; i++){
+								if(classIdList[i].equals(classId)){
+									flag = true;
+									break;
+								}
+							}
+							if(!flag){
+								classIdListStr += ","+classId;
+							}
 						}else{
 							classIdListStr = classId;
 						}

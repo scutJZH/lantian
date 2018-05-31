@@ -7,7 +7,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Class_paper{
+public class Study{
+	private String studyId;
+	public String getStudyId() {
+		return studyId;
+	}
+	public void setStudyId(String studyId) {
+		this.studyId = studyId;
+	}
 	private String paperId;
 	private String classId;
 	private int aveTime;
@@ -18,7 +25,7 @@ public class Class_paper{
 	private Date assignTime;
 	private String paperType;
 	private int examTime;
-	private Map rank;
+	private String rank;
 	public String getPaperId() {
 		return this.paperId;
 	}
@@ -49,7 +56,7 @@ public class Class_paper{
 	public int getExamTime() {
 		return this.examTime;
 	}
-	public Map getRank(){
+	public String getRank(){
 		return this.rank;
 	}
 	//set
@@ -83,7 +90,7 @@ public class Class_paper{
 	public void setExamTime(int examTime) {
 		this.examTime=examTime;
 	}
-	public void setRank(Map rank) {
+	public void setRank(String rank) {
 		this.rank=rank;
 	}
 }

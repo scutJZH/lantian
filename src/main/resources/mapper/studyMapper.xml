@@ -13,42 +13,37 @@
     
 <!-- 获取作业列表 -->
 	<select id="selectList" resultMap="getHomeworkListHashMap">
-select paper_id,assign_time,submit_number,paper_name,student_number from study natural join paper,class
- where study.class_id=class.class_id and study.paper_id=paper.paper_id
+select study_id,paper_id,assign_time,submit_number,study_name,student_number from study natural join class
+ where study.class_id=class.class_id
   and study.assign_teacher_id=#{teacherId}
   and study.class_id=#{classId};
 	</select>
 <resultMap id="getHomeworkListHashMap" type="java.util.HashMap">
-<id property="paperId" column="paper_id"/>
+<id property="studyId" column="study_id"/>
+<result property="paperId" column="paper_id"/>
 <result property="assignTime" column="assign_time"/>
 <result property="submitNumber" column="submit_number"/>
-<result property="paperName" column="paper_name"/>
+<result property="studyName" column="study_name"/>
 <result property="studentNumber" column="student_number"/>
 </resultMap>
 <!-- 2.deleteList -->
 <delete id="deleteList" parameterType = "java.util.List">
-	delete from study where paper_id in(
-	<foreach collection="paperIdList" index="index" item="item" separator=",">
+	delete from study where study_id in(
+	<foreach collection="studyIdList" index="index" item="item" separator=",">
 	#{item}
 	</foreach>)
 </delete>
 <!-- 7.获取作业批改列表 -->
-<select id="getCorrectionList" resultMap="getCorrectionListHashMap">
-	select study_id, paper_name, paper_id,assign_time,submit_number from study natural join paper
+<select id="getCorrectionList" resultMap="getHomeworkListHashMap">
+	select study_id, study_name, paper_id,assign_time,submit_number from study natural join paper
 	where assign_teacher_id=#{teacherId} and class_id=#{classId}
 </select>
-<resultMap id="getCorrectionListHashMap" type="java.util.HashMap">
-<id property="studyId" column="study_id"></id>
-<result property="paperId" column="paper_id"/>
-<result property="assignTime" column="assign_time"/>
-<result property="submitNumber" column="submit_number"/>
-<result property="paperName" column="paper_name"/>
-</resultMap>
+
 
 <!-- assignHomework -->
 <insert id="assignHomework">
 insert into study (study_id,paper_id,class_id,assign_teacher_id,dead_line,submit_number,assign_time,paper_type,exam_time,study_name)
-values (#{studyId},#{paperId},#{classId},#{assignTeacherId},from_unixtime(#{deadLine},'%y-%m-%d %h:%i:%s'),#{submitNumber},#{assignTime,jdbcType=DATE},#{paperType},#{examTime},#{studyName});
+values (#{studyId},#{paperId},#{classId},#{assignTeacherId},from_unixtime(#{deadLine},'%y-%m-%d %T'),#{submitNumber},#{assignTime,jdbcType=DATE},#{paperType},#{examTime},#{studyName});
 
 </insert>
 
@@ -69,6 +64,10 @@ values (#{studyId},#{paperId},#{classId},#{assignTeacherId},from_unixtime(#{dead
 	select rank from study where study_id=#{studyId}
 	</select>
 	<resultMap type="java.sql.Blob" id="getBlobRankMap">
-	<id property="rank" column="rank"></id>
+	<id property="rank" column="rank" jdbcType="BLOB" typeHandler="org.apache.ibatis.type.BlobTypeHandler"></id>
 	</resultMap>
+	
+	<select id="getRankById" parameterType="String" resultType="hashmap">
+		select rank from study where study_id=#{studyId}
+	</select>
 </mapper>
