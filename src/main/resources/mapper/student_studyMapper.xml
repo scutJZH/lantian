@@ -89,4 +89,8 @@ update student_study set choice_score=#{choiceScore} where student_id=#{studentI
 	#{item}
 	</foreach>)
 	</delete>
+<!-- removeStudent -->
+<delete id="removeStudent">
+delete from student_study where student_id=#{studentId} and teacher_id=#{teacherId}
+</delete>
 </mapper>

@@ -33,4 +33,5 @@ public interface IStudent_studyDao {
 
 	public int deleteList(@Param("studyIdList")List<String> studyIdArr);
 
+	public int removeStudent(@Param("studentId")String studentId,@Param("teacherId")String teacherId);
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.scut.dao.IClassDao;
 import org.scut.dao.IStudentDao;
 import org.scut.dao.IStudent_classDao;
+import org.scut.dao.IStudent_studyDao;
 import org.scut.dao.ITeacherDao;
 import org.scut.dao.ITeacher_classDao;
 import org.scut.model.Class;
@@ -36,7 +37,9 @@ public class ClassManagementServiceImpl implements IClassManagementService{
 	private IStudentDao studentDao;
 	@Resource
 	private IStudent_classDao studentClassDao;
-
+	//for getCorrectStudentList function run correctly
+	@Resource
+	private IStudent_studyDao student_studyDao;
 	@Override
 	public Map<String, Object> createClass(String teacherId, String className, String schoolId, String grade, String headPic) {
 		
@@ -215,6 +218,8 @@ public class ClassManagementServiceImpl implements IClassManagementService{
 				studentClassDao.deleteRelationship(studentId, classId);
 				int studentNumber = classDao.getStuNumber(classId);
 				classDao.updateStudentNumber(classId, studentNumber-1);
+				//for getCorrectStudentList function run correctly
+				student_studyDao.removeStudent(studentId,teacherId);
 			}else{
 				status = "-1";
 			}
