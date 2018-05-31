@@ -54,11 +54,19 @@ public class PostController {
 		String postSubject=(String)map.get("postSubject");
 		String imgbase64=(String)map.get("imgbase64");
 		Post post= new Post();
-		String filePath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.picPath;
 		String picPath;
+		
+		
+		
 		int result;
 		try {
-			picPath=Base64Analysis.analysisPic(UUID.randomUUID().toString(), filePath, imgbase64);
+			if (imgbase64!=null) {
+				String filePath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.picPath;	
+				picPath=Base64Analysis.analysisPic(UUID.randomUUID().toString(), filePath, imgbase64);
+			}else {
+				picPath=null;
+			}
+			
 			post.setPostPic(picPath);
 			post.setPostId(UUID.randomUUID().toString());
 			post.setPostTitle(postTitle);
