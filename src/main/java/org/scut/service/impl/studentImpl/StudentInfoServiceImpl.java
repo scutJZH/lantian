@@ -63,8 +63,15 @@ public class StudentInfoServiceImpl implements IStudentInfoService{
 					schoolInfo = schoolDao.getSchoolById(schoolId);
 				}
 				userInfo.put("schoolId", schoolId);
-				userInfo.put("schoolName", schoolInfo.getSchoolName());
-				userInfo.put("city", schoolInfo.getCity());
+				if (schoolInfo!=null) {
+					userInfo.put("schoolName", schoolInfo.getSchoolName());
+					userInfo.put("city", schoolInfo.getCity());
+				}else {
+					userInfo.put("schoolName", "");
+					userInfo.put("city", "");
+				}
+				
+				
 			} else {
 				status = "-1";
 			}

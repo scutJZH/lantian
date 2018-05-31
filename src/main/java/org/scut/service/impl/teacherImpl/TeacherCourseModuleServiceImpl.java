@@ -499,10 +499,20 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
 			Map<String,Object> r1=this.questionDao.checkTitle(questionId);
-			if(((String)r1.get("optionA"))==null) {r1.put("questionType", 1);
-			r1.put("answer", r1.get("answer").toString());}
-			else if(((String)r1.get("optionA")).length()>0) {r1.put("questionType", 2);
-			r1.put("answer", r1.get("answer").toString().toUpperCase());}
+			if (r1!=null) {
+				if(((String)r1.get("optionA"))==null) {r1.put("questionType", 1);
+				if (r1.get("answer")!=null) {
+					r1.put("answer", r1.get("answer").toString());
+				}
+				else {
+					r1.put("answer", "");
+				}
+				}
+				else if(((String)r1.get("optionA")).length()>0) {r1.put("questionType", 2);
+				r1.put("answer", r1.get("answer").toString().toUpperCase());}	
+			}
+			
+			
 			result.put("result",r1);
 		}
 		catch(Exception e) {
@@ -540,7 +550,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 					return responseBody;
 				}
 				
-				if(correctedPic!=null && correctedPic!="") {
+				if(correctedPic!=null) {
 					picId = UUID.randomUUID().toString();
 					picId = Base64Analysis.analysisPic(picId, this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.solutionPicPath, correctedPic);
 					System.out.println(this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.solutionPicPath);

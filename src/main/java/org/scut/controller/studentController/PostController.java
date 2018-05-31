@@ -206,23 +206,34 @@ public Map<String, Object>  answerAnswer(HttpServletRequest request, HttpServlet
 		Integer count=Integer.valueOf((String) map.get("count"));
 		List<Post> result=new ArrayList<>();
 		List<Post> posts= postService.gettotal();
+		
 		int size=posts.size();
-		if(size>count+10&size==count+10) {
+		if(size>count+10||size==count+10) {
 			for(int i =count;i<count+10;i++) {
 				posts.get(i).setPicPath("/img/"+posts.get(i).getPicPath());
-				posts.get(i).setPostPic("/img/"+posts.get(i).getPostPic());
+				if (posts.get(i).getPostPic()!=null) {
+					posts.get(i).setPostPic("/img/"+posts.get(i).getPostPic());
+				}
+				else {
+					posts.get(i).setPostPic(null);
+				}
 				result.add(posts.get(i));
 			}
 		}else if (size<count+10) {
 			for(int j=count;j<size;j++) {
+				posts.get(j).setPicPath("/img/"+posts.get(j).getPicPath());
+				if (posts.get(j).getPostPic()!=null) {
+					posts.get(j).setPostPic("/img/"+posts.get(j).getPostPic());
+				}
+				else {
+					posts.get(j).setPostPic(null);
+				}
 				result.add(posts.get(j));
+				
 			}
+		
 		}
-		for(int i=0;i<result.size();i++) {
-			result.get(i).setPicPath("/img/"+result.get(i).getPicPath());
-			result.get(i).setPostPic("/img/"+result.get(i).getPostPic());
-			
-		}
+		
 		
 		return Json.getJson(1,result);	
 	
