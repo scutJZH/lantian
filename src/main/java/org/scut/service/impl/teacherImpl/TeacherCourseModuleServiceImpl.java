@@ -55,6 +55,8 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	private IMistakeDao mistakeDao;
 	@Resource
 	private ITeacher_questionDao teacher_questionDao;
+	@Resource
+	private IStudent_classDao student_classDao;
 	public HashMap<String,Object> selectList(String teacherId,String classId){
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
@@ -149,6 +151,12 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
 			List<HashMap<String,Object>> r1= this.studyDao.getCorrectionList(teacherId,classId);
+			for(int i=0;i<r1.size();i++) {
+			    String studyId=(String)r1.get(i).get("studyId");
+			    HashMap<String, Object> map=getCorrectStudentList(teacherId, studyId);
+			    List<HashMap<String,Object>> r2=(List<HashMap<String,Object>>)map.get("result");
+			    r1.get(i).put("submitNumber", r2.size());
+			}
 			Map<String,Object> r2=this.classDao.getStudentNumber(classId);
 			/**for unsubmittedNumber**/
 			for(int i=0;i<r1.size();i++) {
@@ -244,7 +252,15 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			List<HashMap<String,Object>> r1= this.student_studyDao.getCorrectStudentList(studyId);
+			Map<String, Object> map1=studyDao.getStudyById(studyId);
+			String classId=(String)map1.get("classId");
+			List<HashMap<String,Object>> r2= this.student_studyDao.getCorrectStudentList(studyId);
+			List<HashMap<String, Object>> r1=new ArrayList<>();
+			for (int i=0;i<r2.size();i++) {
+				if (student_classDao.isRelationshipExist((String)r2.get(i).get("studentId"),classId)) {
+					r1.add(r2.get(i));
+				}
+			}
 			/**閫氳繃鍒ゆ柇鎬诲垎鏄惁涓�0鏉ュ垽鏂槸鍚﹀凡鎵规敼**/
 			if((Integer)(this.studyDao.getCorrectionList2(studyId).get("submitNumber"))!=0) {
 			boolean a=true;
