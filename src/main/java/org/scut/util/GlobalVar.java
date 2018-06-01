@@ -13,5 +13,5 @@ public class GlobalVar {
 	
 	public static final String solutionPicPath = "/solutions/";
 	
-	public static final String questionPicPath="question/";
+	public static final String questionPicPath="img/";
 }
