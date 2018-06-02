@@ -54,11 +54,19 @@ public class PostController {
 		String postSubject=(String)map.get("postSubject");
 		String imgbase64=(String)map.get("imgbase64");
 		Post post= new Post();
-		String filePath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.picPath;
 		String picPath;
+		
+		
+		
 		int result;
 		try {
-			picPath=Base64Analysis.analysisPic(UUID.randomUUID().toString(), filePath, imgbase64);
+			if (imgbase64!=null) {
+				String filePath=this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.picPath;	
+				picPath=Base64Analysis.analysisPic(UUID.randomUUID().toString(), filePath, imgbase64);
+			}else {
+				picPath=null;
+			}
+			
 			post.setPostPic(picPath);
 			post.setPostId(UUID.randomUUID().toString());
 			post.setPostTitle(postTitle);
@@ -198,18 +206,34 @@ public Map<String, Object>  answerAnswer(HttpServletRequest request, HttpServlet
 		Integer count=Integer.valueOf((String) map.get("count"));
 		List<Post> result=new ArrayList<>();
 		List<Post> posts= postService.gettotal();
+		
 		int size=posts.size();
-		if(size>count+10&size==count+10) {
+		if(size>count+10||size==count+10) {
 			for(int i =count;i<count+10;i++) {
 				posts.get(i).setPicPath("/img/"+posts.get(i).getPicPath());
-				posts.get(i).setPostPic("/img/"+posts.get(i).getPostPic());
+				if (posts.get(i).getPostPic()!=null) {
+					posts.get(i).setPostPic("/img/"+posts.get(i).getPostPic());
+				}
+				else {
+					posts.get(i).setPostPic(null);
+				}
 				result.add(posts.get(i));
 			}
 		}else if (size<count+10) {
 			for(int j=count;j<size;j++) {
+				posts.get(j).setPicPath("/img/"+posts.get(j).getPicPath());
+				if (posts.get(j).getPostPic()!=null) {
+					posts.get(j).setPostPic("/img/"+posts.get(j).getPostPic());
+				}
+				else {
+					posts.get(j).setPostPic(null);
+				}
 				result.add(posts.get(j));
+				
 			}
+		
 		}
+		
 		
 		return Json.getJson(1,result);	
 	

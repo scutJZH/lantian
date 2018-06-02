@@ -8,13 +8,12 @@ import org.scut.dao.IParent_studentDao;
 import org.scut.dao.IStudentDao;
 import org.scut.dao.IStudent_studyDao;
 import org.scut.service.parentService.IChildInfoService;
+import org.scut.util.ParamsTransport;
 import org.springframework.stereotype.Service;
 
 @Service("childInfoService")
 public class ChildInfoServiceImpl implements IChildInfoService {
 
-	@Resource
-	private IStudentDao studentDao;
 	@Resource
 	private IStudent_studyDao studentStudyDao;
 	@Resource
@@ -33,16 +32,20 @@ public class ChildInfoServiceImpl implements IChildInfoService {
 				if(childHomeworkInfoList != null && childHomeworkInfoList.size()>0){
 					for(Map<String, Object> childHomeworkInfo : childHomeworkInfoList){
 						String rank = null;
-						List<Map<String, Object>> rankMapList = (List<Map<String, Object>>)childHomeworkInfo.get("rank");
+						String rankJson = (String)childHomeworkInfo.get("rank");
+						List<Map<String, Object>> rankMapList = ParamsTransport.stringToList(rankJson);
 						if(rankMapList != null && rankMapList.size() > 0){
 							for(Map<String, Object> rankMap : rankMapList){
 								String studentIdInRank = (String)rankMap.get("studentId");
 								if(studentIdInRank.equals(studentId)){
-									rank = (String)rankMap.get("rank");
+									rank = (String)rankMap.get("rankNumber");
+									break;
 								}
 							}
 							childHomeworkInfo.put("rank", rank);
-						}	
+						}else{
+							childHomeworkInfo.put("rank", null);
+						}
 					}
 				}
 				result.put("result", childHomeworkInfoList);

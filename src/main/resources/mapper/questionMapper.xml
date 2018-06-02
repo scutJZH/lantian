@@ -142,8 +142,8 @@
   </update>
   
   <select id="getQuestionList" resultMap="getQuestionListHashMap">
-	select question_id,title_content,option_a from question natural join title
-	 where subject_id=#{subjectId} 
+	select question.question_id,title.title_content,question.option_a from question natural join title,teacher_question
+	 where question.subject_id=#{subjectId} and question.grade=#{grade} and teacher_question.question_id=question.question_id and teacher_question.teacher_id=#{teacherId}
   </select>
 <resultMap id="getQuestionListHashMap" type="HashMap">
 	<id property="questionId" column="question_id"></id>
@@ -154,15 +154,15 @@
 <!-- 14getSubjectiveListOrObjective -->
 <select id="getSubjectiveList" resultMap="getSubjectiveListMap">
 select question.question_id,title_content from question natural join title
-	join teacher_question on question.question_id=teacher_question.question_id and teacher_question.teacher_id=#{teacherId} where subject_id=#{subject} and grade=#{grade} and option_a is null
+	join teacher_question on question.question_id=teacher_question.question_id and teacher_question.teacher_id=#{teacherId} where subject_id=#{subjectId} and grade=#{grade} and option_a is null
 </select>
 <resultMap id="getSubjectiveListMap" type="HashMap">
 	<id property="questionId" column="question_id"></id>
 	<result property="titleContent" column="title_content"/>
 </resultMap>
 <select id="getObjectiveList" resultMap="getObjectiveListMap">
-select question_id,title_content from question natural join title
-	 where subject_id=#{subjectId} and grade=#{grade} and option_a is not null
+select question.question_id,title_content from question natural join title
+	join teacher_question on question.question_id=teacher_question.question_id and teacher_question.teacher_id=#{teacherId} where subject_id=#{subjectId} and grade=#{grade} and option_a is not null
 </select>
 <resultMap id="getObjectiveListMap" type="HashMap">
 	<id property="questionId" column="question_id"></id>
@@ -191,12 +191,12 @@ and question.question_id=#{questionId}
 
 <!-- createSubjective -->
 <insert id="createSubjective">
-insert into question(question_id,title_id,subject_id,grade,answer)values(#{questionId,javaType=String,jdbcType=VARCHAR},#{titleId,javaType=String,jdbcType=VARCHAR},#{subjectId,javaType=String,jdbcType=VARCHAR},#{grade,jdbcType=INTEGER},#{answer,javaType=String,jdbcType=VARCHAR})
+insert into question(question_id,title_id,subject_id,grade,answer)values(#{questionId,javaType=String,jdbcType=VARCHAR},#{titleId,javaType=String,jdbcType=VARCHAR},#{subjectId,javaType=String,jdbcType=VARCHAR},#{grade,jdbcType=VARCHAR},#{answer,javaType=String,jdbcType=VARCHAR})
 </insert>
 <!-- createObjective -->
 <insert id="createObjective">
 insert into question(question_id,title_id,subject_id,grade,option_a,option_b,option_c,option_d,
-			answer,opa_pic_path,opb_pic_path,opc_pic_path,opd_pic_path)values(#{questionId,javaType=String,jdbcType=VARCHAR},#{titleId,javaType=String,jdbcType=VARCHAR},#{subjectId,javaType=String,jdbcType=VARCHAR},#{grade,jdbcType=INTEGER},#{optionA,javaType=String,jdbcType=VARCHAR},#{optionB,javaType=String,jdbcType=VARCHAR},#{optionC,javaType=String,jdbcType=VARCHAR},#{optionD,javaType=String,jdbcType=VARCHAR},
+			answer,opa_pic_path,opb_pic_path,opc_pic_path,opd_pic_path)values(#{questionId,javaType=String,jdbcType=VARCHAR},#{titleId,javaType=String,jdbcType=VARCHAR},#{subjectId,javaType=String,jdbcType=VARCHAR},#{grade,jdbcType=VARCHAR},#{optionA,javaType=String,jdbcType=VARCHAR},#{optionB,javaType=String,jdbcType=VARCHAR},#{optionC,javaType=String,jdbcType=VARCHAR},#{optionD,javaType=String,jdbcType=VARCHAR},
 			#{answer,javaType=String,jdbcType=VARCHAR},#{opaPicPath,javaType=String,jdbcType=VARCHAR},#{opbPicPath,javaType=String,jdbcType=VARCHAR},#{opcPicPath,javaType=String,jdbcType=VARCHAR},#{opdPicPath,javaType=String,jdbcType=VARCHAR})
 </insert>
 

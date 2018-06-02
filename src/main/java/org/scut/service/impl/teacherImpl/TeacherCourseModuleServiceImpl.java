@@ -4,6 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Resource;
 import org.scut.dao.*;
+import org.scut.model.Question;
 import org.scut.model.Title;
 import org.scut.service.teacherService.ITeacherCourseModuleService;
 import org.scut.util.Base64Analysis;
@@ -27,7 +29,7 @@ import java.sql.Blob;
 import java.io.OutputStream;  
 import sun.misc.BASE64Decoder;  
 import org.hibernate.Hibernate;
-
+import org.scut.util.*;
 @SuppressWarnings({ "restriction", "unused" })
 @Service(value="teacherCourseModuleService")
 public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleService{
@@ -49,7 +51,12 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	private ITitleDao titleDao;
 	@Resource
 	private IQuestion_paperDao Question_paperDao;
-	
+	@Resource
+	private IMistakeDao mistakeDao;
+	@Resource
+	private ITeacher_questionDao teacher_questionDao;
+	@Resource
+	private IStudent_classDao student_classDao;
 	public HashMap<String,Object> selectList(String teacherId,String classId){
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
@@ -65,11 +72,14 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		result.put("status", status);
 		return result;
 	}
-	public HashMap<String,Object> deleteList(List<String> paperId) {
+	public HashMap<String,Object> deleteList(List<String> studyIdArr) {
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			this.studyDao.deleteList(paperId);
+			this.solutionDao.deleteList(studyIdArr);
+			this.student_studyDao.deleteList(studyIdArr);
+			this.studyDao.deleteList(studyIdArr);
+
 			result.put("result",status);
 		}
 		catch(Exception e) {
@@ -95,11 +105,11 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		result.put("status", status);
 		return result;
 	}
-	public HashMap<String,Object> getQuestionList(String sunjectId){
+	public HashMap<String,Object> getQuestionList(String sunjectId,String grade,String teacherId){
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			List<HashMap<String,Object>> r1=this.questionDao.getQuestionList(sunjectId);
+			List<HashMap<String,Object>> r1=this.questionDao.getQuestionList(sunjectId,grade,teacherId);
 			HashMap<String,Object> questionTypeId=new HashMap<String,Object>();
 			for(int i=0;i<r1.size();i++) {
 			if(r1.get(i).get("optionA")!=null)
@@ -141,6 +151,12 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
 			List<HashMap<String,Object>> r1= this.studyDao.getCorrectionList(teacherId,classId);
+			for(int i=0;i<r1.size();i++) {
+			    String studyId=(String)r1.get(i).get("studyId");
+			    HashMap<String, Object> map=getCorrectStudentList(teacherId, studyId);
+			    List<HashMap<String,Object>> r2=(List<HashMap<String,Object>>)map.get("result");
+			    r1.get(i).put("submitNumber", r2.size());
+			}
 			Map<String,Object> r2=this.classDao.getStudentNumber(classId);
 			/**for unsubmittedNumber**/
 			for(int i=0;i<r1.size();i++) {
@@ -159,10 +175,12 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	}
 	public HashMap<String,Object> getRankList(String teacherId,String classId){
 		String status = "1";
-		HashMap<String, Object> result = new HashMap<String, Object>();
+		HashMap<String,Object> result = new HashMap<String,Object>();
+		//System.out.println(teacherId+classId);
 		try{
 			List<HashMap<String,Object>> r1=this.studyDao.getCorrectionList(teacherId, classId);
 			result.put("result",r1);
+			//System.out.println(r1.size());
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -189,22 +207,23 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	        	a.set(i, temp);
 	        }
 	        result.put("result",a);
-	        try  {  
+	        String transferA=ParamsTransport.listToJson(a);
+	       try  {  
 	            
-	            ByteArrayOutputStream out  =   new  ByteArrayOutputStream();  
+	            /**ByteArrayOutputStream out  =   new  ByteArrayOutputStream();  
 	            ObjectOutputStream outputStream  =   new  ObjectOutputStream(out);  
 	            outputStream.writeObject(result);  
 	             byte [] bytes  =  out.toByteArray();  
 	            outputStream.close();
 	            @SuppressWarnings("deprecation")
-				Blob b=Hibernate.createBlob(bytes);
-	            this.studyDao.getRankDetails(b,studyId);
+				Blob b=Hibernate.createBlob(bytes);**/
+	            this.studyDao.getRankDetails(transferA,studyId);
 	        }  catch  (Exception e) {  
-	            System.out.println("ObjectToBlob");  
+	           // System.out.println("ObjectToBlob");  
 	            e.printStackTrace();
 				status = "-2";
 				result.put("result",status);
-	        }  
+	        }
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -213,7 +232,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		}
 		result.put("status", status);
 		//test echo
-		Blob blob=this.studyDao.getBlobRank(studyId);
+		/**Blob blob=this.studyDao.getBlobRank(studyId);
 		HashMap<String,Object> l=new HashMap<String,Object>();
         try  {  
             ObjectInputStream in  = new ObjectInputStream(blob.getBinaryStream());  
@@ -227,15 +246,23 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
         }  
         //test echo end
 		System.out.println(String.valueOf((((List<LinkedHashMap<String,Object>>)l.get("result")).get(0).get("nickname"))));
-		return result;
+		**/return result;
 	}
-	public HashMap<String,Object> getCorrectStudentList(String teacherId,String paperId){
+	public HashMap<String,Object> getCorrectStudentList(String teacherId,String studyId){
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
-			List<HashMap<String,Object>> r1= this.student_studyDao.getCorrectStudentList(teacherId,paperId);
+			Map<String, Object> map1=studyDao.getStudyById(studyId);
+			String classId=(String)map1.get("classId");
+			List<HashMap<String,Object>> r2= this.student_studyDao.getCorrectStudentList(studyId);
+			List<HashMap<String, Object>> r1=new ArrayList<>();
+			for (int i=0;i<r2.size();i++) {
+				if (student_classDao.isRelationshipExist((String)r2.get(i).get("studentId"),classId)) {
+					r1.add(r2.get(i));
+				}
+			}
 			/**閫氳繃鍒ゆ柇鎬诲垎鏄惁涓�0鏉ュ垽鏂槸鍚﹀凡鎵规敼**/
-			if((Integer)(this.studyDao.getCorrectionList2(teacherId, paperId).get("submitNumber"))!=0) {
+			if((Integer)(this.studyDao.getCorrectionList2(studyId).get("submitNumber"))!=0) {
 			boolean a=true;
 			boolean b=false;
 			for(int i=0;i<r1.size();i++) {
@@ -308,14 +335,14 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		return responsBody;
 	}
 	
-	public HashMap<String,Object> getSubjectiveOrObjectiveList(String teacherId,String questionType,String subjectId,int grade){
+	public HashMap<String,Object> getSubjectiveOrObjectiveList(String teacherId,String questionType,String subjectId,String grade){
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try {
 			List<HashMap<String,Object>> r1=this.questionDao.getSubjectiveList(teacherId,subjectId,grade);
 			List<HashMap<String,Object>> r2=this.questionDao.getObjectiveList(teacherId,subjectId,grade);
 			int str2=2;
-			//should use String.equals(),not==
+			//should use String.equals(),not==	
 			if(Integer.parseInt(questionType) != str2) result.put("result",r1);
 			else result.put("result",r2);
 		}catch(Exception e) {
@@ -382,20 +409,20 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 	@Override
 	public HashMap<String,Object> createSubjective(String teacherId,String picSubjective,
 			String picPath,
-			String picAnswer,String answer,String subjectId,int grade,String picId1,String picId2) {
+			String picAnswer,String answer,String subjectId,String grade,String picId1,String picId2) {
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		ArrayList<HashMap<String, Object>> base64file=new ArrayList<HashMap<String, Object>>();
 		HashMap<String, Object> hashmap1=new HashMap<String, Object>();
-		HashMap<String, Object> hashmap2=new HashMap<String, Object>();
+		//HashMap<String, Object> hashmap2=new HashMap<String, Object>();
 		hashmap1.put("imgStr", picSubjective);
 		hashmap1.put("picPath", picPath);
-		hashmap2.put("imgStr", picAnswer);
-		hashmap2.put("picPath", answer);
+		//hashmap2.put("imgStr", picAnswer);
+		//hashmap2.put("picPath", answer);
 		base64file.add(hashmap1);
-		base64file.add(hashmap2);
-		result.put("picPath",picPath);
-		result.put("picPath2",picAnswer);
+		//base64file.add(hashmap2);
+		//result.put("picPath",picPath); for_test
+		//result.put("picPath2",picAnswer);
 		try{
 			String questionId=UUID.randomUUID().toString();
 			String titleId=UUID.randomUUID().toString();
@@ -403,7 +430,9 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 				GenerateImage(String.valueOf(subfile.get("imgStr")),String.valueOf(subfile.get("picPath")));
 			}
 			this.titleDao.createSubjective(titleId,GlobalVar.questionPicPath+picId1+".jpg");
-			this.questionDao.createSubjective(questionId,titleId,subjectId,grade,GlobalVar.questionPicPath+picId2+".jpg");
+			this.questionDao.createSubjective(questionId,titleId,subjectId,grade,answer);
+			
+			this.teacher_questionDao.createQuestion(teacherId,questionId);
 			result.put("result",status);
 		}
 		catch(Exception e) {
@@ -415,10 +444,10 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		return result;
 	}
 	//16.create objective completed!
-	public HashMap<String,Object> createObjective(String subjectId,int grade,String optionA,String optionB,String optionC,String optionD,
+	public HashMap<String,Object> createObjective(String subjectId,String grade,String optionA,String optionB,String optionC,String optionD,
 			String answer,String picA,String picB,String picC,String picD,String picPathPicture
 			,String opaPicPath,String opbPicPath,String opcPicPath,String opdPicPath,String picPath,String titleContent,
-			String picId1,String picId2,String picId3,String picId4,String picId5){
+			String picId1,String picId2,String picId3,String picId4,String picId5,String teacherId){
 		String status = "1";
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		ArrayList<HashMap<String, Object>> base64file=new ArrayList<HashMap<String, Object>>();
@@ -468,6 +497,7 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 			if(picA==null)
 			this.questionDao.createObjective(questionId, titleId, subjectId, grade, optionA, optionB, optionC, optionD, answer, null, null,null, null);
 			
+			this.teacher_questionDao.createQuestion(teacherId,questionId);
 			result.put("result",status);
 		}
 		catch(Exception e) {
@@ -485,10 +515,20 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		try{
 			Map<String,Object> r1=this.questionDao.checkTitle(questionId);
-			if(((String)r1.get("optionA"))==null) {r1.put("questionType", 1);
-			r1.put("answer", r1.get("answer").toString());}
-			else if(((String)r1.get("optionA")).length()>0) {r1.put("questionType", 2);
-			r1.put("answer", r1.get("answer").toString().toUpperCase());}
+			if (r1!=null) {
+				if(((String)r1.get("optionA"))==null) {r1.put("questionType", 1);
+				if (r1.get("answer")!=null) {
+					r1.put("answer", r1.get("answer").toString());
+				}
+				else {
+					r1.put("answer", "");
+				}
+				}
+				else if(((String)r1.get("optionA")).length()>0) {r1.put("questionType", 2);
+				r1.put("answer", r1.get("answer").toString().toUpperCase());}	
+			}
+			
+			
 			result.put("result",r1);
 		}
 		catch(Exception e) {
@@ -526,13 +566,32 @@ public class TeacherCourseModuleServiceImpl implements ITeacherCourseModuleServi
 					return responseBody;
 				}
 				
-				if(correctedPic!=null && correctedPic!="") {
+				if(correctedPic!=null) {
 					picId = UUID.randomUUID().toString();
 					picId = Base64Analysis.analysisPic(picId, this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.solutionPicPath, correctedPic);
 					System.out.println(this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.solutionPicPath);
 					System.out.println();
 				}				
-				solutionDao.correctSolution(studentId, studyId, questionId, point,picId,isright);				
+				solutionDao.correctSolution(studentId, studyId, questionId, point,picId,isright);
+				if (isright=="0") {
+					Question question=questionDao.selectByPrimaryKey(questionId);
+					
+					if (question.getOptionA()!=null) {
+						String questionType="2";
+						String note=null;
+						Date createTime=new Date();
+						String content=solutionDao.getsolution(studentId, studyId, questionId);
+						mistakeDao.insertmistake(studentId, questionId, note, questionType, content, createTime);
+						
+					}else {
+						String questionType="1";
+						String note=null;
+						Date createTime=new Date();
+						String content=solutionDao.getsolution(studentId, studyId, questionId);
+						mistakeDao.insertmistake(studentId, questionId, note, questionType, content, createTime);
+					}
+				}
+				
 			}
 			totalScore+=choiceScore;
 			

@@ -22,5 +22,6 @@ public interface ISolutionDao {
 
 	public void correctSolution(@Param("studentId")String studentId,@Param("studyId") String studyId,@Param("questionId") String questionId,@Param("point") int point,@Param("picId") String picId,
 			@Param("isright") String isright);
-	
+	public String  getsolution(@Param("studentId")String studentId,@Param("studyId") String studyId,@Param("questionId") String questionId);
+	public int deleteList(@Param("studyIdList")List<String> studyIdArr);
 }

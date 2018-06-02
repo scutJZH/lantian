@@ -118,6 +118,6 @@
   <!-- assignHomework -->
   <insert id="assignHomework">
   insert into paper (paper_id,paper_name,grade,subject_id,create_teacher_id,create_time,max_score)
-  values(#{paperId,jdbcType=VARCHAR},#{paperName,jdbcType=VARCHAR},#{grade,jdbcType=INTEGER},#{subjectId,jdbcType=VARCHAR},#{createTeacherId,jdbcType=VARCHAR},from_unixtime(#{createTime,jdbcType=DATE},'%y-%m-%d %h:%i:%s'),#{maxScore,jdbcType=INTEGER})
+  values(#{paperId,jdbcType=VARCHAR},#{paperName,jdbcType=VARCHAR},#{grade,jdbcType=VARCHAR},#{subjectId,jdbcType=VARCHAR},#{createTeacherId,jdbcType=VARCHAR},from_unixtime(#{createTime,jdbcType=DATE},'%y-%m-%d %h:%i:%s'),#{maxScore,jdbcType=INTEGER})
   </insert>
 </mapper>

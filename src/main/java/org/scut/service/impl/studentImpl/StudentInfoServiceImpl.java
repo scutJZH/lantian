@@ -31,7 +31,10 @@ public class StudentInfoServiceImpl implements IStudentInfoService{
 	private IClassDao classdao;
 	@Resource
 	private IStudent_classDao student_classdao;
-	@Resource ITeacher_classDao teacher_classdao;
+	@Resource
+	private ITeacher_classDao teacher_classdao;
+
+	
 
 
 	@Override
@@ -60,8 +63,15 @@ public class StudentInfoServiceImpl implements IStudentInfoService{
 					schoolInfo = schoolDao.getSchoolById(schoolId);
 				}
 				userInfo.put("schoolId", schoolId);
-				userInfo.put("schoolName", schoolInfo.getSchoolName());
-				userInfo.put("city", schoolInfo.getCity());
+				if (schoolInfo!=null) {
+					userInfo.put("schoolName", schoolInfo.getSchoolName());
+					userInfo.put("city", schoolInfo.getCity());
+				}else {
+					userInfo.put("schoolName", "");
+					userInfo.put("city", "");
+				}
+				
+				
 			} else {
 				status = "-1";
 			}
@@ -178,6 +188,7 @@ public class StudentInfoServiceImpl implements IStudentInfoService{
 			e.printStackTrace();
 			stastus="-2";
 		}
+		
 		result.put("status", stastus);
 		return result;
 	}

@@ -19,20 +19,19 @@ public interface IStudent_studyDao {
 
 	public List<LinkedHashMap<String,Object>> getRankDetails(@Param("studyId")String studyId,@Param("paperId")String paperId);
 
-	public List<HashMap<String,Object>> getCorrectStudentList(@Param("teacherId")String teacherId,@Param("paperId")String paperId);
+	public List<HashMap<String,Object>> getCorrectStudentList(@Param("studyId")String studyId);
 
 	void updateSubmit(@Param("studentId")String studentId, @Param("studyId")String studyId,@Param("choiceScore") int choiceScore);
 
-	public int assignmentHomework(@Param("paperId")String paperId,@Param("studentId")String studentId,@Param("submit")String submit,@Param("score")int score,@Param("paperType")String paperType);
+	public int assignmentHomework(@Param("studyId")String studyId,@Param("studentId")String studentId,@Param("submit")String submit,@Param("score")int score,@Param("paperType")String paperType);
 	
 	public int autoCorrect(@Param("studentId")String studentId,@Param("paperId")String paperId,@Param("choiceScore")int choiceScore);
 
 	public void updateCorrectedStatus(@Param("studentId")String studentId,@Param("studyId") String studyId,@Param("totalScore") int totalScore,@Param("teacherId")String teacherId);
 
-
-
-
 	public List<Map<String, Object>> getChildStudyInfoList(@Param("studentId")String studentId, @Param("classId")String classId, @Param("subjectId")String subjectId, @Param("studyType")String studyType);
 
+	public int deleteList(@Param("studyIdList")List<String> studyIdArr);
 
+	public int removeStudent(@Param("studentId")String studentId,@Param("teacherId")String teacherId);
 }
