@@ -22,6 +22,7 @@ public class Mistake  {
 		private String lastAnswer;
 		private String answer;
 		private String note;
+		
 		public String getQuestionId() {
 			return questionId;
 		}

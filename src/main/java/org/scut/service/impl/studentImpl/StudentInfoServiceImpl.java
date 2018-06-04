@@ -67,8 +67,8 @@ public class StudentInfoServiceImpl implements IStudentInfoService{
 					userInfo.put("schoolName", schoolInfo.getSchoolName());
 					userInfo.put("city", schoolInfo.getCity());
 				}else {
-					userInfo.put("schoolName", "");
-					userInfo.put("city", "");
+					userInfo.put("schoolName", null);
+					userInfo.put("city", null);
 				}
 				
 				

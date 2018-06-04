@@ -49,10 +49,14 @@ public class TeacherInfoServiceImpl implements ITeacherInfoService{
 				School schoolInfo = null;
 				if(schoolId != null){
 					schoolInfo = schoolDao.getSchoolById(schoolId);
+					userInfo.put("schoolName", schoolInfo.getSchoolName());
+					userInfo.put("city", schoolInfo.getCity());
+				}else{
+					userInfo.put("schoolName", null);
+					userInfo.put("city", null);
 				}
 				userInfo.put("schoolId", schoolId);
-				userInfo.put("schoolName", schoolInfo.getSchoolName());
-				userInfo.put("city", schoolInfo.getCity());
+				
 				userInfo.put("name", teacher.getName());
 			} else {
 				status = "-1";
