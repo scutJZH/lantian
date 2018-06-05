@@ -26,8 +26,7 @@ public class Post {
     
     private String postPic;
     
-
-
+    private String studentName;
 	public String getPostId() {
 		return postId;
 	}
@@ -106,6 +105,14 @@ public class Post {
 
 	public void setPostPic(String postPic) {
 		this.postPic = postPic;
+	}
+
+	public String getStudentName() {
+		return studentName;
+	}
+
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
 	}
 
 

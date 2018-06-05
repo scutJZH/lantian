@@ -260,7 +260,7 @@ public class StudentServiceImpl implements IStudentService{
 						String picPath = null;
 												
 						if(isRight==null) {allTheQuestionsAreChoices=false;}
-						if(isRight=="1") {
+						if(isRight!=null&&isRight.equals("1")) {
 							choiceScore += (int)(question_paperDao.getQuestion(paperId, questionId).get("point"));
 						}						
 						if( img!=null && img.length()!=0 )
@@ -271,7 +271,7 @@ public class StudentServiceImpl implements IStudentService{
 							System.out.println();
 							}						
 						solutionDao.insertSolution(studentId,studyId,questionId,solutionContent,picPath,isRight);
-						if ( isRight==("0")) {
+						if ( isRight.equals("0")) {
 							String questionType="2";
 							String note=null;
 							Date createTime=new Date();

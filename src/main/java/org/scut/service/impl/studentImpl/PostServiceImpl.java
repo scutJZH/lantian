@@ -1,6 +1,7 @@
 package org.scut.service.impl.studentImpl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -51,6 +52,11 @@ private IStudentDao IStudentDao;
 	@Override
 	public List<Post> gettotal() {
 		List<Post> posts = IPostDao.getallpost();
+		
+		for(int i=0;i<posts.size();i++) {
+			Student student = IStudentDao.getStudentById(posts.get(i).getStudentId());
+			posts.get(i).setStudentName(student.getNickname());
+		}
 		return posts;
 	}
 	
