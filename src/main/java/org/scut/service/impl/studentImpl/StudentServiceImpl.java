@@ -128,7 +128,7 @@ public class StudentServiceImpl implements IStudentService{
 				Map<String,Object> titleMap = new HashMap<>();
 				titleMap.put("titleId", title.getTitleId());
 				
-				if(title.getPicPath()==null||title.getPicPath().length()==0) {titleMap.put("picPath", title.getPicPath());}else {titleMap.put("picPath", GlobalVar.titlePicPath+title.getPicPath());}
+				if(title.getPicPath()==null||title.getPicPath().length()==0) {titleMap.put("picPath", title.getPicPath());}else {titleMap.put("picPath",title.getPicPath());}
 				
 				titleMap.put("titleContent", title.getTitleContent());
 								
@@ -254,6 +254,8 @@ public class StudentServiceImpl implements IStudentService{
 				    String teacherId = (String) studyDao.getStudyById(studyId).get("assignTeacherId");
 					for (Map<String, Object> map : solutionList) {
 						String questionId = (String) map.get("questionId");
+						//for test
+						System.out.println(questionId);
 						String solutionContent = (String) map.get("solutionContent");
 						String img = (String) map.get("img");
 						String isRight = (String) map.get("isRight");						
