@@ -22,5 +22,6 @@ public interface IMistakeDao {
     					@Param("questionType")String questionType,@Param("lastAnswer")String lastAnwer,@Param("createTime")Date createTime);
    int updateanswer(@Param("studentId")String studentId,@Param("questionId")String questionId,@Param("newAnswer")String newAnswer,@Param("changeTime")Date changeTime); 
    int inserttitle2(@Param("titleId")String titleId,@Param("picPath")String picPath);
+   int count(@Param("studentId")String studentId,@Param("questionId")String questionId);
     
 }

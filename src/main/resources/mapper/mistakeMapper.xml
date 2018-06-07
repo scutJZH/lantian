@@ -162,6 +162,11 @@
   
   
   </update>
+  <select id="count"  resultType="java.lang.Integer">
+  select count(*)
+  from mistake where student_id=#{studentId,jdbcType=VARCHAR}  and question_id=#{questionId,jdbcType=VARCHAR}
+  
+  </select>
   
   
   

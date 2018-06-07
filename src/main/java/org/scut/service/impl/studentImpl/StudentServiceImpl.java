@@ -261,28 +261,27 @@ public class StudentServiceImpl implements IStudentService{
 						String isRight = (String) map.get("isRight");						
 						String picPath = null;
 												
-						if(isRight==null) {allTheQuestionsAreChoices=false;}
+						if(isRight==null||isRight.isEmpty()) {allTheQuestionsAreChoices=false;}
 						if(isRight!=null&&isRight.equals("1")) {
 							choiceScore += (int)(question_paperDao.getQuestion(paperId, questionId).get("point"));
 						}	
-						
-						if( img!=null&&img!="")
-						{
-							System.err.println(img);
+						if (img!=null&&!img.isEmpty()) {
+							
 	                        picPath = UUID.randomUUID().toString();
 							picPath = Base64Analysis.analysisPic(picPath, this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.solutionPicPath, img);
-							
 							}						
 						System.err.println(studentId+studyId+questionId+solutionContent+picPath+isRight);
 						solutionDao.insertSolution(studentId,studyId,questionId,solutionContent,picPath,isRight);
 						
-						if ( isRight.equals("0")) {
-							String questionType="2";
-							String note=null;
-							Date createTime=new Date();
-							String content=solutionDao.getsolution(studentId, studyId, questionId);
-							mistakeDao.insertmistake(studentId, questionId, note, questionType, content, createTime);
-						
+						if ( isRight!=null&&isRight.equals("0")) {
+							if (mistakeDao.count(studentId, questionId)<1) {
+								String questionType="2";
+								String note=null;
+								Date createTime=new Date();
+								String content=solutionDao.getsolution(studentId, studyId, questionId);
+								mistakeDao.insertmistake(studentId, questionId, note, questionType, content, createTime);
+							}
+							
 						}
 						
 						}
