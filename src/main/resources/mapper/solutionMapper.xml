@@ -16,7 +16,7 @@ where study_id=#{studyId} AND student_id=#{studentId} AND (isright is null or is
 
   <insert id="insertSolution">
 		insert into solution (student_id , study_id , question_id , content,pic_path,isright) 
-		values (#{studentId},#{studyId},#{questionId},#{solutionContent},#{picPath},#{isRight})
+		values (#{studentId,jdbcType=VARCHAR},#{studyId,jdbcType=VARCHAR},#{questionId,jdbcType=VARCHAR},#{solutionContent,jdbcType=VARCHAR},#{picPath,jdbcType=VARCHAR},#{isRight,jdbcType=VARCHAR})
   </insert>
   
   <update id="correctSolution">

@@ -264,15 +264,18 @@ public class StudentServiceImpl implements IStudentService{
 						if(isRight==null) {allTheQuestionsAreChoices=false;}
 						if(isRight!=null&&isRight.equals("1")) {
 							choiceScore += (int)(question_paperDao.getQuestion(paperId, questionId).get("point"));
-						}						
-						if( img!=null && img.equals("1"))
+						}	
+						
+						if( img!=null&&img!="")
 						{
+							System.err.println(img);
 	                        picPath = UUID.randomUUID().toString();
 							picPath = Base64Analysis.analysisPic(picPath, this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.solutionPicPath, img);
-							System.out.println(this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.solutionPicPath);
-							System.out.println();
+							
 							}						
+						System.err.println(studentId+studyId+questionId+solutionContent+picPath+isRight);
 						solutionDao.insertSolution(studentId,studyId,questionId,solutionContent,picPath,isRight);
+						
 						if ( isRight.equals("0")) {
 							String questionType="2";
 							String note=null;
