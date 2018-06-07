@@ -56,7 +56,7 @@
     	birthday = #{teacher.birthday, javaType=Date, jdbcType=DATE},
     	sex = #{teacher.sex},
     	token = #{teacher.token, javaType=String, jdbcType=VARCHAR},
-    	school_name = #{teacher.schoolName, javaType=String, jdbcType=VARCHAR},
+    	school_id = #{teacher.schoolId, javaType=String, jdbcType=VARCHAR},
     	name = #{teacher.name, javaType=String, jdbcType=VARCHAR},
     	state = #{teacher.state},
     	verify_code = #{teacher.verifyCode, javaType=String, jdbcType=VARCHAR}
