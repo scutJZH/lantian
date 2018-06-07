@@ -23,12 +23,12 @@
 	<insert id="insertUser" parameterType="User">
 		insert into student 
 		 (student_id, phone, password, create_time, pic_path, nickname, birthday, sex,
-		 token, state, verify_code)
+		 token, state, verify_code,school_id)
   		 values (#{user.id}, #{user.phone}, #{user.password, javaType=String, jdbcType=VARCHAR},
   		 #{user.createTime, javaType=Date, jdbcType=DATE}, #{user.picPath},
   		 #{user.nickname, javaType=String, jdbcType=VARCHAR}, #{user.birthday, javaType=Date, jdbcType=DATE},
   		 #{user.sex}, #{user.token, javaType=String, jdbcType=VARCHAR}, #{user.state},
-  		 #{user.verifyCode, javaType=String, jdbcType=VARCHAR})
+  		 #{user.verifyCode, javaType=String, jdbcType=VARCHAR},'05394a70-afa6-41a4-b928-d19df7dcce5e')
 	</insert>
 	
 	<update id="updateUser" parameterType="User">

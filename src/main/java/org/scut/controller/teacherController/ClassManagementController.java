@@ -27,6 +27,8 @@ public class ClassManagementController {
 		String teacherId = (String) map.get("teacherId");
 		String className = (String) map.get("className");
 		String schoolId = (String) map.get("schoolId"); 
+		//modify
+		schoolId="05394a70-afa6-41a4-b928-d19df7dcce5e";
 		String grade = (String) map.get("grade");
 		String headPic = (String) map.get("headPic");
 

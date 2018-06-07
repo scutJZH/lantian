@@ -128,7 +128,7 @@ public class StudentServiceImpl implements IStudentService{
 				Map<String,Object> titleMap = new HashMap<>();
 				titleMap.put("titleId", title.getTitleId());
 				
-				if(title.getPicPath()==null||title.getPicPath().length()==0) {titleMap.put("picPath", title.getPicPath());}else {titleMap.put("picPath",title.getPicPath());}
+				if(title.getPicPath()==null||title.getPicPath().length()==0) {titleMap.put("picPath", "/"+title.getPicPath());}else {titleMap.put("picPath","/"+title.getPicPath());}
 				
 				titleMap.put("titleContent", title.getTitleContent());
 								
@@ -265,7 +265,7 @@ public class StudentServiceImpl implements IStudentService{
 						if(isRight=="1") {
 							choiceScore += (int)(question_paperDao.getQuestion(paperId, questionId).get("point"));
 						}						
-						if( img!=null && img.length()!=0 )
+						if( img!=null && img.equals("1"))
 						{
 	                        picPath = UUID.randomUUID().toString();
 							picPath = Base64Analysis.analysisPic(picPath, this.getClass().getClassLoader().getResource("../../").getPath()+GlobalVar.solutionPicPath, img);
